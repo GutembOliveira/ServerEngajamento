@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "quiz-app",
-    "slug": "quiz-app",
+    "slug": "engajamento",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -30,8 +30,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "5b9681e8-dc05-4169-8113-46add2caec71"
+        "projectId": "7398b26e-b101-4ade-8bcf-276af03bf592"
       }
-    }
+    },
+    "owner": "engajamento"
   }
 }

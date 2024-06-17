@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~3.2.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/material-top-tabs": "^6.6.13",
     "@react-navigation/native": "^6.1.9",
@@ -20,6 +21,7 @@
     "expo-status-bar": "~1.12.1",
     "formik": "^2.4.6",
     "react": "^18.2.0",
+    "react-dom": "18.2.0",
     "react-native": "0.74.2",
     "react-native-pager-view": "6.3.0",
     "react-native-root-toast": "^3.5.1",
@@ -28,11 +30,9 @@
     "react-native-segmented-control-tab": "^4.0.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.0.3",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz",
-    "yup": "^1.4.0",
-    "react-dom": "18.2.0",
     "react-native-web": "~0.19.10",
-    "@expo/metro-runtime": "~3.2.1"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

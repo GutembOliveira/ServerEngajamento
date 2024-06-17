@@ -23,6 +23,8 @@ export default function ApplyQuizScreen() {
   const [classToApply, setClassToApply] = useState(null);
   const [quizToApply, setQuizToApply] = useState(null);
 
+  const [radioKey, setRadioKey] = useState(0);
+
   useEffect(() => {
     const getToApply = async() => {
       if(currentStep === 1){
@@ -68,6 +70,7 @@ export default function ApplyQuizScreen() {
       setClassToApply(null);
     };
 
+    setRadioKey(prevKey => prevKey + 1); 
     setCurrentStep(prevStep => prevStep - 1);
   };
 
@@ -86,7 +89,7 @@ export default function ApplyQuizScreen() {
               !quizzes ?
               <ActivityIndicator size="large" color={theme.colors.lightBlue} />
               :
-              <RadioButtons data={quizzes} onSelect={(value) => setSelectedQuiz(value)}/>
+              <RadioButtons key={radioKey} data={quizzes} onSelect={(value) => setSelectedQuiz(value)}/>
             }
             <Button text="Próximo" onPress={nextStep}/>
           </>
@@ -101,7 +104,7 @@ export default function ApplyQuizScreen() {
               !classes ?
               <ActivityIndicator size="large" color={theme.colors.lightBlue} />
               :
-              <RadioButtons data={classes} onSelect={(value) => setSelectedClass(value)}/>
+              <RadioButtons key={radioKey} data={classes} onSelect={(value) => setSelectedClass(value)}/>
             }
 
             <View style={styles.buttonArea}>
