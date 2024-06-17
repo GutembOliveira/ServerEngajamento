@@ -1,64 +1,70 @@
 import { useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import theme from "../theme";
-import { shuffleArray } from "../helpers/shuffleArray";
 import Button from "../components/Button";
+import useQuizStore from "../stores/QuizStore";
 
 export default function SolveQuizScreen({ navigation }) {
     const route = useRoute();
     const { quiz } = route.params;
 
-    const [shuffledQuestions, setShuffledQuestions] = useState(null);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const questions = useQuizStore((state) => state.questions);
+    const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
+    const lastAnswer = useQuizStore((state) => state.lastAnswer);
+    const correctAnswers = useQuizStore((state) => state.correctAnswers);
+
+    const fetchQuestions = useQuizStore((state) => state.fetchQuestions);
+    const nextQuestion = useQuizStore((state) => state.nextQuestion);
+    const setSelectedAnswer = useQuizStore((state) => state.setSelectedAnswer);
+    const setCorrectAnswer = useQuizStore((state) => state.setCorrectAnswer);
 
     useEffect(() => {
-        setShuffledQuestions(shuffleArray(quiz.questions));
+        fetchQuestions(quiz.questions);
     }, []);
 
     const handleNextQuestion = () => {
-        setCurrentQuestionIndex((prevIndex) => Math.min(prevIndex + 1, shuffledQuestions.length - 1));
+        nextQuestion();
     };
     
     return (
         <SafeAreaView style={globalStyles.container}>
         {
-            !shuffledQuestions ?
+            !questions ?
             <ActivityIndicator size="large" color={theme.colors.lightBlue} />
                 :
                 (
                     <>
                     <Text style={globalStyles.heading}>{quiz.name}</Text>
                     <Text style={globalStyles.subheading}>Questão {currentQuestionIndex + 1} de {quiz.questions.length}</Text>
-                    <Text style={globalStyles.subheading}>Assunto: {shuffledQuestions[currentQuestionIndex].topic}</Text>
-                    <Text style={styles.question}>{shuffledQuestions[currentQuestionIndex].question}</Text>
+                    <Text style={globalStyles.subheading}>Assunto: {questions[currentQuestionIndex].topic}</Text>
+                    <Text style={styles.question}>{questions[currentQuestionIndex].question}</Text>
 
                     <View style={styles.buttonContainer}>
                     <TouchableOpacity
-                    style={[styles.button, styles.true, selectedAnswer === true && styles.selectedButton]}
+                    style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
                     onPress={() => setSelectedAnswer(true)}
                     >
                         <Text style={styles.buttonText}>Verdadeiro</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                    style={[styles.button, styles.false, selectedAnswer === false && styles.selectedButton]}
+                    style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
                     onPress={() => setSelectedAnswer(false)}
                     >
                         <Text style={styles.buttonText}>Falso</Text>
                     </TouchableOpacity>
                     </View>
 
-                    {selectedAnswer !== null && (
+                    {lastAnswer !== null && (
                         <Text style={styles.answerText}>
-                            Você selecionou: {selectedAnswer ? "Verdadeiro" : "Falso"}
+                            Você selecionou: {lastAnswer ? "Verdadeiro" : "Falso"}
                         </Text>
                     )}
  
                     {
-                        currentQuestionIndex === shuffledQuestions.length - 1 ?
+                        currentQuestionIndex === questions.length - 1 ?
                             <Button text="Finalizar" onPress={() => {}}/>
                             :
                             <Button text="Ver resposta" onPress={handleNextQuestion}/>
