@@ -25,7 +25,8 @@ export default function TeacherScreen() {
          options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesomeIcons name="book" color={color} size={size}/>
-          )
+          ),
+          headerBackTitle: 'Voltar'
          }}/>
         <Tab.Screen
          name="Turmas"
@@ -34,6 +35,7 @@ export default function TeacherScreen() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="google-classroom" color={color} size={size}/>
           ),
+          headerBackTitle: 'Voltar'
         }}/>
         <Tab.Screen
          name="Novo"
@@ -42,6 +44,7 @@ export default function TeacherScreen() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesomeIcons name="plus-circle" color={color} size={size}/>
           ),
+          headerBackTitle: 'Voltar'
         }}/>
         <Tab.Screen
          name="Aplicar questionário"
@@ -50,6 +53,7 @@ export default function TeacherScreen() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesomeIcons name="check-square" color={color} size={size}/>
           ),
+          headerBackTitle: 'Voltar'
         }}/>
       </Tab.Navigator>
   );
