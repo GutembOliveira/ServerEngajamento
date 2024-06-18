@@ -5,6 +5,7 @@ const useQuizStore = create((set) => ({
     currentQuestionIndex: 0,
     lastAnswer: null,
     correctAnswers: 0,
+    isLastAnswerCorrect: null,
 
     fetchQuestions: (questionsArray) => set({ questions: questionsArray }),
 
@@ -12,6 +13,20 @@ const useQuizStore = create((set) => ({
     { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.questions.length - 1) })),
 
     setSelectedAnswer: (answer) => set({ lastAnswer: answer }),
+
+    computeAnswer: (lastAnswer, questionAnswer) => set((state) => {
+        if (lastAnswer === questionAnswer) {
+            return {
+                isLastAnswerCorrect: true,
+                correctAnswers: state.correctAnswers + 1,
+            };
+        } else {
+            return {
+                isLastAnswerCorrect: false,
+            };
+        }
+    }),
+    
 
     setCorrectAnswer: () => set((state) => ({correctAnswers: state.correctAnswers + 1}))
 

@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import theme from "../theme";
@@ -10,6 +10,9 @@ export default function SolveQuizScreen({ navigation }) {
     const route = useRoute();
     const { quiz } = route.params;
 
+    const [timer, setTimer] = useState(10);
+    const [timeIsOver, setTimeIsOver] = useState(false);
+
     const questions = useQuizStore((state) => state.questions);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
     const lastAnswer = useQuizStore((state) => state.lastAnswer);
@@ -18,14 +21,39 @@ export default function SolveQuizScreen({ navigation }) {
     const fetchQuestions = useQuizStore((state) => state.fetchQuestions);
     const nextQuestion = useQuizStore((state) => state.nextQuestion);
     const setSelectedAnswer = useQuizStore((state) => state.setSelectedAnswer);
-    const setCorrectAnswer = useQuizStore((state) => state.setCorrectAnswer);
+    const computeAnswer = useQuizStore((state) => state.computeAnswer);
 
     useEffect(() => {
         fetchQuestions(quiz.questions);
     }, []);
 
+    useEffect(() => {
+        let interval = null;
+
+        if (!timeIsOver && timer > 0) {
+          interval = setInterval(() => {
+            setTimer((prevTimer) => prevTimer - 1);
+          }, 1000);
+        } else if (timer === 0) {
+          setTimeIsOver(true);
+        }
+
+        return () => clearInterval(interval);
+      }, [timer, timeIsOver, currentQuestionIndex]);
+
     const handleNextQuestion = () => {
-        nextQuestion();
+        setTimer(10);
+        setTimeIsOver(false);
+        //setSelectedAnswer(null);
+        
+        computeAnswer(lastAnswer, questions[currentQuestionIndex].answer);
+
+        //console.log(lastAnswer);
+        //console.log('1 - ', questions[currentQuestionIndex].answer);
+        
+        navigation.navigate('Comment');
+
+        //refresh states na tela de comentario
     };
     
     return (
@@ -37,6 +65,13 @@ export default function SolveQuizScreen({ navigation }) {
                 (
                     <>
                     <Text style={globalStyles.heading}>{quiz.name}</Text>
+                    {
+                        timeIsOver ?
+                        <Text style={globalStyles.subheading}>Tempo esgotado</Text>
+                        :
+                        <Text style={globalStyles.subheading}>Tempo:  {timer}</Text>
+                    }
+
                     <Text style={globalStyles.subheading}>Questão {currentQuestionIndex + 1} de {quiz.questions.length}</Text>
                     <Text style={globalStyles.subheading}>Assunto: {questions[currentQuestionIndex].topic}</Text>
                     <Text style={styles.question}>{questions[currentQuestionIndex].question}</Text>
@@ -45,6 +80,7 @@ export default function SolveQuizScreen({ navigation }) {
                     <TouchableOpacity
                     style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
                     onPress={() => setSelectedAnswer(true)}
+                    disabled={timeIsOver}
                     >
                         <Text style={styles.buttonText}>Verdadeiro</Text>
                     </TouchableOpacity>
@@ -52,6 +88,7 @@ export default function SolveQuizScreen({ navigation }) {
                     <TouchableOpacity
                     style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
                     onPress={() => setSelectedAnswer(false)}
+                    disabled={timeIsOver}
                     >
                         <Text style={styles.buttonText}>Falso</Text>
                     </TouchableOpacity>
@@ -62,14 +99,17 @@ export default function SolveQuizScreen({ navigation }) {
                             Você selecionou: {lastAnswer ? "Verdadeiro" : "Falso"}
                         </Text>
                     )}
- 
-                    {
-                        currentQuestionIndex === questions.length - 1 ?
+
+{
+                        timeIsOver &&
+                        (
+                            currentQuestionIndex === questions.length - 1 ?
                             <Button text="Finalizar" onPress={() => {}}/>
                             :
                             <Button text="Ver resposta" onPress={handleNextQuestion}/>
+                        )
                     }
-                    
+                     
                     </>
                 )
         }
