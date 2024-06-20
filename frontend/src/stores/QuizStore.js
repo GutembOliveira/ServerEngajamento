@@ -1,16 +1,22 @@
 import { create } from 'zustand';
 
-const useQuizStore = create((set) => ({
-    questions: null,
+const defaultState = {
+    quiz: null,
     currentQuestionIndex: 0,
     lastAnswer: null,
     correctAnswers: 0,
-    isLastAnswerCorrect: null,
+    isLastAnswerCorrect: null
+}
 
-    fetchQuestions: (questionsArray) => set({ questions: questionsArray }),
+const useQuizStore = create((set) => ({
+    ...defaultState,
+
+    reset: () => set(defaultState),
+
+    fetchQuiz: (quizData) => set({ quiz: quizData }),
 
     nextQuestion: () => set((state) => (
-    { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.questions.length - 1) })),
+    { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.quiz.questions.length - 1) })),
 
     setSelectedAnswer: (answer) => set({ lastAnswer: answer }),
 

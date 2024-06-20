@@ -7,6 +7,7 @@ export default function CommentQuestionScreen() {
     const lastAnswer = useQuizStore((state) => state.lastAnswer);
     const correctAnswers = useQuizStore((state) => state.correctAnswers);
     const isLastAnswerCorrect = useQuizStore((state) => state.isLastAnswerCorrect);
+    const nextQuestion = useQuizStore((state) => state.nextQuestion);
 
     return (
         <View style={globalStyles.container}>
@@ -14,7 +15,7 @@ export default function CommentQuestionScreen() {
             <Text>A resposta está: {isLastAnswerCorrect === true ? 'Correta' : 'Errada'}</Text>
             <Text>Questões corretas até o momento: {correctAnswers}</Text>
 
-            <Button text="Próxima Questão" onPress={() => {}}/>
+            <Button text="Próxima Questão" onPress={nextQuestion}/>
         </View>
     )
 }

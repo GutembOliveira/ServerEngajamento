@@ -1,31 +1,30 @@
-import { useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { NavigationContainer, useRoute, useFocusEffect } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useEffect, useState, useCallback } from "react";
 import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import theme from "../theme";
 import Button from "../components/Button";
 import useQuizStore from "../stores/QuizStore";
 
-export default function SolveQuizScreen({ navigation }) {
-    const route = useRoute();
-    const { quiz } = route.params;
+const QuestionScreen = ({ navigation }) => {
+    const quiz = useQuizStore((state) => state.quiz);
 
-    const [timer, setTimer] = useState(10);
+    const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
 
-    const questions = useQuizStore((state) => state.questions);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
     const lastAnswer = useQuizStore((state) => state.lastAnswer);
-    const correctAnswers = useQuizStore((state) => state.correctAnswers);
-
-    const fetchQuestions = useQuizStore((state) => state.fetchQuestions);
-    const nextQuestion = useQuizStore((state) => state.nextQuestion);
     const setSelectedAnswer = useQuizStore((state) => state.setSelectedAnswer);
     const computeAnswer = useQuizStore((state) => state.computeAnswer);
 
-    useEffect(() => {
-        fetchQuestions(quiz.questions);
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            setTimer(5);
+            setTimeIsOver(false);
+            setSelectedAnswer(null);
+        }, [])
+    );
 
     useEffect(() => {
         let interval = null;
@@ -41,25 +40,16 @@ export default function SolveQuizScreen({ navigation }) {
         return () => clearInterval(interval);
       }, [timer, timeIsOver, currentQuestionIndex]);
 
-    const handleNextQuestion = () => {
-        setTimer(10);
-        setTimeIsOver(false);
-        //setSelectedAnswer(null);
+    const seeComment = () => {
         
-        computeAnswer(lastAnswer, questions[currentQuestionIndex].answer);
-
-        //console.log(lastAnswer);
-        //console.log('1 - ', questions[currentQuestionIndex].answer);
-        
+        computeAnswer(lastAnswer, quiz.questions[currentQuestionIndex].answer);
         navigation.navigate('Comment');
-
-        //refresh states na tela de comentario
     };
-    
+
     return (
         <SafeAreaView style={globalStyles.container}>
         {
-            !questions ?
+            !quiz ?
             <ActivityIndicator size="large" color={theme.colors.lightBlue} />
                 :
                 (
@@ -73,8 +63,8 @@ export default function SolveQuizScreen({ navigation }) {
                     }
 
                     <Text style={globalStyles.subheading}>Questão {currentQuestionIndex + 1} de {quiz.questions.length}</Text>
-                    <Text style={globalStyles.subheading}>Assunto: {questions[currentQuestionIndex].topic}</Text>
-                    <Text style={styles.question}>{questions[currentQuestionIndex].question}</Text>
+                    <Text style={globalStyles.subheading}>Assunto: {quiz.questions[currentQuestionIndex].topic}</Text>
+                    <Text style={styles.question}>{quiz.questions[currentQuestionIndex].question}</Text>
 
                     <View style={styles.buttonContainer}>
                     <TouchableOpacity
@@ -103,10 +93,10 @@ export default function SolveQuizScreen({ navigation }) {
 {
                         timeIsOver &&
                         (
-                            currentQuestionIndex === questions.length - 1 ?
+                            currentQuestionIndex === quiz.questions.length - 1 ?
                             <Button text="Finalizar" onPress={() => {}}/>
                             :
-                            <Button text="Ver resposta" onPress={handleNextQuestion}/>
+                            <Button text="Ver resposta" onPress={seeComment}/>
                         )
                     }
                      
@@ -115,6 +105,67 @@ export default function SolveQuizScreen({ navigation }) {
         }
         </SafeAreaView>
     );
+};
+
+const CommentScreen = ({ navigation }) => {
+    const lastAnswer = useQuizStore((state) => state.lastAnswer);
+    const correctAnswers = useQuizStore((state) => state.correctAnswers);
+    const isLastAnswerCorrect = useQuizStore((state) => state.isLastAnswerCorrect);
+    const nextQuestion = useQuizStore((state) => state.nextQuestion);
+
+    const BackToQuestion = () => {
+        nextQuestion();
+        navigation.navigate('Question');
+    }
+
+    return (
+        <SafeAreaView style={globalStyles.container}>
+            { lastAnswer === null ? 
+                <Text>Você não respondeu esta questão</Text> :
+                <>
+                    <Text>Você respondeu: {lastAnswer === true ? 'Verdadeiro' : 'Falso'}</Text>
+                    <Text>A resposta está: {isLastAnswerCorrect === true ? 'Correta' : 'Errada'}</Text>
+                </>
+            }
+            <Text>Questões corretas até o momento: {correctAnswers}</Text>
+
+            <Button text="Próxima Questão" onPress={BackToQuestion}/>
+        </SafeAreaView>
+    )
+};
+
+const FinalScreen = ({ navigation }) => {
+    return (
+        <SafeAreaView style={globalStyles.container}>
+            <Text>Questionário finalizado</Text>
+        </SafeAreaView>
+    );
+}
+
+const Stack = createNativeStackNavigator();
+
+export default function SolveQuizScreen() {
+    const route = useRoute();
+    const { quiz } = route.params;
+
+    const fetchQuiz = useQuizStore((state) => state.fetchQuiz);
+    const resetQuiz = useQuizStore((state) => state.reset);
+
+    useEffect(() => {
+        resetQuiz();
+        fetchQuiz(quiz);
+    }, []);
+
+    return (
+        <NavigationContainer independent={true}>
+            <Stack.Navigator initialRouteName="QuestionScreen">
+                <Stack.Screen name="Question" component={QuestionScreen} options={{ title: 'Questão' }} />
+                <Stack.Screen name="Comment" component={CommentScreen} options={{ title: 'Comentário' }} />
+                <Stack.Screen name="Final" component={FinalScreen} options={{ title: 'Final' }} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
+    
 }
 
 const styles = StyleSheet.create({
