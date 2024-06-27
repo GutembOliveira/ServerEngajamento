@@ -1,5 +1,5 @@
 // const turmas = require('../repositorys/turmaRepository');
-const  connection  = require('../BACKEND-APP/dbConfig.js');
+const  connection  = require('./dbConfig.js');
 
 module.exports = {
 

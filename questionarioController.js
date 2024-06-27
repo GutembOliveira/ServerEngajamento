@@ -1,4 +1,4 @@
-const connection = require('../BACKEND-APP/dbConfig.js');
+const connection = require('./dbConfig.js');
 
 var questionario;
 var contQuest = 0;
