@@ -7,9 +7,65 @@ var clientesId = [];
 let requestQueue = [];
 let canCallGetQuestionario = false;
 
-function getQuestionario() {
-    return new Promise((resolve, reject) => {
-        var sql = `
+// function getQuestionario() {
+//     return new Promise((resolve, reject) => {
+//         var sql = `
+//             SELECT 
+//                 q.idQuestao,
+//                 q.enunciado,  
+//                 q.fkAssunto,
+//                 q.tipoQuestao,
+//                 a.idalternativas,
+//                 a.Questao_idQuestao,
+//                 a.Questao_fkAssunto,
+//                 a.letra,
+//                 a.descricao,
+//                 a.resposta
+//             FROM 
+//                 mydb.Questao q
+//             INNER JOIN 
+//                 mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
+//             ORDER BY 
+//                 q.idQuestao, a.letra
+//         `;
+//         connection.query(sql, function (err, result) {
+//             if (err) {
+//                 return reject(err);
+//             }
+//             // Processa os resultados para montar o JSON personalizado
+//             let questoesMap = {};
+
+//             result.forEach(row => {
+//                 if (!questoesMap[row.idQuestao]) {
+//                     questoesMap[row.idQuestao] = {
+//                         idQuestao: row.idQuestao,
+//                         enunciado: "Determine se as afirmações abaixo são verdadeiras (V) ou falsas (F)",
+//                         alternativas: []
+//                     };
+//                 }
+
+//                 questoesMap[row.idQuestao].alternativas.push({
+//                     questao: row.idQuestao,
+//                     idalternativas: row.idalternativas,
+//                     letra: row.letra,
+//                     descricao: row.descricao,
+//                     resposta: row.resposta
+//                 });
+//             });
+
+//             // Converte o mapa em uma lista
+//             let questoesList = Object.values(questoesMap);
+//             questionario = questoesList;
+//             console.log(questionario)
+//             resolve(questoesList);
+//         });
+//     });
+// }
+
+function getQuestionario(request, response){
+
+
+    var sql = `
             SELECT 
                 q.idQuestao,
                 q.enunciado,  
@@ -56,9 +112,11 @@ function getQuestionario() {
             // Converte o mapa em uma lista
             let questoesList = Object.values(questoesMap);
             questionario = questoesList;
-            resolve(questoesList);
+            console.log(questionario)
+            response.json(questionario);
         });
-    });
+
+    
 }
 
 function getProximaQuestao(request, response) {
