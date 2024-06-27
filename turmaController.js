@@ -11,7 +11,7 @@ getTurma(request,response){
     console.log(result);
     return response.json(result);
     });
-    connection.end()
+    //connection.end()
 }
 
 }

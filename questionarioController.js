@@ -86,7 +86,7 @@ function getQuestionario(request, response){
         `;
         connection.query(sql, function (err, result) {
             if (err) {
-                return reject(err);
+                return "error:"+ (err);
             }
             // Processa os resultados para montar o JSON personalizado
             let questoesMap = {};
