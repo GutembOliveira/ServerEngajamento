@@ -1,0 +1,20 @@
+{
+  "name": "backend-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csvtojson": "^2.0.10",
+    "express": "^4.19.2",
+    "mysql": "^2.18.1",
+    "ws": "^8.17.1"
+  }
+}

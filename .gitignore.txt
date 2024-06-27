@@ -1,0 +1,5 @@
+#arquivos ignorados
+mockTeste.js
+turma.csv
+baseQuestao.csv
+repositorys/
