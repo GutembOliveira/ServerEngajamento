@@ -3,6 +3,7 @@ const db = require("./dbConfig.js")
 const cors = require("cors");
 const mysql = require("mysql");
 const routes = require('./routes.js');
+const bodyParser = require('body-parser');
 const app=express();
     app.use(cors());
     app.use(routes);

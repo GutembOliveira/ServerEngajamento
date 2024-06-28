@@ -1,12 +1,13 @@
 const connection = require('./dbConfig.js');
-
+//app.use(express.json())
+const bodyParser = require('body-parser')
 var questionario;
 var contQuest = 0;
 var numAlunos = 0;
 var clientesId = [];
 let requestQueue = [];
 let canCallGetQuestionario = false;
-
+const jsonParser = bodyParser.json();
 // function getQuestionario() {
 //     return new Promise((resolve, reject) => {
 //         var sql = `
@@ -127,34 +128,51 @@ function getProximaQuestao(request, response) {
     return response.json(questionario[i]);
 }
 
-function liberaQuestionario(request, response) {
-    clientesId.push(request.id);
-    requestQueue.push({ request, response });
+// function liberaQuestionario(request, response) {
+//     clientesId.push(request.id);
+//     requestQueue.push({ request, response });
 
-    if (requestQueue.length >= 5 && canCallGetQuestionario) {
-        getQuestionario().then(result => {
-            // Enviar a mesma resposta para todos os clientes na fila
-            requestQueue.forEach(({ response }) => {
-                response.json(result);
-            });
+//     if (canCallGetQuestionario) {
+//     //if (requestQueue.length >= 5 && canCallGetQuestionario) {
+//         getQuestionario().then(result => {
+//             // Enviar a mesma resposta para todos os clientes na fila
+//             requestQueue.forEach(({ response }) => {
+//                 response.json(result);
+//             });
 
-            // Limpar a fila
-            requestQueue = [];
-            numAlunos = 0;  // Resetar o contador de alunos
-        }).catch(error => {
-            // Em caso de erro, enviar uma resposta de erro para todos os clientes na fila
-            requestQueue.forEach(({ response }) => {
-                response.status(500).json({ error: 'Erro no processamento' });
-            });
+//             // Limpar a fila
+//             requestQueue = [];
+//             numAlunos = 0;  // Resetar o contador de alunos
+//         }).catch(error => {
+//             // Em caso de erro, enviar uma resposta de erro para todos os clientes na fila
+//             requestQueue.forEach(({ response }) => {
+//                 response.status(500).json({ error: 'Erro no processamento' });
+//             });
 
-            // Limpar a fila
-            requestQueue = [];
-            numAlunos = 0;  // Resetar o contador de alunos
-        });
-    } else {
-        console.log("Esperando jogadores...");
-        numAlunos++;
-    }
+//             // Limpar a fila
+//             requestQueue = [];
+//             numAlunos = 0;  // Resetar o contador de alunos
+//         });
+//     } else {
+//         console.log("Esperando jogadores...");
+//         numAlunos++;
+//     }
+// }
+
+function liberaQuestionario(request,response){
+    const {valor} = request.body;
+    console.log(request.body)
+    //console.log(jsonData.data)
+    console.log('Recebida variavel:', valor);
+    canCallGetQuestionario = valor;
+
+}
+
+
+function iniciaQuestionario(request,response){
+    console.log(canCallGetQuestionario)
+    return response.json(canCallGetQuestionario);
+
 }
 
 function enableGetQuestionario() {
@@ -188,5 +206,6 @@ module.exports = {
     getQuestionario,
     getProximaQuestao,
     liberaQuestionario,
-    enableGetQuestionario
+    enableGetQuestionario,
+    iniciaQuestionario
 };
