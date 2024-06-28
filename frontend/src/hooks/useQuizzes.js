@@ -6,16 +6,26 @@ const useQuizzes = () => {
 
     const fetchData = async () => {
       try {
-        const result = await api.get('/quizzes');
+        const result = await api.get('/Questionarios');
         setQuizzes(result.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }
 
+    // const fetchQuizById = async (id) => {
+    //   try {
+    //       const result = await api.get(`/quizzes/${id}`);
+    //       return result.data;
+    //   } catch (error) {
+    //       console.error('Error fetching quiz:', error);
+    //       return null;
+    //   }
+    // };
+
     const fetchQuizById = async (id) => {
       try {
-          const result = await api.get(`/quizzes/${id}`);
+          const result = await quizzes.find(quiz => quiz.idQuestao === id);
           return result.data;
       } catch (error) {
           console.error('Error fetching quiz:', error);

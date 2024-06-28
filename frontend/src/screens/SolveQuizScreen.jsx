@@ -20,7 +20,7 @@ const QuestionScreen = ({ navigation }) => {
 
     useFocusEffect(
         useCallback(() => {
-            setTimer(5);
+            setTimer(7);
             setTimeIsOver(false);
             setSelectedAnswer(null);
         }, [])
@@ -40,9 +40,8 @@ const QuestionScreen = ({ navigation }) => {
         return () => clearInterval(interval);
       }, [timer, timeIsOver, currentQuestionIndex]);
 
-    const seeComment = () => {
-        
-        computeAnswer(lastAnswer, quiz.questions[currentQuestionIndex].answer);
+    const seeComment = () => {    
+        computeAnswer(lastAnswer, quiz.alternativas[currentQuestionIndex].resposta);
         navigation.navigate('Comment');
     };
 
@@ -54,7 +53,7 @@ const QuestionScreen = ({ navigation }) => {
                 :
                 (
                     <>
-                    <Text style={globalStyles.heading}>{quiz.name}</Text>
+                        <Text style={globalStyles.heading}>Quiz Teste</Text>
                     {
                         timeIsOver ?
                         <Text style={globalStyles.subheading}>Tempo esgotado</Text>
@@ -62,9 +61,9 @@ const QuestionScreen = ({ navigation }) => {
                         <Text style={globalStyles.subheading}>Tempo:  {timer}</Text>
                     }
 
-                    <Text style={globalStyles.subheading}>Questão {currentQuestionIndex + 1} de {quiz.questions.length}</Text>
-                    <Text style={globalStyles.subheading}>Assunto: {quiz.questions[currentQuestionIndex].topic}</Text>
-                    <Text style={styles.question}>{quiz.questions[currentQuestionIndex].question}</Text>
+                    <Text style={globalStyles.subheading}>Questão {currentQuestionIndex + 1} de {quiz.alternativas.length}</Text>
+                    <Text style={globalStyles.subheading}>Assunto: {quiz.alternativas[currentQuestionIndex].topic}</Text>
+                    <Text style={styles.question}>{quiz.alternativas[currentQuestionIndex].descricao}</Text>
 
                     <View style={styles.buttonContainer}>
                     <TouchableOpacity
@@ -90,14 +89,8 @@ const QuestionScreen = ({ navigation }) => {
                         </Text>
                     )}
 
-{
-                        timeIsOver &&
-                        (
-                            currentQuestionIndex === quiz.questions.length - 1 ?
-                            <Button text="Finalizar" onPress={() => {}}/>
-                            :
-                            <Button text="Ver resposta" onPress={seeComment}/>
-                        )
+                    {
+                        timeIsOver && <Button text="Ver resposta" onPress={seeComment}/>
                     }
                      
                     </>
@@ -108,6 +101,9 @@ const QuestionScreen = ({ navigation }) => {
 };
 
 const CommentScreen = ({ navigation }) => {
+    const quiz = useQuizStore((state) => state.quiz);
+    const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
+    
     const lastAnswer = useQuizStore((state) => state.lastAnswer);
     const correctAnswers = useQuizStore((state) => state.correctAnswers);
     const isLastAnswerCorrect = useQuizStore((state) => state.isLastAnswerCorrect);
@@ -129,7 +125,13 @@ const CommentScreen = ({ navigation }) => {
             }
             <Text>Questões corretas até o momento: {correctAnswers}</Text>
 
-            <Button text="Próxima Questão" onPress={BackToQuestion}/>
+            {
+                currentQuestionIndex === quiz.alternativas.length - 1 ?
+                <Button text="Finalizar" onPress={() => navigation.navigate('Final')}/>
+                :
+                <Button text="Próxima Questão" onPress={BackToQuestion}/>
+            }
+
         </SafeAreaView>
     )
 };
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: Dimensions.get('window').width * 0.35,
         marginVertical: 20,
-        opacity: .7
+        opacity: .5
     },
         
     true: {

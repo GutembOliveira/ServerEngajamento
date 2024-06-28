@@ -8,8 +8,8 @@ export default function ListClassesScreen({ navigation }) {
   const { classes } = useClasses();
 
   const renderItem = ({ item }) => (
-    <Card onPress={() => navigation.navigate('Class Detail', { id: item._id})}>
-      <Text>{item.name}</Text>
+    <Card onPress={() => navigation.navigate('Class Detail', { item: item })}>
+      <Text>Turma teste</Text>
     </Card>
   )
 
@@ -25,12 +25,15 @@ export default function ListClassesScreen({ navigation }) {
               :
               <>
                 <Text style={[globalStyles.text, globalStyles.heading]}>Minhas turmas</Text>
-                <FlatList
+                <Card onPress={() => navigation.navigate('Class Detail', { item: classes })}>
+                  <Text>Turma teste</Text>
+                </Card>
+                {/* <FlatList
                   data={classes}
-                  keyExtractor={item => item._id}
+                  keyExtractor={item => item.Turma_idTurma}
                   renderItem={renderItem}
                   style={{width: Dimensions.get('window').width * 0.9}}
-                />
+                /> */}
               </>
           )
       }

@@ -9,22 +9,24 @@ import theme from '../theme';
 
 export default function ClassDetailScreen() {
   const route = useRoute();
-  const { id } = route.params;
+  //const { id } = route.params;
+  const { item } = route.params;
   const [selectedClass, setSelectedClass] = useState(null);
   const { fetchClassById } = useClasses();
 
   useEffect(() => {
-    const getClass = async() => {
-      const result = await fetchClassById(id);
-      setSelectedClass(result);
-    }
-    getClass();
+    // const getClass = async() => {
+    //   const result = await fetchClassById(id);
+    //   setSelectedClass(result);
+    // }
+    // getClass();
+    setSelectedClass(item);
   }, []);
 
   const renderItem = ({ item }) => (
     <CardContent>
-      <Text>{item._id}</Text>
-      <Text>{item.name}</Text>
+      <Text>{item.idAluno}</Text>
+      <Text>{item.Nome}</Text>
       <Text>{item.email}</Text>
     </CardContent>
   )
@@ -38,12 +40,12 @@ export default function ClassDetailScreen() {
           (
             <>
               <Text style={[globalStyles.text, globalStyles.heading]}>Detalhes da turma</Text>
-              <Text style={globalStyles.text}>Nome: { selectedClass.name }</Text>
-              <Text style={globalStyles.text}>Alunos: { selectedClass.students.length }</Text>
+              <Text style={globalStyles.text}>Nome: Turma teste </Text>
+              <Text style={globalStyles.text}>Alunos: { selectedClass.length }</Text>
 
               <FlatList
-                  data={selectedClass.students}
-                  keyExtractor={item => item._id}
+                  data={selectedClass}
+                  keyExtractor={item => item.idAluno}
                   renderItem={renderItem}
                   style={{width: Dimensions.get('window').width * 0.9}}
                 />

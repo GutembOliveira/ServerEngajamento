@@ -10,8 +10,8 @@ export default function ListQuizzesScreen({ navigation }) {
   const { quizzes } = useQuizzes();
 
   const renderItem = ({ item }) => (
-    <Card onPress={() => navigation.navigate('Quiz Detail', { id: item._id})}>
-      <Text>{item.name}</Text>
+    <Card onPress={() => navigation.navigate('Quiz Detail', { item: item})}>
+      <Text>Quiz Teste</Text>
     </Card>
   )
 
@@ -29,7 +29,7 @@ export default function ListQuizzesScreen({ navigation }) {
                 <Text style={[globalStyles.text, globalStyles.heading]}>Meus questionários</Text>
                 <FlatList
                   data={quizzes}
-                  keyExtractor={item => item._id}
+                  keyExtractor={item => item.idQuestao}
                   renderItem={renderItem}
                   style={{width: Dimensions.get('window').width * 0.9}}
                 />

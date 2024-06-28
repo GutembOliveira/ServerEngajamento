@@ -9,24 +9,28 @@ import CardContent from '../components/CardContent';
 
 export default function QuizDetailScreen() {
   const route = useRoute();
-  const { id } = route.params;
+  const { item } = route.params;
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const { fetchQuizById } = useQuizzes();
 
-  useEffect(() => {
-    const getQuiz = async() => {
-      const result = await fetchQuizById(id);
-      setSelectedQuiz(result);
-    }
+  //const { quizzes } = useQuizzes();
 
-    getQuiz();
+  useEffect(() => {
+    //const getQuiz = async() => {
+    // const getQuiz = async () => {
+    //   const result = await fetchQuizById(id);
+    //   //const result = quizzes.find(quiz => quiz.idQuestao === id);
+    //   setSelectedQuiz(result);
+    // }
+    // getQuiz();
+    setSelectedQuiz(item);
   }, []);
 
   const renderItem = ({ item }) => (
     <CardContent>
-      <Text>{item.subject}</Text>
-      <Text>{item.topic}</Text>
-      <Text>{item.question}</Text>
+      <Text>Geografia</Text>
+      <Text>Mundo</Text>
+      <Text>{item.descricao}</Text>
     </CardContent>
   )
 
@@ -39,12 +43,13 @@ export default function QuizDetailScreen() {
         (
           <>
             <Text style={[globalStyles.text, globalStyles.heading]}>Detalhes do questionário</Text>
-            <Text style={globalStyles.text}>Nome: { selectedQuiz.name }</Text>
-            <Text style={globalStyles.text}>Questões: { selectedQuiz.questions.length }</Text>
+            {/* <Text style={globalStyles.text}>Nome: { selectedQuiz.name }</Text> */}
+            <Text style={globalStyles.text}>Nome: Quiz teste</Text>
+            <Text style={globalStyles.text}>Questões: { selectedQuiz.alternativas.length }</Text>
 
             <FlatList
-                  data={selectedQuiz.questions}
-                  keyExtractor={item => item._id}
+                  data={selectedQuiz.alternativas}
+                  keyExtractor={item => item.idalternativas}
                   renderItem={renderItem}
                   style={{width: Dimensions.get('window').width * 0.9}}
                 />

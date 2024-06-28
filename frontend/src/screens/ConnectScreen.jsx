@@ -8,17 +8,14 @@ import api from '../services/api';
 
 export default function ConnectScreen() {
   const [quizCode, setQuizCode] = useState('');
-  const [data, setData] = useState(null);
 
   async function connect() {
-    const response = await api.get("/Questionarios")
-    setData(response.data)
+    if(quizCode == 1){
+      await api.get('/conectaQuestionario')
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err))
+    }
   }
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
 
   return (
     <SafeAreaView style={globalStyles.container}>

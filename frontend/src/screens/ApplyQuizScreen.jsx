@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 
 import globalStyles from '../utils/globalStyles';
@@ -10,6 +10,8 @@ import RadioButtons from '../components/RadioButtons';
 
 import useClasses from '../hooks/useClasses';
 import useQuizzes from '../hooks/useQuizzes';
+
+import api from '../services/api';
 
 export default function ApplyQuizScreen() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -141,9 +143,20 @@ export default function ApplyQuizScreen() {
     }
   }
 
+  const liberarQuestionario = async () => {
+    await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
+    .then((response) => {console.log(response.data.data)})
+    .catch((error) => {console.error(error)})
+  }
+
+  const iniciarQuestionario = async () => {
+    const result = await api.get('/iniciaQuestionario');
+    console.log(result)
+  }
+
   return (
     <SafeAreaView style={globalStyles.container}>
-    {
+    {/* {
       !classes || !quizzes ?
       <ActivityIndicator size="large" color={theme.colors.lightBlue} />
       :
@@ -153,8 +166,12 @@ export default function ApplyQuizScreen() {
           :
           renderStep()
       )
-    }
-    </SafeAreaView>
+    } */}
+
+      <Button onPress={liberarQuestionario} text="Liberar questionário"/>
+      <Button onPress={iniciarQuestionario} text="Iniciar questionário"/>
+
+      </SafeAreaView>
   );
 }
 

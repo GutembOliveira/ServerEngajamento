@@ -9,9 +9,8 @@ export default function SelectQuizScreen({ navigation }) {
   const { quizzes } = useQuizzes();
 
   const renderItem = ({ item }) => (
-    //TODO
-    <Card onPress={() => navigation.navigate('Confirm', { id: item._id})}>
-      <Text>{item.name}</Text>
+    <Card onPress={() => navigation.navigate('Confirm', { item: item})}>
+      <Text>Quiz Teste</Text>
     </Card>
   )
 
@@ -29,7 +28,7 @@ export default function SelectQuizScreen({ navigation }) {
                   <Text style={[globalStyles.text, globalStyles.heading]}>Selecione um questionário</Text>
                   <FlatList
                     data={quizzes}
-                    keyExtractor={item => item._id}
+                    keyExtractor={item => item.idQuestao}
                     renderItem={renderItem}
                     style={{width: Dimensions.get('window').width * 0.9}}
                   />

@@ -10,17 +10,19 @@ import StepperButton from '../components/StepperButton';
 
 export default function ConfirmQuizScreen({ navigation }) {
     const route = useRoute();
-    const { id } = route.params;
+    //const { id } = route.params;
+    const { item } = route.params;
     const [selectedQuiz, setSelectedQuiz] = useState(null);
-    const { fetchQuizById } = useQuizzes();
+    //const { fetchQuizById } = useQuizzes();
   
     useEffect(() => {
-      const getQuiz = async() => {
-        const result = await fetchQuizById(id);
-        setSelectedQuiz(result);
-      }
+      // const getQuiz = async() => {
+      //   const result = await fetchQuizById(id);
+      //   setSelectedQuiz(result);
+      // }
   
-      getQuiz();
+      // getQuiz();
+      setSelectedQuiz(item);
     }, []);
 
     return (
@@ -31,8 +33,8 @@ export default function ConfirmQuizScreen({ navigation }) {
                 :
                 (
                     <>
-                        <Text style={globalStyles.heading}>{selectedQuiz.name}</Text>
-                        <Text>{selectedQuiz.questions.length} questões</Text>
+                        <Text style={globalStyles.heading}>Quiz Teste</Text>
+                        <Text>{selectedQuiz.alternativas.length} questões</Text>
 
                         <View style={styles.buttonArea}>
                             <StepperButton text="Voltar" onPress={() => {navigation.goBack()}} secondary/>

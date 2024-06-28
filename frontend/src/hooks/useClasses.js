@@ -6,7 +6,7 @@ const useClasses = () => {
 
     const fetchData = async () => {
       try {
-        const result = await api.get('/classes');
+        const result = await api.get('/turma');
         setClasses(result.data);
       } catch (error) {
         console.error('Error fetching data:', error);

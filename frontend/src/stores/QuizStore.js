@@ -16,12 +16,14 @@ const useQuizStore = create((set) => ({
     fetchQuiz: (quizData) => set({ quiz: quizData }),
 
     nextQuestion: () => set((state) => (
-    { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.quiz.questions.length - 1) })),
+    { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.quiz.alternativas.length - 1) })),
 
     setSelectedAnswer: (answer) => set({ lastAnswer: answer }),
 
     computeAnswer: (lastAnswer, questionAnswer) => set((state) => {
-        if (lastAnswer === questionAnswer) {
+        const answer = questionAnswer === 'V' ? true : false
+
+        if (lastAnswer === answer) {
             return {
                 isLastAnswerCorrect: true,
                 correctAnswers: state.correctAnswers + 1,
@@ -33,7 +35,6 @@ const useQuizStore = create((set) => ({
         }
     }),
     
-
     setCorrectAnswer: () => set((state) => ({correctAnswers: state.correctAnswers + 1}))
 
 }))

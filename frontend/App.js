@@ -13,7 +13,6 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import StudentScreen from './src/screens/StudentScreen';
 import ConfirmQuizScreen from './src/screens/ConfirmQuizScreen';
 import SolveQuizScreen from './src/screens/SolveQuizScreen';
-import CommentQuestionScreen from './src/screens/CommentQuestionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +38,6 @@ export default function App() {
 
         <Stack.Screen name='Confirm' component={ConfirmQuizScreen} />
         <Stack.Screen name='Solve Quiz' component={SolveQuizScreen} />
-        <Stack.Screen name='Comment' component={CommentQuestionScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </RootSiblingParent>
