@@ -46,7 +46,7 @@ const useQuizzes = () => {
 
     useEffect(() => {
         fetchData();
-    }, [quizzes]);
+    }, []);
 
     return { quizzes, refetch: fetchData, fetchQuizById, createNewQuiz };
 }

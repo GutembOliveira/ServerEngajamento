@@ -36,7 +36,7 @@ const useClasses = () => {
 
     useEffect(() => {
         fetchData();
-    }, [classes]);
+    }, []);
 
     return { classes, refetch: fetchData, fetchClassById, createNewClass };
 }
