@@ -30,8 +30,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "7398b26e-b101-4ade-8bcf-276af03bf592"
-      }
+        "projectId": "6f26eab2-9668-4d9c-acd5-19ce4980bc34"
+      },
+      "EXPO_PUBLIC_URL_API": "http://34.234.206.222:5000"
+
     },
     "owner": "engajamento"
   }
