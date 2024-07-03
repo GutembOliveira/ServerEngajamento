@@ -7,18 +7,13 @@
       "developmentClient": true,
       "distribution": "internal"
     },
-    "preview": {
-      "production": {
-        "env": {
-          "EXPO_PUBLIC_URL_API": "http://34.234.206.222:5000"
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_URL_API": "http://34.234.206.222:5000"
       },
-
       "android": {
         "buildType": "apk"
-      }
-    },
-    
-    "simulator": {
+      },
       "ios": {
         "simulator": "true"
       }
@@ -27,5 +22,4 @@
   "submit": {
     "production": {}
   }
-}
 }
