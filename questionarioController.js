@@ -165,6 +165,7 @@ function liberaQuestionario(request,response){
     //console.log(jsonData.data)
     console.log('Recebida variavel:', valor);
     canCallGetQuestionario = valor;
+    return;
 
 }
 

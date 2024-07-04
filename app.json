@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "6e171b44-ccf7-4ce0-9fca-ee237ac65ecb"
+      }
+    },
+    "android": {
+      "package": "com.gutemberg_oliveira.backendapp"
+    },
+    "owner": "engajamento",
+    "slug": "teste-app",
+    "plugins": [
+      "expo-build-properties"
+    ]
+  }
+}
