@@ -13,7 +13,8 @@ const app=express();
     app.listen(5000,()=>console.log("servidor escutando"));
     https.createServer({
         cert:fs.readFileSync('SSL/code.crt'),
-        key:fs.readFileSync('SSL/code.key')
+        key:fs.readFileSync('SSL/code.key'),
+        
     },app).listen(3001,()=>console.log("Server https funcionando"))
 
 

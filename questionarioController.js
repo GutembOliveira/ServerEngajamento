@@ -119,6 +119,71 @@ function getQuestionario(request, response){
 
     
 }
+function getQuestionarioAluno(request, response){
+
+
+    var sql = `
+            SELECT 
+                q.idQuestao,
+                q.enunciado,  
+                q.fkAssunto,
+                q.tipoQuestao,
+                a.idalternativas,
+                a.Questao_idQuestao,
+                a.Questao_fkAssunto,
+                a.letra,
+                a.descricao,
+                a.resposta
+            FROM 
+                mydb.Questao q
+            INNER JOIN 
+                mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
+            ORDER BY 
+                q.idQuestao, a.letra
+        `;
+        connection.query(sql, function (err, result) {
+            if (err) {
+                return "error:"+ (err);
+            }
+            // Processa os resultados para montar o JSON personalizado
+            let questoesMap = {};
+
+            result.forEach(row => {
+                if (!questoesMap[row.idQuestao]) {
+                    questoesMap[row.idQuestao] = {
+                        idQuestao: row.idQuestao,
+                        enunciado: "Determine se as afirmações abaixo são verdadeiras (V) ou falsas (F)",
+                        alternativas: []
+                    };
+                }
+
+                questoesMap[row.idQuestao].alternativas.push({
+                    questao: row.idQuestao,
+                    idalternativas: row.idalternativas,
+                    letra: row.letra,
+                    descricao: row.descricao,
+                    resposta: row.resposta
+                });
+            });
+
+            // Converte o mapa em uma lista
+            let questoesList = Object.values(questoesMap);
+            questionario = questoesList;
+            console.log(questionario)
+            if(canCallGetQuestionario==true){
+                console.log(canCallGetQuestionario);
+                console.log(questionario);
+                response.json(questionario);
+            }
+            else{
+                console.log(canCallGetQuestionario)
+                 response.json("questionario não liberado");
+                }
+        });
+
+    
+}
+
 
 function getProximaQuestao(request, response) {
     console.log("função proxima questão");
@@ -165,9 +230,10 @@ function liberaQuestionario(request,response){
     //console.log(jsonData.data)
     console.log('Recebida variavel:', valor);
     canCallGetQuestionario = valor;
-    return;
+    response.status(200).json("questioniario liberado");
 
 }
+
 
 
 function iniciaQuestionario(request,response){
@@ -208,5 +274,6 @@ module.exports = {
     getProximaQuestao,
     liberaQuestionario,
     enableGetQuestionario,
-    iniciaQuestionario
+    iniciaQuestionario,
+    getQuestionarioAluno
 };
