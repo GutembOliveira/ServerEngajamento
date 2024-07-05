@@ -12,6 +12,8 @@ const questionarioController = require('./questionarioController')
 
 routes.get('/turma',turmaController.getTurma);
 routes.get('/Questionarios',questionarioController.getQuestionario);
+routes.get('/conectarAluno',questionarioController.conectarAluno);
+routes.get('/alunosConectados',questionarioController.alunosConectados);
 routes.get('/questionarioAluno',questionarioController.getQuestionarioAluno);
 routes.get('/proxQuestao',questionarioController.getProximaQuestao);
 routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuestionario);

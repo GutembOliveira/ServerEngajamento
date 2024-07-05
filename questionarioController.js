@@ -120,8 +120,8 @@ function getQuestionario(request, response){
     
 }
 function getQuestionarioAluno(request, response){
-
-
+    clientesId.push(request.id);
+    requestQueue.push({ request, response });
     var sql = `
             SELECT 
                 q.idQuestao,
@@ -193,37 +193,46 @@ function getProximaQuestao(request, response) {
     return response.json(questionario[i]);
 }
 
-// function liberaQuestionario(request, response) {
-//     clientesId.push(request.id);
-//     requestQueue.push({ request, response });
+function liberaQuestionario(request, response) {
+    clientesId.push(request.id);
+    requestQueue.push({ request, response });
 
-//     if (canCallGetQuestionario) {
-//     //if (requestQueue.length >= 5 && canCallGetQuestionario) {
-//         getQuestionario().then(result => {
-//             // Enviar a mesma resposta para todos os clientes na fila
-//             requestQueue.forEach(({ response }) => {
-//                 response.json(result);
-//             });
+    if (canCallGetQuestionario) {
+    //if (requestQueue.length >= 5 && canCallGetQuestionario) {
+        getQuestionario().then(result => {
+            // Enviar a mesma resposta para todos os clientes na fila
+            requestQueue.forEach(({ response }) => {
+                response.json(result);
+            });
 
-//             // Limpar a fila
-//             requestQueue = [];
-//             numAlunos = 0;  // Resetar o contador de alunos
-//         }).catch(error => {
-//             // Em caso de erro, enviar uma resposta de erro para todos os clientes na fila
-//             requestQueue.forEach(({ response }) => {
-//                 response.status(500).json({ error: 'Erro no processamento' });
-//             });
+            // Limpar a fila
+            requestQueue = [];
+            numAlunos = 0;  // Resetar o contador de alunos
+        }).catch(error => {
+            // Em caso de erro, enviar uma resposta de erro para todos os clientes na fila
+            requestQueue.forEach(({ response }) => {
+                response.status(500).json({ error: 'Erro no processamento' });
+            });
 
-//             // Limpar a fila
-//             requestQueue = [];
-//             numAlunos = 0;  // Resetar o contador de alunos
-//         });
-//     } else {
-//         console.log("Esperando jogadores...");
-//         numAlunos++;
-//     }
-// }
+            // Limpar a fila
+            requestQueue = [];
+            numAlunos = 0;  // Resetar o contador de alunos
+        });
+    } else {
+        console.log("Esperando jogadores...");
+        numAlunos++;
+    }
+}
 
+function alunosConectados(request,response){
+    response.json(clientesId.length);
+}
+
+function conectarAluno(request,response){
+    clientesId.push(request.id);
+   
+    response.status(200).json("aluno conectado");
+}
 function liberaQuestionario(request,response){
     const {valor} = request.body;
     console.log(request.body)
@@ -275,5 +284,7 @@ module.exports = {
     liberaQuestionario,
     enableGetQuestionario,
     iniciaQuestionario,
-    getQuestionarioAluno
+    getQuestionarioAluno,
+    conectarAluno,
+    alunosConectados
 };
