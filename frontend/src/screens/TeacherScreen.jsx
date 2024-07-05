@@ -2,6 +2,7 @@ import ListClassesScreen from './ListClassesScreen';
 import ListQuizzesScreen from './ListQuizzesScreen';
 import NewContentScreen from './NewContentScreen';
 import ApplyQuizScreen from './ApplyQuizScreen';
+import BeginQuizScreen from './BeginQuizScreen';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
@@ -48,7 +49,7 @@ export default function TeacherScreen() {
         }}/>
         <Tab.Screen
          name="Aplicar questionário"
-         component={ApplyQuizScreen} 
+         component={BeginQuizScreen} 
          options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesomeIcons name="check-square" color={color} size={size}/>
