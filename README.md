@@ -7,8 +7,8 @@ git clone https://github.com/andrecbs/engajamento
 ## Executando o aplicativo
 
 ```
-cd frontend
-npm install
+cd apps/teacher (App do professor) ou cd apps/student (app do aluno)
+npm install (Para instalar dependências)
 npm start
 ```
 

@@ -5,40 +5,50 @@ import api from '../services/api';
 
 export default function WaitingQuizScreen() {
     const [intervalId, setIntervalId] = useState(null);
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
         const askForQuiz = async () => {
             try {
                 const response = await api.get('/questionarioAluno');
-                setMessage(response.data)
 
-                // Check the condition to stop the loop
-                // if (data.success) {
-                //     clearInterval(intervalId);
-                // }
+                console.log(response.data);
+                //setMessage(response.data)
+
+                if (response.data !== 'questionario não liberado') {
+                    setMessage('Questionário Liberado')
+                    setIsSuccess(true);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        // Set up the interval
-        const id = setInterval(askForQuiz, 2000);
-        setIntervalId(id);
+        if(!isSuccess){
+            const id = setInterval(askForQuiz, 2000);
+            return () => clearInterval(id);
+        }
 
-        // Cleanup the interval on component unmount
-        return () => clearInterval(id);
-    }, []);
+    }, [isSuccess]);
 
     return (
         <SafeAreaView style={globalStyles.container}>
             <>
                 <Text>Conectado</Text>
-                <Text>Aguardando liberação</Text>
+
+                {
+                    isSuccess ?
+                    <Text>Liberado</Text>
+                    :
+                    <Text>NÃO Liberado</Text>
+                }
+
+                {/* <Text>Aguardando liberação</Text>
                 {
                     message !== '' &&
                     <Text>{message}</Text>
-                }
+                } */}
             </>
         </SafeAreaView>
     )
