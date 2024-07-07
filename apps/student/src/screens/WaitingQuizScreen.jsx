@@ -1,23 +1,21 @@
-import { SafeAreaView, Text } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
+import theme from '../theme';
+import StepperButton from '../components/StepperButton';
 
-export default function WaitingQuizScreen() {
-    const [intervalId, setIntervalId] = useState(null);
-    const [message, setMessage] = useState('');
+export default function WaitingQuizScreen({ navigation }) {
     const [isSuccess, setIsSuccess] = useState(false);
+    const [quizToSolve, setQuizToSolve] = useState(null);
 
     useEffect(() => {
         const askForQuiz = async () => {
             try {
                 const response = await api.get('/questionarioAluno');
 
-                console.log(response.data);
-                //setMessage(response.data)
-
                 if (response.data !== 'questionario não liberado') {
-                    setMessage('Questionário Liberado')
+                    setQuizToSolve(response.data);
                     setIsSuccess(true);
                 }
             } catch (error) {
@@ -25,8 +23,8 @@ export default function WaitingQuizScreen() {
             }
         };
 
-        if(!isSuccess){
-            const id = setInterval(askForQuiz, 2000);
+        if (!isSuccess) {
+            const id = setInterval(askForQuiz, 1000);
             return () => clearInterval(id);
         }
 
@@ -34,22 +32,35 @@ export default function WaitingQuizScreen() {
 
     return (
         <SafeAreaView style={globalStyles.container}>
-            <>
-                <Text>Conectado</Text>
+            {
+                isSuccess ?
+                    <>
+                        <Text style={globalStyles.heading}>Quiz Teste</Text>
+                        <Text>{quizToSolve.length} questões</Text>
 
-                {
-                    isSuccess ?
-                    <Text>Liberado</Text>
+                        <View style={styles.buttonArea}>
+                            <StepperButton text="Voltar" onPress={() => { navigation.goBack() }} secondary />
+                            <StepperButton text="Responder" onPress={() => { navigation.navigate('Solve Quiz', { quiz: quizToSolve }) }} />
+                        </View>
+                    </>
                     :
-                    <Text>NÃO Liberado</Text>
-                }
+                    <>
+                        <Text>Aguardando autorização</Text>
+                        <Text>Aguarde o professor iniciar o questionário. Isto pode levar alguns instantes</Text>
 
-                {/* <Text>Aguardando liberação</Text>
-                {
-                    message !== '' &&
-                    <Text>{message}</Text>
-                } */}
-            </>
+                        <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+                    </>
+            }
         </SafeAreaView>
     )
 }
+
+
+const styles = StyleSheet.create({
+    buttonArea: {
+      //flex: 1,
+      flexWrap: 'wrap',
+      flexDirection: 'row',
+      marginTop: 25
+    },
+  })

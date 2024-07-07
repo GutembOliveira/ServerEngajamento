@@ -16,7 +16,7 @@ const useQuizStore = create((set) => ({
     fetchQuiz: (quizData) => set({ quiz: quizData }),
 
     nextQuestion: () => set((state) => (
-    { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.quiz.alternativas.length - 1) })),
+    { currentQuestionIndex: Math.min(state.currentQuestionIndex + 1, state.quiz.length - 1) })),
 
     setSelectedAnswer: (answer) => set({ lastAnswer: answer }),
 
