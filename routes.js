@@ -17,8 +17,9 @@ routes.get('/alunosConectados',questionarioController.alunosConectados);
 routes.get('/questionarioAluno',questionarioController.getQuestionarioAluno);
 routes.get('/proxQuestao',questionarioController.getProximaQuestao);
 routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuestionario);
-routes.get('/enableGetQuestionario',questionarioController.enableGetQuestionario);
+//routes.get('/enableGetQuestionario',questionarioController.enableGetQuestionario);
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
+routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 
 
 
