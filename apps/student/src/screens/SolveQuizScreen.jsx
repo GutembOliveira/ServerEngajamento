@@ -1,11 +1,12 @@
 import { NavigationContainer, useRoute, useFocusEffect } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState, useCallback } from "react";
-import { ActivityIndicator, Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import theme from "../theme";
-import Button from "../components/Button";
+//import Button from "../components/Button";
 import useQuizStore from "../stores/QuizStore";
+import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
 
 const QuestionScreen = ({ navigation }) => {
     const quiz = useQuizStore((state) => state.quiz);
@@ -18,6 +19,8 @@ const QuestionScreen = ({ navigation }) => {
     const setSelectedAnswer = useQuizStore((state) => state.setSelectedAnswer);
     const computeAnswer = useQuizStore((state) => state.computeAnswer);
     const nextQuestion = useQuizStore((state) => state.nextQuestion);
+
+    const theme = useTheme();
 
     useFocusEffect(
         useCallback(() => {
@@ -56,53 +59,54 @@ const QuestionScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={globalStyles.container}>
+        <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
             {
                 !quiz ?
-                    <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+                    <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
                     :
                     (
                         <>
-                            <Text style={globalStyles.heading}>Quiz Teste</Text>
+                            <Text variant="headlineMedium" style={{ marginBottom: 20 }}>Quiz Teste</Text>
                             {
                                 timeIsOver ?
-                                    <Text style={globalStyles.subheading}>Tempo esgotado</Text>
+                                    <Text variant="titleMedium" style={{ marginBottom: 30 }}>Tempo esgotado</Text>
                                     :
-                                    <Text style={globalStyles.subheading}>Tempo:  {timer}</Text>
+                                    <Text variant="titleMedium" style={{ marginBottom: 30 }}>Tempo:  {timer}</Text>
                             }
 
-                            <Text style={globalStyles.subheading}>Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
-                            {/* <Text style={globalStyles.subheading}>Assunto: {quiz.alternativas[currentQuestionIndex].topic}</Text> */}
-                            <Text style={styles.question}>{quiz[currentQuestionIndex].alternativas[0].descricao}</Text>
+                            <Text variant="titleMedium">Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
+                            <Text variant="titleMedium" style={{ marginBottom: 30 }}>{quiz[currentQuestionIndex].alternativas[0].descricao}</Text>
 
                             <View style={styles.buttonContainer}>
-                                <TouchableOpacity
-                                    style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
-                                    onPress={() => setSelectedAnswer(true)}
-                                    disabled={timeIsOver}
+                                <Button
+                                mode="contained"
+                                onPress={() => setSelectedAnswer(true)}
+                                style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
+                                disabled={timeIsOver}
                                 >
-                                    <Text style={styles.buttonText}>Verdadeiro</Text>
-                                </TouchableOpacity>
+                                    Verdadeiro
+                                </Button>
 
-                                <TouchableOpacity
-                                    style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
-                                    onPress={() => setSelectedAnswer(false)}
-                                    disabled={timeIsOver}
+                                <Button
+                                mode="contained"
+                                onPress={() => setSelectedAnswer(false)}
+                                style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
+                                disabled={timeIsOver}
                                 >
-                                    <Text style={styles.buttonText}>Falso</Text>
-                                </TouchableOpacity>
+                                    Falso
+                                </Button>
                             </View>
 
                             {
                                 (timeIsOver && lastAnswer === null) && (
-                                    <Text style={styles.answerText}>
+                                    <Text variant="titleMedium">
                                         Você não respondeu a questão
                                     </Text>
                                 )
                             }
 
                             {lastAnswer !== null && (
-                                <Text style={styles.answerText}>
+                                <Text variant="titleMedium">
                                     Você selecionou: {lastAnswer ? "Verdadeiro" : "Falso"}
                                 </Text>
                             )}
@@ -111,9 +115,13 @@ const QuestionScreen = ({ navigation }) => {
                                 timeIsOver &&
                                 (
                                     currentQuestionIndex === quiz.length - 1 ?
-                                        <Button text="Finalizar" onPress={finishQuiz} />
+                                        <Button mode="contained" onPress={finishQuiz} style={{ marginTop: 30}}>
+                                            Finalizar
+                                        </Button>
                                         :
-                                        <Button text="Próxima Questão" onPress={answerNextQuestion} />
+                                        <Button mode="contained" onPress={answerNextQuestion} style={{ marginTop: 30}}>
+                                            Próxima Questão
+                                        </Button>
                                 )
                             }
 
@@ -130,10 +138,10 @@ const FinalScreen = ({ navigation }) => {
     const correctAnswers = useQuizStore((state) => state.correctAnswers);
 
     return (
-        <SafeAreaView style={globalStyles.container}>
-            <Text>Questionário finalizado</Text>
-            <Text>Total de questões: {quiz.length}</Text>
-            <Text>Respostas corretas: {correctAnswers}</Text>
+        <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+            <Text variant="titleMedium">Questionário finalizado</Text>
+            <Text variant="titleMedium">Total de questões: {quiz.length}</Text>
+            <Text variant="titleMedium">Respostas corretas: {correctAnswers}</Text>
         </SafeAreaView>
     );
 }
@@ -154,7 +162,9 @@ export default function SolveQuizScreen() {
 
     return (
         <NavigationContainer independent={true}>
-            <Stack.Navigator initialRouteName="QuestionScreen">
+            <Stack.Navigator initialRouteName="QuestionScreen" screenOptions={{
+                headerShown: false
+            }}>
                 <Stack.Screen name="Question" component={QuestionScreen} options={{ title: 'Questão' }} />
                 <Stack.Screen name="Final" component={FinalScreen} options={{ title: 'Final' }} />
             </Stack.Navigator>
@@ -164,44 +174,30 @@ export default function SolveQuizScreen() {
 }
 
 const styles = StyleSheet.create({
-    question: {
-        width: Dimensions.get('window').width * 0.875,
-        fontSize: theme.fontSizes.medium,
-        lineHeight: 25
-    },
-
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: Dimensions.get('window').width * 0.75,
+        width: Dimensions.get('window').width * 0.8,
         marginBottom: 20,
     },
 
     button: {
-        padding: 20,
-        backgroundColor: '#ddd',
+        padding: 10,
         borderRadius: 10,
-        width: Dimensions.get('window').width * 0.35,
+        width: Dimensions.get('window').width * 0.375,
         marginVertical: 20,
         opacity: .5
     },
 
     true: {
-        backgroundColor: '#007BFF'
+        backgroundColor: '#1E90FF'
     },
 
     false: {
-        backgroundColor: '#FFAA00'
+        backgroundColor: '#FF4500'
     },
 
     selectedButton: {
         opacity: 1
-    },
-
-    buttonText: {
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: theme.fontSizes.medium
-    },
-
+    }
 })

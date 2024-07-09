@@ -1,13 +1,16 @@
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useTheme, ActivityIndicator, Button, Text } from 'react-native-paper';
+
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
-import theme from '../theme';
 import StepperButton from '../components/StepperButton';
 
 export default function WaitingQuizScreen({ navigation }) {
     const [isSuccess, setIsSuccess] = useState(false);
     const [quizToSolve, setQuizToSolve] = useState(null);
+    
+    const theme = useTheme();
 
     useEffect(() => {
         const askForQuiz = async () => {
@@ -31,24 +34,38 @@ export default function WaitingQuizScreen({ navigation }) {
     }, [isSuccess]);
 
     return (
-        <SafeAreaView style={globalStyles.container}>
+        <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
             {
                 isSuccess ?
                     <>
-                        <Text style={globalStyles.heading}>Quiz Teste</Text>
-                        <Text>{quizToSolve.length} questões</Text>
+                    <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Quiz Teste</Text>
+                    <Text variant="titleMedium" style={{ marginBottom: 10 }}>{quizToSolve.length} questões</Text>
+                   
+                    <View style={styles.buttonArea}>
+                        <Button
+                        mode="outlined"
+                        onPress={() => { navigation.goBack() }}
+                        style={{ width: '35%', marginRight: 30 }}
+                        >
+                            Voltar
+                        </Button>
 
-                        <View style={styles.buttonArea}>
-                            <StepperButton text="Voltar" onPress={() => { navigation.goBack() }} secondary />
-                            <StepperButton text="Responder" onPress={() => { navigation.navigate('Solve Quiz', { quiz: quizToSolve }) }} />
-                        </View>
+                        <Button
+                        mode="contained"
+                        onPress={() => { navigation.navigate('Solve Quiz', { quiz: quizToSolve }) }}
+                        style={{ width: '35%' }}
+                        >
+                            Responder
+                        </Button>
+                    </View>
                     </>
                     :
                     <>
-                        <Text>Aguardando autorização</Text>
-                        <Text>Aguarde o professor iniciar o questionário. Isto pode levar alguns instantes</Text>
+                        <Text variant="titleLarge" style={{ marginBottom: 10 }}>Aguardando autorização</Text>
+                        <Text variant="titleMedium">Aguarde o professor iniciar o questionário</Text>
+                        <Text variant="titleMedium" style={{ marginBottom: 20 }}>Isso pode levar alguns instantes</Text>
 
-                        <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+                        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
                     </>
             }
         </SafeAreaView>

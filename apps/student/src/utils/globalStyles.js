@@ -16,15 +16,5 @@ export default StyleSheet.create({
     marginVertical: 40,
     fontWeight: 'bold',
     fontSize: theme.fontSizes.large
-  },
-
-  subheading:{
-    marginVertical: 25,
-    fontSize: theme.fontSizes.medium
-  },
-
-  link: {
-    color: theme.colors.lightBlue,
-    textDecorationLine: 'underline'
-}
+  }
 });
