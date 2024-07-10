@@ -134,17 +134,18 @@ function getQuestionarioAluno(request, response){
 
 //Professor aperta para passar para a próxima questão   
 function liberaProximaQuestao(request, response) {
-    //const { trigger } = request.body;
     
-    //if (trigger === true) {
         // Envia o valor numérico para todos os clientes conectados
-        clients.forEach(client => client.response.write(`true\n\n`));
-        response.json("resposta mandada para todos os alunos");
+        //clients.forEach(client => client.response.write(`true\n\n`));
+        sendEventToAllClients(true);
+        response.json("Evento enviado para todos os clientes");
+        console.log("resposta mandada para todos os alunos");
     //} else {
-        response.json("Resposta não enviada");
+        //response.json("Resposta não enviada");
     //}
    
 }
+
 // Rota específica para SSE
 
 //rota que ficará escutando pela resposta do servidor. Virá do lado do aluno
@@ -154,23 +155,28 @@ function getProximaQuestao(request,response){
     response.setHeader('Cache-Control', 'no-cache');
     response.setHeader('Connection', 'keep-alive');
     response.flushHeaders();
-    
+        console.log("aluno pedindo prox questão")
         const newClient = {
             id: Date.now(),
             response: response  
         };
         clients.push(newClient);
         response.write(`data: ${7}\n\n`);
+        
 
             // Enviar o valor numérico atual ao cliente imediatamente após a conexão
-            request.on('close', () => {
-            console.log(`${newClient.id} Connection closed`);
-            clients = clients.filter(client => client.id !== newClient.id);
+        request.on('close', () => {
+        console.log(`${newClient.id} Connection closed`);
+        clients = clients.filter(client => client.id !== newClient.id);
         });
     
     
 }
-
+function sendEventToAllClients(data) {
+    clients.forEach(client => {
+      client.response.write(`data: ${data}\n\n`);
+    });
+  }
 
 
 function liberaQuestionario(request, response) {
