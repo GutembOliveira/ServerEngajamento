@@ -137,8 +137,9 @@ function liberaProximaQuestao(request, response) {
     
         // Envia o valor numérico para todos os clientes conectados
         //clients.forEach(client => client.response.write(`true\n\n`));
-        sendEventToAllClients(true);
+        sendEventToAllClients(1);
         response.json("Evento enviado para todos os clientes");
+        console.log(clients.length);
         console.log("resposta mandada para todos os alunos");
     //} else {
         //response.json("Resposta não enviada");
@@ -163,7 +164,10 @@ function getProximaQuestao(request,response){
         clients.push(newClient);
         response.write(`data: ${7}\n\n`);
         
-
+        const intervalId = setInterval(() => {
+            response.write(`data: ${JSON.stringify({ number: 8 })}\n\n`);
+        }, 5000); // Envia dados a cada 5 segundos
+    
             // Enviar o valor numérico atual ao cliente imediatamente após a conexão
         request.on('close', () => {
         console.log(`${newClient.id} Connection closed`);
