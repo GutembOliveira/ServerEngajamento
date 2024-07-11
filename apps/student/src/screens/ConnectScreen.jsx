@@ -12,17 +12,24 @@ export default function ConnectScreen({ navigation }) {
   const theme = useTheme();
 
   async function connect() {
-    if(quizCode === ''){
-      showErrorToast('Digite um código')
-    }
-    else if (quizCode == 123) {
+    // if(quizCode === ''){
+    //   showErrorToast('Digite um código')
+    // }
+    // else if (quizCode == 123) {
+    //   await api.get('/conectarAluno')
+    //     .then(response => console.log(response.data));
+
+    //   //showSuccessToast('Conectado com sucesso')
+    //   navigation.navigate('Waiting')
+    // } else {
+    //   showErrorToast('Código incorreto')
+    // }
+
+    if (quizCode == 123) {
       await api.get('/conectarAluno')
         .then(response => console.log(response.data));
 
-      showSuccessToast('Conectado com sucesso')
       navigation.navigate('Waiting')
-    } else {
-      showErrorToast('Código incorreto')
     }
   }
 
@@ -44,11 +51,11 @@ export default function ConnectScreen({ navigation }) {
         }}
       />
 
-      <Button 
-      icon="qrcode" 
-      mode="contained"
-      style={{ padding: 5 }}
-      onPress={connect}>
+      <Button
+        icon="qrcode"
+        mode="contained"
+        style={{ padding: 5 }}
+        onPress={connect}>
         Conectar
       </Button>
     </SafeAreaView>

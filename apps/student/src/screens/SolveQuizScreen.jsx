@@ -1,18 +1,20 @@
 import { NavigationContainer, useRoute, useFocusEffect } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState, useCallback } from "react";
-import { Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { BackHandler, Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import theme from "../theme";
 //import Button from "../components/Button";
 import useQuizStore from "../stores/QuizStore";
-import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
+import { useTheme, ActivityIndicator, Button, Dialog, Portal, Text } from "react-native-paper";
 
 const QuestionScreen = ({ navigation }) => {
     const quiz = useQuizStore((state) => state.quiz);
 
     const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
+
+    const [visible, setVisible] = useState(false);
 
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
     const lastAnswer = useQuizStore((state) => state.lastAnswer);
@@ -22,6 +24,9 @@ const QuestionScreen = ({ navigation }) => {
 
     const theme = useTheme();
 
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+
     useFocusEffect(
         useCallback(() => {
             setTimer(5);
@@ -29,6 +34,21 @@ const QuestionScreen = ({ navigation }) => {
             setSelectedAnswer(null);
         }, [])
     );
+
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                showDialog();
+            }
+
+            const backHandler = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+              );
+        
+              return () => backHandler.remove();
+        }, [])
+    )
 
     useEffect(() => {
         let interval = null;
@@ -79,19 +99,19 @@ const QuestionScreen = ({ navigation }) => {
 
                             <View style={styles.buttonContainer}>
                                 <Button
-                                mode="contained"
-                                onPress={() => setSelectedAnswer(true)}
-                                style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
-                                disabled={timeIsOver}
+                                    mode="contained"
+                                    onPress={() => setSelectedAnswer(true)}
+                                    style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
+                                    disabled={timeIsOver}
                                 >
                                     Verdadeiro
                                 </Button>
 
                                 <Button
-                                mode="contained"
-                                onPress={() => setSelectedAnswer(false)}
-                                style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
-                                disabled={timeIsOver}
+                                    mode="contained"
+                                    onPress={() => setSelectedAnswer(false)}
+                                    style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
+                                    disabled={timeIsOver}
                                 >
                                     Falso
                                 </Button>
@@ -115,18 +135,34 @@ const QuestionScreen = ({ navigation }) => {
                                 timeIsOver &&
                                 (
                                     currentQuestionIndex === quiz.length - 1 ?
-                                        <Button mode="contained" onPress={finishQuiz} style={{ marginTop: 30}}>
+                                        <Button mode="contained" onPress={finishQuiz} style={{ marginTop: 30 }}>
                                             Finalizar
                                         </Button>
                                         :
-                                        <Button mode="contained" onPress={answerNextQuestion} style={{ marginTop: 30}}>
+                                        <Button mode="contained" onPress={answerNextQuestion} style={{ marginTop: 30 }}>
                                             Próxima Questão
                                         </Button>
                                 )
                             }
 
+                            <View>
+                                <Portal>
+                                    <Dialog visible={visible} onDismiss={hideDialog}>
+                                        <Dialog.Title>Alerta</Dialog.Title>
+                                        <Dialog.Content>
+                                            <Text variant="bodyMedium">Deseja mesmo sair do quiz?</Text>
+                                        </Dialog.Content>
+                                        <Dialog.Actions>
+                                            <Button onPress={navigation.goBack()}>Sair</Button>
+                                        </Dialog.Actions>
+                                    </Dialog>
+                                </Portal>
+                            </View>
+
                         </>
                     )
+
+
             }
         </SafeAreaView>
     );
