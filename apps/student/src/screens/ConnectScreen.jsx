@@ -4,7 +4,6 @@ import { useTheme, Button, TextInput } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
-import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 
 export default function ConnectScreen({ navigation }) {
   const [quizCode, setQuizCode] = useState('');
@@ -12,19 +11,6 @@ export default function ConnectScreen({ navigation }) {
   const theme = useTheme();
 
   async function connect() {
-    // if(quizCode === ''){
-    //   showErrorToast('Digite um código')
-    // }
-    // else if (quizCode == 123) {
-    //   await api.get('/conectarAluno')
-    //     .then(response => console.log(response.data));
-
-    //   //showSuccessToast('Conectado com sucesso')
-    //   navigation.navigate('Waiting')
-    // } else {
-    //   showErrorToast('Código incorreto')
-    // }
-
     if (quizCode == 123) {
       await api.get('/conectarAluno')
         .then(response => console.log(response.data));

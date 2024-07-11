@@ -4,7 +4,6 @@ import { useTheme, ActivityIndicator, Button, Text } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
-import StepperButton from '../components/StepperButton';
 
 export default function WaitingQuizScreen({ navigation }) {
     const [isSuccess, setIsSuccess] = useState(false);

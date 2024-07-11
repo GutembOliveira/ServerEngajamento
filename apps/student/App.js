@@ -5,7 +5,6 @@ import { ThemeProvider } from './src/contexts/themeContext';
 import { StatusBar } from 'expo-status-bar';
 
 import ConnectScreen from './src/screens/ConnectScreen';
-import ConfirmQuizScreen from './src/screens/ConfirmQuizScreen';
 import SolveQuizScreen from './src/screens/SolveQuizScreen';
 import WaitingQuizScreen from './src/screens/WaitingQuizScreen';
 
@@ -24,7 +23,6 @@ export default function App() {
               {/* <Stack.Screen name='Student' component={StudentScreen} /> */}
 
               <Stack.Screen name='Connect' component={ConnectScreen} />
-              <Stack.Screen name='Confirm' component={ConfirmQuizScreen} />
               <Stack.Screen name='Solve Quiz' component={SolveQuizScreen} />
               <Stack.Screen name='Waiting' component={WaitingQuizScreen} />
             </Stack.Navigator>

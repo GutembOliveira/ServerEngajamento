@@ -3,8 +3,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState, useCallback } from "react";
 import { BackHandler, Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
-import theme from "../theme";
-//import Button from "../components/Button";
 import useQuizStore from "../stores/QuizStore";
 import { useTheme, ActivityIndicator, Button, Dialog, Portal, Text } from "react-native-paper";
 
@@ -153,7 +151,7 @@ const QuestionScreen = ({ navigation }) => {
                                             <Text variant="bodyMedium">Deseja mesmo sair do quiz?</Text>
                                         </Dialog.Content>
                                         <Dialog.Actions>
-                                            <Button onPress={navigation.goBack()}>Sair</Button>
+                                            <Button onPress={() => navigation.goBack()}>Sair</Button>
                                         </Dialog.Actions>
                                     </Dialog>
                                 </Portal>
