@@ -17,13 +17,13 @@ npm start
 ### Android - APK
 
 ```
-eas build --platform android --profile preview
+eas build --platform android --profile production
 ```
 
 ### IOS
 
 ```
-eas build --platform ios --profile simulator
+eas build --platform ios --profile production
 ```
 
 
