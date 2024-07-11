@@ -9,30 +9,30 @@ const Tab = createBottomTabNavigator();
 
 export default function StudentScreen() {
   return (
-      <Tab.Navigator screenOptions={{
-        tabBarStyle:{
-          height: 65
-        },
-        tabBarLabelStyle: {
-          paddingBottom: 10
-        }
-      }}>
-        <Tab.Screen
-         name="Conectar"
-         component={ConnectScreen}
-         options={{
+    <Tab.Navigator screenOptions={{
+      tabBarStyle: {
+        height: 65
+      },
+      tabBarLabelStyle: {
+        paddingBottom: 10
+      }
+    }}>
+      <Tab.Screen
+        name="Conectar"
+        component={ConnectScreen}
+        options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesomeIcons name="qrcode" color={color} size={size}/>
+            <FontAwesomeIcons name="qrcode" color={color} size={size} />
           )
-         }}/>
-        <Tab.Screen
-         name="Resolver"
-         component={SelectQuizScreen}
-         options={{
+        }} />
+      <Tab.Screen
+        name="Resolver"
+        component={SelectQuizScreen}
+        options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="question-answer" color={color} size={size}/>
+            <MaterialIcons name="question-answer" color={color} size={size} />
           )
-         }}/>
-      </Tab.Navigator>
+        }} />
+    </Tab.Navigator>
   );
 }
