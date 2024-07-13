@@ -1,15 +1,19 @@
 const connection = require('./dbConfig.js');
 //app.use(express.json())
 const bodyParser = require('body-parser')
+const turmaController = require('./turmaController.js')
 var questionario;
 var contQuest = 0;
 var numAlunos = 0;
 var clientesId = [];
 let clients = [];
+// lista de alunos que responderam a questão e estão esperando a próxima
+let alunosProntos =[]
+let listaAlunosConectados =   new Map();
 let requestQueue = [];
 let canCallGetQuestionario = false;
 const jsonParser = bodyParser.json();
-
+//let turma = turmaController.getTurma();
 
 function getQuestionario(request, response){
 
@@ -146,6 +150,13 @@ function liberaProximaQuestao(request, response) {
     //}
    
 }
+//rota que coloca o aluno na lista de alunos conectados
+function conectaAluno(request,response){
+    //console.log(turma)
+    // const { matricula} = request.body;
+    // listaAlunosConectados.set("", "Aluno teste");
+
+}
 
 // Rota específica para SSE
 
@@ -162,10 +173,10 @@ function getProximaQuestao(request,response){
             response: response  
         };
         clients.push(newClient);
-        response.write(`data: ${7}\n\n`);
+        //response.write(`data: ${7}\n\n`);
         
         const intervalId = setInterval(() => {
-            response.write(`data: ${JSON.stringify({ number: 8 })}\n\n`);
+            //response.write(`data: ${JSON.stringify({ number: 8 })}\n\n`);
         }, 5000); // Envia dados a cada 5 segundos
     
             // Enviar o valor numérico atual ao cliente imediatamente após a conexão
@@ -182,6 +193,10 @@ function sendEventToAllClients(data) {
     });
   }
 
+  function addAlunoPronto(request,response){
+        alunosProntos.push(request.id);
+
+  }
 
 function liberaQuestionario(request, response) {
     clientesId.push(request.id);
@@ -214,12 +229,29 @@ function liberaQuestionario(request, response) {
     }
 }
 
-function alunosConectados(request,response){
-    response.json(clientesId.length);
+async function alunosConectados(request,response){
+    // let turmas = await turmaController.getTurma();
+    // console.log(turmas)
+    // var aluno = JSON.parse(request.body);
+    // var matriculaAluno = aluno.
+
+    // clientesId.push(request.id);
+    let dict = new Map();
+    dict.set("1", "Aluno teste");
+
+    //returns "bar"
+    //dict.get("1");
+    //alunosConectados = [{1,"alunoTeste"}]
+    response.json(dict.get("1"));
 }
 
-function conectarAluno(request,response){
-    clientesId.push(request.id);
+async function conectarAluno(request,response){
+    //let turmas = await turmaController.getTurma();
+    //console.log(turma)
+    // var aluno = JSON.parse(request.body);
+    // var matriculaAluno = aluno.
+
+    // clientesId.push(request.id);
    
     response.status(200).json("aluno conectado");
 }
