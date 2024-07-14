@@ -3,7 +3,6 @@ import ListQuizzesScreen from './ListQuizzesScreen';
 import NewContentScreen from './NewContentScreen';
 import ApplyQuizScreen from './ApplyQuizScreen';
 import BeginQuizScreen from './BeginQuizScreen';
-import PodiumScreen from './PodiumScreen'; // CHANGED
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
@@ -57,16 +56,6 @@ export default function TeacherScreen() {
           ),
           headerBackTitle: 'Voltar'
         }} />
-      <Tab.Screen
-        name="Pódio" // CHANGED
-        component={PodiumScreen} // CHANGED
-        options={{ // CHANGED
-          tabBarIcon: ({ color, size }) => ( // CHANGED
-            <FontAwesomeIcons name="trophy" color={color} size={size} /> // CHANGED
-          ), // CHANGED
-          headerBackTitle: 'Voltar' // CHANGED
-        }} // CHANGED
-      />
     </Tab.Navigator>
   );
 }

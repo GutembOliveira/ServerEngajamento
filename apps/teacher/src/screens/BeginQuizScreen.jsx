@@ -1,7 +1,8 @@
 import { SafeAreaView, Text } from 'react-native';
 
 import globalStyles from '../utils/globalStyles';
-import Button from '../components/Button';
+//import Button from '../components/Button';
+import { Button } from 'react-native-paper';
 
 import api from '../services/api';
 import { useEffect, useState } from 'react';
@@ -52,7 +53,11 @@ export default function BeginQuizScreen() {
             <Text>{connectedStudents} alunos conectados</Text>
       }
       <Input onChangeText={setQuizCode} placeholder="Código" value={quizCode} />
-      <Button onPress={liberarQuestionario} text="Iniciar questionário" />
+      {/* <Button onPress={liberarQuestionario} text="Iniciar questionário" /> */}
+      <Button onPress={liberarQuestionario}>
+      Iniciar questionário
+      </Button>
+      
     </SafeAreaView>
   );
 }
