@@ -33,3 +33,6 @@ yarn-error.*
 
 # ignores all .env files
 .env*
+
+#VS Code
+.vscode/

@@ -10,27 +10,8 @@ export default function WaitingQuizScreen({ navigation }) {
     const [isSuccess, setIsSuccess] = useState(false);
     const [quizToSolve, setQuizToSolve] = useState(null);
 
-    const [currentNumber, setCurrentNumber] = useState(0); // Estado para o número atual do evento SSE
-    
     const theme = useTheme();
-
-    useEffect(() => {
-        const eventSource = new RNEventSource('https://serverengajamento.onrender.com/proxQuestao');
-
-        eventSource.addEventListener('message', (event) => {
-            const data = JSON.parse(event.data);
-            console.log(data);
-        })
-
-        eventSource.addEventListener('error', (event) => {
-            console.error('Error connecting', event);
-        })
-
-        return () => {
-            eventSource.close();
-        }
-    }, []);
-
+    
     useEffect(() => {
         const askForQuiz = async () => {
             try {
@@ -71,7 +52,7 @@ export default function WaitingQuizScreen({ navigation }) {
 
                         <Button
                         mode="contained"
-                        onPress={() => { navigation.navigate('Solve Quiz', { quiz: quizToSolve }) }}
+                        onPress={() => { navigation.navigate('Solve', { quiz: quizToSolve }) }}
                         style={{ width: '35%' }}
                         >
                             Responder
@@ -83,8 +64,6 @@ export default function WaitingQuizScreen({ navigation }) {
                         <Text variant="titleLarge" style={{ marginBottom: 10 }}>Aguardando autorização</Text>
                         <Text variant="titleMedium">Aguarde o professor iniciar o questionário</Text>
                         <Text variant="titleMedium" style={{ marginBottom: 20 }}>Isso pode levar alguns instantes</Text>
-
-                        <Text variant="titleMedium" style={{ marginBottom: 20 }}>Número recebido: {currentNumber}</Text>
 
                         <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
                     </>

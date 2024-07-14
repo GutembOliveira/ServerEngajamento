@@ -1,29 +1,46 @@
-import { NavigationContainer, useRoute, useFocusEffect } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect, useState, useCallback } from "react";
-import { BackHandler, Dimensions, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Alert, BackHandler, Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import useQuizStore from "../stores/QuizStore";
-import { useTheme, ActivityIndicator, Button, Dialog, Portal, Text } from "react-native-paper";
+import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
+import RNEventSource from "react-native-event-source";
 
-const QuestionScreen = ({ navigation }) => {
-    const quiz = useQuizStore((state) => state.quiz);
+// const [currentNumber, setCurrentNumber] = useState(0); // Estado para o número atual do evento SSE
+//     useEffect(() => {
+//         const eventSource = new RNEventSource('https://serverengajamento.onrender.com/proxQuestao');
+//         
+//         return () => {
+//             eventSource.close();
+//         }
+//     }, []);
+
+export default function SolveQuestionScreen({ navigation }) {
+    const route = useRoute();
+    const { quiz } = route.params;
 
     const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
+    const [currentNumber, setCurrentNumber] = useState(0); // Estado para o número atual do evento SSE
 
-    const [visible, setVisible] = useState(false);
-
+    //const quiz = useQuizStore((state) => state.quiz);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
     const lastAnswer = useQuizStore((state) => state.lastAnswer);
     const setSelectedAnswer = useQuizStore((state) => state.setSelectedAnswer);
     const computeAnswer = useQuizStore((state) => state.computeAnswer);
     const nextQuestion = useQuizStore((state) => state.nextQuestion);
+    const fetchQuiz = useQuizStore((state) => state.fetchQuiz);
+    const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
-
-    const showDialog = () => setVisible(true);
-    const hideDialog = () => setVisible(false);
+    //const eventSource = new RNEventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`);
+    const eventSourceRef = useRef(null);
+    const prevTimeIsOver = useRef(false);
+    
+    useEffect(() => {
+        resetQuiz();
+        fetchQuiz(quiz);
+    }, []);
 
     useFocusEffect(
         useCallback(() => {
@@ -36,15 +53,32 @@ const QuestionScreen = ({ navigation }) => {
     useFocusEffect(
         useCallback(() => {
             const onBackPress = () => {
-                showDialog();
+                Alert.alert(
+                    "Alerta",
+                    "Você quer mesmo sair do questionário?",
+                    [
+                        {
+                            text: "Cancelar",
+                            onPress: () => null,
+                            style: "cancel"
+                        },
+                        {
+                            text: "Sair",
+                            onPress: () => navigation.popToTop()
+                        }
+                    ]
+                );
+                return true;
             }
 
             const backHandler = BackHandler.addEventListener(
                 'hardwareBackPress',
                 onBackPress
-              );
-        
-              return () => backHandler.remove();
+            );
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
         }, [])
     )
 
@@ -62,6 +96,36 @@ const QuestionScreen = ({ navigation }) => {
         return () => clearInterval(interval);
     }, [timer, timeIsOver, currentQuestionIndex]);
 
+    useEffect(() => {
+        if (timeIsOver && !prevTimeIsOver.current) {
+            eventSourceRef.current = new RNEventSource(process.env.EXPO_PUBLIC_API_URL + '/proxQuestao');
+
+            eventSourceRef.current.addEventListener('message', (event) => {
+                //const data = JSON.parse(event.data);
+                console.log(event);
+                //setCurrentNumber(data.number);
+            });
+
+            eventSourceRef.current.addEventListener('error', (event) => {
+                console.error('Error connecting', event);
+            });
+        }
+
+        if (!timeIsOver && prevTimeIsOver.current) {
+            if (eventSourceRef.current) {
+                eventSourceRef.current.close();
+                eventSourceRef.current = null;
+            }
+        }
+
+        prevTimeIsOver.current = timeIsOver;
+
+        return () => {
+            if (eventSourceRef.current) {
+                eventSourceRef.current.close();
+            }
+        };
+    }, [timeIsOver]);
 
     const answerNextQuestion = () => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta)
@@ -75,6 +139,8 @@ const QuestionScreen = ({ navigation }) => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta);
         navigation.navigate('Final', { quiz: quiz });
     }
+
+
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
@@ -129,7 +195,7 @@ const QuestionScreen = ({ navigation }) => {
                                 </Text>
                             )}
 
-                            {
+                            {/* {
                                 timeIsOver &&
                                 (
                                     currentQuestionIndex === quiz.length - 1 ?
@@ -141,70 +207,25 @@ const QuestionScreen = ({ navigation }) => {
                                             Próxima Questão
                                         </Button>
                                 )
-                            }
+                            } */}
 
-                            <View>
-                                <Portal>
-                                    <Dialog visible={visible} onDismiss={hideDialog}>
-                                        <Dialog.Title>Alerta</Dialog.Title>
-                                        <Dialog.Content>
-                                            <Text variant="bodyMedium">Deseja mesmo sair do quiz?</Text>
-                                        </Dialog.Content>
-                                        <Dialog.Actions>
-                                            <Button onPress={() => navigation.goBack()}>Sair</Button>
-                                        </Dialog.Actions>
-                                    </Dialog>
-                                </Portal>
-                            </View>
-
+                            {/* {
+                                timeIsOver && {
+                                    eventSource.addEventListener('message', (event) => {
+                                        const data = JSON.parse(event.data);
+                                        console.log(data);
+                                    });
+                                        
+                                    eventSource.addEventListener('error', (event) => {
+                                        console.error('Error connecting', event);
+                                    })
+                                }
+                            } */}
                         </>
                     )
-
-
             }
         </SafeAreaView>
     );
-};
-
-const FinalScreen = ({ navigation }) => {
-    const route = useRoute();
-    const { quiz } = route.params;
-    const correctAnswers = useQuizStore((state) => state.correctAnswers);
-
-    return (
-        <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
-            <Text variant="titleMedium">Questionário finalizado</Text>
-            <Text variant="titleMedium">Total de questões: {quiz.length}</Text>
-            <Text variant="titleMedium">Respostas corretas: {correctAnswers}</Text>
-        </SafeAreaView>
-    );
-}
-
-const Stack = createNativeStackNavigator();
-
-export default function SolveQuizScreen() {
-    const route = useRoute();
-    const { quiz } = route.params;
-
-    const fetchQuiz = useQuizStore((state) => state.fetchQuiz);
-    const resetQuiz = useQuizStore((state) => state.reset);
-
-    useEffect(() => {
-        resetQuiz();
-        fetchQuiz(quiz);
-    }, []);
-
-    return (
-        <NavigationContainer independent={true}>
-            <Stack.Navigator initialRouteName="QuestionScreen" screenOptions={{
-                headerShown: false
-            }}>
-                <Stack.Screen name="Question" component={QuestionScreen} options={{ title: 'Questão' }} />
-                <Stack.Screen name="Final" component={FinalScreen} options={{ title: 'Final' }} />
-            </Stack.Navigator>
-        </NavigationContainer>
-    )
-
 }
 
 const styles = StyleSheet.create({

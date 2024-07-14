@@ -5,7 +5,7 @@ import { ThemeProvider } from './src/contexts/themeContext';
 import { StatusBar } from 'expo-status-bar';
 
 import ConnectScreen from './src/screens/ConnectScreen';
-import SolveQuizScreen from './src/screens/SolveQuizScreen';
+import SolveQuestionScreen from './src/screens/SolveQuestionScreen';
 import WaitingQuizScreen from './src/screens/WaitingQuizScreen';
 
 const Stack = createNativeStackNavigator();
@@ -23,7 +23,7 @@ export default function App() {
               {/* <Stack.Screen name='Student' component={StudentScreen} /> */}
 
               <Stack.Screen name='Connect' component={ConnectScreen} />
-              <Stack.Screen name='Solve Quiz' component={SolveQuizScreen} />
+              <Stack.Screen name='Solve' component={SolveQuestionScreen} />
               <Stack.Screen name='Waiting' component={WaitingQuizScreen} />
             </Stack.Navigator>
           </NavigationContainer>
