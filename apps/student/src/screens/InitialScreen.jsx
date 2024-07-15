@@ -5,28 +5,28 @@ import { useTheme, Button, TextInput } from 'react-native-paper';
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
-export default function ConnectScreen({ navigation }) {
-  const [quizCode, setQuizCode] = useState('');
-  
+export default function InitialScreen({ navigation }) {
+  const [matricula, setMatricula] = useState('');
+
   const theme = useTheme();
 
   async function connect() {
-      // await api.post('/conectarAluno', JSON.stringify({
-      //   matricula
-      // }))
-      //   .then(response => console.log(response.data));
-      if(quizCode == 123)
-        navigation.navigate('Waiting')
+      await api.post('/conectarAluno', JSON.stringify({
+        matricula
+      }))
+        .then(response => console.log(response.data));
+
+      navigation.navigate('Connect')
   }
   
   return (
     <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
       <TextInput
-        label="Código"
-        value={quizCode}
-        onChangeText={setQuizCode}
+        label="Matrícula"
+        value={matricula}
+        onChangeText={setMatricula}
         mode="outlined"
-        placeholder='Digite o código'
+        placeholder='Digite seu número de matrícula'
         activeOutlineColor={theme.colors.onBackground}
         style={{
           width: '75%',
@@ -38,11 +38,11 @@ export default function ConnectScreen({ navigation }) {
       />
 
       <Button
-        icon="qrcode"
+        icon="login"
         mode="contained"
         style={{ padding: 5 }}
         onPress={connect}>
-        Conectar
+        Entrar
       </Button>
     </SafeAreaView>
   )

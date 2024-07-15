@@ -4,6 +4,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import { ThemeProvider } from './src/contexts/themeContext';
 import { StatusBar } from 'expo-status-bar';
 
+import InitialScreen from './src/screens/InitialScreen';
 import ConnectScreen from './src/screens/ConnectScreen';
 import SolveQuestionScreen from './src/screens/SolveQuestionScreen';
 import WaitingQuizScreen from './src/screens/WaitingQuizScreen';
@@ -17,11 +18,12 @@ export default function App() {
           <StatusBar translucent />
 
           <NavigationContainer>
-            <Stack.Navigator initialRouteName='Connect' screenOptions={{
+            <Stack.Navigator initialRouteName='Initial' screenOptions={{
               headerShown: false
             }}>
               {/* <Stack.Screen name='Student' component={StudentScreen} /> */}
 
+              <Stack.Screen name='Initial' component={InitialScreen} />
               <Stack.Screen name='Connect' component={ConnectScreen} />
               <Stack.Screen name='Solve' component={SolveQuestionScreen} />
               <Stack.Screen name='Waiting' component={WaitingQuizScreen} />

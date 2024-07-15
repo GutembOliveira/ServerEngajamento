@@ -33,10 +33,10 @@ export default function SolveQuestionScreen({ navigation }) {
     const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
-    //const eventSource = new RNEventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`);
+    const eventSource = new RNEventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`);
     const eventSourceRef = useRef(null);
     const prevTimeIsOver = useRef(false);
-    
+
     useEffect(() => {
         resetQuiz();
         fetchQuiz(quiz);
@@ -97,35 +97,21 @@ export default function SolveQuestionScreen({ navigation }) {
     }, [timer, timeIsOver, currentQuestionIndex]);
 
     useEffect(() => {
-        if (timeIsOver && !prevTimeIsOver.current) {
-            eventSourceRef.current = new RNEventSource(process.env.EXPO_PUBLIC_API_URL + '/proxQuestao');
-
-            eventSourceRef.current.addEventListener('message', (event) => {
+        if (timeIsOver) {
+            eventSource.addEventListener('message', (event) => {
                 //const data = JSON.parse(event.data);
                 console.log(event);
                 //setCurrentNumber(data.number);
             });
 
-            eventSourceRef.current.addEventListener('error', (event) => {
-                console.error('Error connecting', event);
+            eventSource.addEventListener('error', (event) => {
+                //const data = JSON.parse(event.data);
+                console.log(event);
+                //setCurrentNumber(data.number);
             });
         }
 
-        if (!timeIsOver && prevTimeIsOver.current) {
-            if (eventSourceRef.current) {
-                eventSourceRef.current.close();
-                eventSourceRef.current = null;
-            }
-        }
-
-        prevTimeIsOver.current = timeIsOver;
-
-        return () => {
-            if (eventSourceRef.current) {
-                eventSourceRef.current.close();
-            }
-        };
-    }, [timeIsOver]);
+    }, [timeIsOver])
 
     const answerNextQuestion = () => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta)
@@ -139,8 +125,6 @@ export default function SolveQuestionScreen({ navigation }) {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta);
         navigation.navigate('Final', { quiz: quiz });
     }
-
-
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
@@ -163,18 +147,20 @@ export default function SolveQuestionScreen({ navigation }) {
 
                             <View style={styles.buttonContainer}>
                                 <Button
-                                    mode="contained"
+                                    mode={lastAnswer === true ? 'contained' : 'outlined'}
                                     onPress={() => setSelectedAnswer(true)}
-                                    style={[styles.button, styles.true, lastAnswer === true && styles.selectedButton]}
+                                    buttonColor={lastAnswer === true ? '#1E90FF' : theme.colors.outline}
+                                    style={styles.button}
                                     disabled={timeIsOver}
                                 >
                                     Verdadeiro
                                 </Button>
 
                                 <Button
-                                    mode="contained"
+                                    mode={lastAnswer === false ? 'contained' : 'outlined'}
                                     onPress={() => setSelectedAnswer(false)}
-                                    style={[styles.button, styles.false, lastAnswer === false && styles.selectedButton]}
+                                    buttonColor={lastAnswer === false ? '#FF4500' : theme.colors.outline}
+                                    style={styles.button}
                                     disabled={timeIsOver}
                                 >
                                     Falso
@@ -210,17 +196,14 @@ export default function SolveQuestionScreen({ navigation }) {
                             } */}
 
                             {/* {
-                                timeIsOver && {
+                                if(timeIsOver){
                                     eventSource.addEventListener('message', (event) => {
                                         const data = JSON.parse(event.data);
                                         console.log(data);
-                                    });
-                                        
-                                    eventSource.addEventListener('error', (event) => {
-                                        console.error('Error connecting', event);
                                     })
                                 }
-                            } */}
+                            }; */}
+
                         </>
                     )
             }
@@ -241,18 +224,5 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: Dimensions.get('window').width * 0.375,
         marginVertical: 20,
-        opacity: .5
-    },
-
-    true: {
-        backgroundColor: '#1E90FF'
-    },
-
-    false: {
-        backgroundColor: '#FF4500'
-    },
-
-    selectedButton: {
-        opacity: 1
     }
 })
