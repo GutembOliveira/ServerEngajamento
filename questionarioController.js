@@ -9,9 +9,11 @@ var clientesId = [];
 let clients = [];
 // lista de alunos que responderam a questão e estão esperando a próxima
 let alunosProntos =[]
-let listaAlunosConectados =   new Map();
+let listaAlunosConectados = [];
 let requestQueue = [];
 let canCallGetQuestionario = false;
+// Criando uma lista de objetos dinamicamente
+
 const jsonParser = bodyParser.json();
 //let turma = turmaController.getTurma();
 
@@ -198,6 +200,19 @@ function sendEventToAllClients(data) {
 
   }
 
+
+
+
+function adicionarAluno(matricula, nome) {
+  let aluno = {
+    matricula: matricula,
+    nome: nome
+  };
+  listaAlunosConectados.push(aluno);
+}
+
+
+
 function liberaQuestionario(request, response) {
     clientesId.push(request.id);
     requestQueue.push({ request, response });
@@ -236,23 +251,29 @@ async function alunosConectados(request,response){
     // var matriculaAluno = aluno.
 
     // clientesId.push(request.id);
-    let dict = new Map();
-    dict.set("1", "Aluno teste");
+    // let dict = new Map();
+    // dict.set("1", "Aluno teste");
 
     //returns "bar"
     //dict.get("1");
-    //alunosConectados = [{1,"alunoTeste"}]
-    response.json(dict.get("1"));
+    
+    console.log("alunos:",listaAlunosConectados)
+
+    response.json((listaAlunosConectados));
+    //response.json(listaAlunosConectados);
 }
 
-async function conectarAluno(request,response){
+    function conectarAluno(request,response){
     //let turmas = await turmaController.getTurma();
-    //console.log(turma)
-    // var aluno = JSON.parse(request.body);
-    // var matriculaAluno = aluno.
+    const {matricula} = request.body;
+    console.log(matricula);
+    console.log("matricula do aluno: +",matricula)
 
-    // clientesId.push(request.id);
-   
+    //var matriculaAluno = aluno.
+    adicionarAluno(matricula, "aluno teste");
+
+    //clientesId.push(request.id);
+    console.log("aluno inserido")
     response.status(200).json("aluno conectado");
 }
 

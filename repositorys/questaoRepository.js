@@ -2,11 +2,14 @@ const mysql = require("mysql");
 const csvtojson = require('csvtojson');
 
 const db = mysql.createConnection({
-    host: "projetoengajamento.czuc0qggowbu.us-east-1.rds.amazonaws.com",
-    port: "3306",
-    user: "devTime",
-    password: "dev@engaj24",
-    database: "mysql",
+    //host: "projetoengajamento.czuc0qggowbu.us-east-1.rds.amazonaws.com",
+    host: "nakedly-novel-asp.data-1.use1.tembo.io",
+    port: "5432",
+    user: "postgres",
+    password: "bxqFKZWcpg5cZ1kM",
+    database: "postgres",
+    // password: "dev@engaj24",
+    // database: "mysql",
 });
 
 const arquivo = "./baseQuestao.csv";
