@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.guisantosfr.quizapp"
+      "bundleIdentifier": "com.engajamento.quizapp-student"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.guisantosfr.quizapp"
+      "package": "com.engajamento.quizapp-student"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
