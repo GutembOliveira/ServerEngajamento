@@ -1,10 +1,10 @@
-import { ActivityIndicator, Dimensions, FlatList, SafeAreaView, Text, View } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
+import { Dimensions, FlatList, SafeAreaView } from 'react-native';
+import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
+
+import { useRoute } from '@react-navigation/native';
 import globalStyles from '../utils/globalStyles';
-import theme from '../theme';
 import useQuizzes from '../hooks/useQuizzes';
-import CardContent from '../components/CardContent';
 import Podium from '../components/Podium'; // CHANGED
 
 export default function QuizDetailScreen() {
@@ -14,6 +14,8 @@ export default function QuizDetailScreen() {
   const { fetchQuizById } = useQuizzes();
   const [students, setStudents] = useState([]); // CHANGED
   const [loading, setLoading] = useState(true); // CHANGED
+
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchQuizDetails = async () => {
@@ -43,12 +45,12 @@ export default function QuizDetailScreen() {
     <SafeAreaView style={globalStyles.container}>
       {
         loading ? (
-          <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+          <ActivityIndicator animating={true} color={theme.colors.primary} />
         ) : (
           <>
-            <Text style={[globalStyles.text, globalStyles.heading]}>Detalhes do questionário</Text>
-            <Text style={globalStyles.text}>Nome: {selectedQuiz?.name || 'Quiz teste'}</Text>
-            <Text style={globalStyles.text}>Questões: {selectedQuiz?.alternativas?.length || 0}</Text>
+            <Text variant="titleLarge">Detalhes do questionário</Text>
+            <Text variant="titleMedium">Nome: {selectedQuiz?.name || 'Quiz teste'}</Text>
+            <Text variant="titleMedium">Questões: {selectedQuiz?.alternativas?.length || 0}</Text>
 
             {/* Adicionando o Podium */}
             <Podium students={students} /> {/* CHANGED */}

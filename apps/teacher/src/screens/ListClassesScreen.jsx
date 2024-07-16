@@ -1,15 +1,17 @@
 import { ActivityIndicator, Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet, Text } from 'react-native';
-import theme from '../theme';
+import { useTheme, ActivityIndicator, Card, Text } from 'react-native-paper';
+
 import globalStyles from '../utils/globalStyles';
 import useClasses from '../hooks/useClasses';
-import Card from '../components/Card';
 
 export default function ListClassesScreen({ navigation }) {
   const { classes } = useClasses();
 
+  const theme = useTheme();
+
   const renderItem = ({ item }) => (
     <Card onPress={() => navigation.navigate('Class Detail', { item: item })}>
-      <Text>Turma teste</Text>
+      <Card.Title title="Turma teste"/>
     </Card>
   )
 
@@ -17,16 +19,16 @@ export default function ListClassesScreen({ navigation }) {
     <SafeAreaView style={globalStyles.container}>
       {
         !classes ?
-          <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+        <ActivityIndicator animating={true} color={theme.colors.primary} />
           :
           (
             classes.length === 0 ?
-              <Text style={globalStyles.text}>Não há turmas cadastradas</Text>
+            <Text variant="titleMedium">Não há turmas cadastradas</Text>
               :
               <>
-                <Text style={[globalStyles.text, globalStyles.heading]}>Minhas turmas</Text>
+                <Text variant="titleMedium">Minhas turmas</Text>
                 <Card onPress={() => navigation.navigate('Class Detail', { item: classes })}>
-                  <Text>Turma teste</Text>
+                  <Card.Title title="Turma teste"/>
                 </Card>
                 {/* <FlatList
                   data={classes}

@@ -1,12 +1,11 @@
-import { SafeAreaView, Text } from 'react-native';
 import { useState } from 'react';
+import { SafeAreaView } from 'react-native';
+import { Button, TextInput, Text } from 'react-native-paper';
+
 import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useClasses from '../hooks/useClasses';
 import globalStyles from '../utils/globalStyles';
-import Button from '../components/Button';
-import Input from '../components/Input';
-import theme from '../theme';
 
 export default function NewClassScreen() {
   const [className, setClassName] = useState('');
@@ -53,10 +52,10 @@ export default function NewClassScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <Input onChangeText={setClassName} value={className} placeholder="Nome da turma" />
-      <Text style={globalStyles.text}>{!fileName ? 'Planilha não lida' : fileName}</Text>
-      <Button text="Ler planilha de alunos" onPress={handleUpload} />
-      <Button text="Salvar turma" onPress={saveClass} />
+      <TextInput label="Nome" placeholder="Nome da turma" value={className} onChangeText={setClassName} />
+      <Text variant="titleSmall">{!fileName ? 'Planilha não lida' : fileName}</Text>
+      <Button onPress={handleUpload}>Ler planilha de alunos</Button>
+      <Button onPress={saveClass}>Salvar turma</Button>
     </SafeAreaView>
   )
 }

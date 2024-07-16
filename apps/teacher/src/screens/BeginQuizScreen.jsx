@@ -1,12 +1,9 @@
-import { SafeAreaView, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native';
+import { Button, TextInput, Text } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
-//import Button from '../components/Button';
-import { Button } from 'react-native-paper';
-
 import api from '../services/api';
-import { useEffect, useState } from 'react';
-import Input from '../components/Input';
 
 export default function BeginQuizScreen() {
   const [quizCode, setQuizCode] = useState('');
@@ -45,19 +42,19 @@ export default function BeginQuizScreen() {
     <SafeAreaView style={globalStyles.container}>
       {
         connectedStudents === 0 ?
-          <Text>Nenhum aluno conectado</Text>
+          <Text variant="titleMedium">Nenhum aluno conectado</Text>
           :
           connectedStudents === 1 ?
-            <Text>1 aluno conectado</Text>
+            <Text variant="titleMedium">1 aluno conectado</Text>
             :
-            <Text>{connectedStudents} alunos conectados</Text>
+            <Text variant="titleMedium">{connectedStudents} alunos conectados</Text>
       }
-      <Input onChangeText={setQuizCode} placeholder="Código" value={quizCode} />
+      <TextInput lable="Código" placeholder="Digite código aqui" onChangeText={setQuizCode} value={quizCode} />
       {/* <Button onPress={liberarQuestionario} text="Iniciar questionário" /> */}
       <Button onPress={liberarQuestionario}>
-      Iniciar questionário
+        Iniciar questionário
       </Button>
-      
+
     </SafeAreaView>
   );
 }

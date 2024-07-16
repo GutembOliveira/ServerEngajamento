@@ -21,7 +21,7 @@ export default function SolveQuestionScreen({ navigation }) {
 
     const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
-    const [currentNumber, setCurrentNumber] = useState(0); // Estado para o número atual do evento SSE
+    const [currentNumber, setCurrentNumber] = useState(null); // Estado para o número atual do evento SSE
 
     //const quiz = useQuizStore((state) => state.quiz);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
@@ -100,8 +100,8 @@ export default function SolveQuestionScreen({ navigation }) {
         if (timeIsOver) {
             eventSource.addEventListener('message', (event) => {
                 //const data = JSON.parse(event.data);
-                console.log(event);
-                //setCurrentNumber(data.number);
+                //console.log(event);
+                setCurrentNumber(event.data);
             });
 
             eventSource.addEventListener('error', (event) => {
@@ -195,14 +195,15 @@ export default function SolveQuestionScreen({ navigation }) {
                                 )
                             } */}
 
-                            {/* {
-                                if(timeIsOver){
-                                    eventSource.addEventListener('message', (event) => {
-                                        const data = JSON.parse(event.data);
-                                        console.log(data);
-                                    })
-                                }
-                            }; */}
+                            {
+                                timeIsOver && (
+                                    currentNumber === null ?
+                                    <Text variant="titleSmall">Aguardando mensagem</Text> :
+                                    <Text variant="titleSmall">Número recebido: {currentNumber}</Text>
+                                )
+                            }
+
+                            
 
                         </>
                     )

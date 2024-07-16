@@ -1,17 +1,17 @@
-import { ActivityIndicator, Dimensions, FlatList, SafeAreaView, Text } from 'react-native';
+import { Dimensions, FlatList, SafeAreaView } from 'react-native';
+import { useTheme, ActivityIndicator, Card, Text } from 'react-native-paper';
 
-import theme from '../theme';
 import globalStyles from '../utils/globalStyles';
-
 import useQuizzes from '../hooks/useQuizzes';
-import Card from '../components/Card';
 
 export default function ListQuizzesScreen({ navigation }) {
   const { quizzes } = useQuizzes();
 
+  const theme = useTheme()
+
   const renderItem = ({ item }) => (
     <Card onPress={() => navigation.navigate('Quiz Detail', { item: item})}>
-      <Text>Quiz Teste</Text>
+      <Card.Title title="Quiz Teste"/>
     </Card>
   )
 
@@ -19,14 +19,14 @@ export default function ListQuizzesScreen({ navigation }) {
     <SafeAreaView style={globalStyles.container}>
       {
         !quizzes ?
-          <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+          <ActivityIndicator animating={true} color={theme.colors.primary} />
           :
           (
             quizzes.length === 0 ?
-              <Text style={globalStyles.text}>Não há questionários cadastrados</Text>
+              <Text variant="titleMedium">Não há questionários cadastrados</Text>
               :
               <>
-                <Text style={[globalStyles.text, globalStyles.heading]}>Meus questionários</Text>
+                <Text variant="titleMedium">Meus questionários</Text>
                 <FlatList
                   data={quizzes}
                   keyExtractor={item => item.idQuestao}

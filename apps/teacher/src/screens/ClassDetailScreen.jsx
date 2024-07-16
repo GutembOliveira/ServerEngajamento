@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, SafeAreaView, Text, View } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { Dimensions, FlatList, SafeAreaView } from 'react-native';
+import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
 
-import CardContent from '../components/CardContent';
+import { useRoute } from '@react-navigation/native';
 import useClasses from '../hooks/useClasses';
 import globalStyles from '../utils/globalStyles';
-import theme from '../theme';
 
 export default function ClassDetailScreen() {
   const route = useRoute();
@@ -13,6 +12,8 @@ export default function ClassDetailScreen() {
   const { item } = route.params;
   const [selectedClass, setSelectedClass] = useState(null);
   const { fetchClassById } = useClasses();
+
+  const theme = useTheme()
 
   useEffect(() => {
     // const getClass = async() => {
@@ -24,31 +25,33 @@ export default function ClassDetailScreen() {
   }, []);
 
   const renderItem = ({ item }) => (
-    <CardContent>
-      <Text>{item.idAluno}</Text>
-      <Text>{item.Nome}</Text>
-      <Text>{item.email}</Text>
-    </CardContent>
+    <Card>
+      <Card.Content>
+        <Text variant="titleSmall">{item.idAluno}</Text>
+        <Text variant="titleSmall">{item.Nome}</Text>
+        <Text variant="titleSmall">{item.email}</Text>
+      </Card.Content>
+    </Card>
   )
 
   return (
     <SafeAreaView style={globalStyles.container}>
       {
         !selectedClass ?
-        <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+          <ActivityIndicator animating={true} color={theme.colors.primary} />
           :
           (
             <>
-              <Text style={[globalStyles.text, globalStyles.heading]}>Detalhes da turma</Text>
-              <Text style={globalStyles.text}>Nome: Turma teste </Text>
-              <Text style={globalStyles.text}>Alunos: { selectedClass.length }</Text>
+              <Text variant="titleLarge">Detalhes da turma</Text>
+              <Text variant="titleMedium">Nome: Turma teste </Text>
+              <Text variant="titleMedium">Alunos: {selectedClass.length}</Text>
 
               <FlatList
-                  data={selectedClass}
-                  keyExtractor={item => item.idAluno}
-                  renderItem={renderItem}
-                  style={{width: Dimensions.get('window').width * 0.9}}
-                />
+                data={selectedClass}
+                keyExtractor={item => item.idAluno}
+                renderItem={renderItem}
+                style={{ width: Dimensions.get('window').width * 0.9 }}
+              />
             </>
           )
       }
