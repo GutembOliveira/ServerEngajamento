@@ -27,9 +27,9 @@ export default function ClassDetailScreen() {
   const renderItem = ({ item }) => (
     <Card>
       <Card.Content>
-        <Text variant="titleSmall">{item.idAluno}</Text>
-        <Text variant="titleSmall">{item.Nome}</Text>
-        <Text variant="titleSmall">{item.email}</Text>
+        <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.idAluno}</Text>
+        <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.Nome}</Text>
+        <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.email}</Text>
       </Card.Content>
     </Card>
   )
@@ -42,9 +42,9 @@ export default function ClassDetailScreen() {
           :
           (
             <>
-              <Text variant="titleLarge">Detalhes da turma</Text>
-              <Text variant="titleMedium">Nome: Turma teste </Text>
-              <Text variant="titleMedium">Alunos: {selectedClass.length}</Text>
+              <Text variant="titleLarge" theme={{ colors: theme.colors.onBackground }}>Detalhes da turma</Text>
+              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nome: Turma teste </Text>
+              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Alunos: {selectedClass.length}</Text>
 
               <FlatList
                 data={selectedClass}

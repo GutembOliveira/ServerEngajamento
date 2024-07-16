@@ -1,6 +1,6 @@
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { useState } from 'react';
-import { Button, TextInput, Text } from 'react-native-paper';
+import { Button, TextInput, Text, useTheme } from 'react-native-paper';
 import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useQuizzes from '../hooks/useQuizzes';
@@ -12,6 +12,7 @@ export default function NewQuizScreen() {
   const [fileName, setFileName] = useState(null);
 
   const { createNewQuiz } = useQuizzes();
+  const theme = useTheme()
 
   const handleUpload = async () => {
     const result = await pickDocumentAsync();
@@ -52,10 +53,10 @@ export default function NewQuizScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
+      <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{!fileName ? 'Planilha não lida' : fileName}</Text>
       <TextInput label="Nome" placeholder="Nome do questionário" value={quizName} onChangeText={setQuizName} />
-      <Text variant="titleSmall">{!fileName ? 'Planilha não lida' : fileName}</Text>
-      <Button onPress={handleUpload}>Ler planilha de questões</Button>
-      <Button onPress={saveQuiz}>Salvar Questionário</Button>
+      <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de questões</Button>
+      <Button mode="contained" style={{ marginVertical: 10 }} onPress={saveQuiz}>Salvar Questionário</Button>
     </SafeAreaView>
   )
 }

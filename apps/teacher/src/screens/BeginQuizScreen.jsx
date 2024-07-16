@@ -40,18 +40,18 @@ export default function BeginQuizScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      {
+      {/* {
         connectedStudents === 0 ?
-          <Text variant="titleMedium">Nenhum aluno conectado</Text>
+          <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nenhum aluno conectado</Text>
           :
           connectedStudents === 1 ?
-            <Text variant="titleMedium">1 aluno conectado</Text>
+            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>1 aluno conectado</Text>
             :
-            <Text variant="titleMedium">{connectedStudents} alunos conectados</Text>
-      }
+            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>{connectedStudents} alunos conectados</Text>
+      } */}
       <TextInput lable="Código" placeholder="Digite código aqui" onChangeText={setQuizCode} value={quizCode} />
       {/* <Button onPress={liberarQuestionario} text="Iniciar questionário" /> */}
-      <Button onPress={liberarQuestionario}>
+      <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
         Iniciar questionário
       </Button>
 

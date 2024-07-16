@@ -48,9 +48,9 @@ export default function QuizDetailScreen() {
           <ActivityIndicator animating={true} color={theme.colors.primary} />
         ) : (
           <>
-            <Text variant="titleLarge">Detalhes do questionário</Text>
-            <Text variant="titleMedium">Nome: {selectedQuiz?.name || 'Quiz teste'}</Text>
-            <Text variant="titleMedium">Questões: {selectedQuiz?.alternativas?.length || 0}</Text>
+            <Text variant="titleLarge" theme={{ colors: theme.colors.onBackground }}>Detalhes do questionário</Text>
+            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nome: {selectedQuiz?.name || 'Quiz teste'}</Text>
+            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Questões: {selectedQuiz?.alternativas?.length || 0}</Text>
 
             {/* Adicionando o Podium */}
             <Podium students={students} /> {/* CHANGED */}
