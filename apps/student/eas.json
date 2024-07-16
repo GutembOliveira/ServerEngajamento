@@ -8,6 +8,9 @@
       "distribution": "internal"
     },
     "production": {
+      "env":{
+        "EXPO_PUBLIC_API_URL": "https://serverengajamento.onrender.com"
+      },
       "android": {
         "buildType": "apk"
       },
