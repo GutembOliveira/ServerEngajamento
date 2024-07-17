@@ -28,13 +28,18 @@ export default function BeginQuizScreen() {
   }, []);
 
   const liberarQuestionario = async () => {
-    await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
+    await api.post('/conectaQuestionario', JSON.stringify({ valor: true }), {headers: {"Content-Type": "application/json"}})
       .then((response) => { console.log(response.data) })
       .catch((error) => { console.error(error) })
   }
 
-  const iniciarQuestionario = async () => {
-    const result = await api.get('/iniciaQuestionario');
+  // const iniciarQuestionario = async () => {
+  //   const result = await api.get('/iniciaQuestionario');
+  //   console.log(result)
+  // }
+
+  const liberarProximaQuestao = async () => {
+    const result = await api.get('/proxQuestao');
     console.log(result)
   }
 
@@ -53,6 +58,10 @@ export default function BeginQuizScreen() {
       {/* <Button onPress={liberarQuestionario} text="Iniciar questionário" /> */}
       <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
         Iniciar questionário
+      </Button>
+
+      <Button mode="contained" onPress={liberarProximaQuestao} style={{ marginTop: 20 }}>
+        Próxima questão
       </Button>
 
     </SafeAreaView>
