@@ -28,7 +28,7 @@ export default function BeginQuizScreen() {
   }, []);
 
   const liberarQuestionario = async () => {
-    await api.post('/conectaQuestionario', JSON.stringify({ valor: true }), {headers: {"Content-Type": "application/json"}})
+    await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
       .then((response) => { console.log(response.data) })
       .catch((error) => { console.error(error) })
   }
