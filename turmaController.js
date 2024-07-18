@@ -1,6 +1,16 @@
 // const turmas = require('../repositorys/turmaRepository');
 const  connection  = require('./dbConfig.js');
 
+
+function getTurmaQuiz() {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM mydb.Aluno";
+        connection.query(sql, (err, result) => {
+            if (err) return reject(err);
+            resolve(result);
+        });
+    });
+}
 module.exports = {
 
 getTurma(request,response){
@@ -11,8 +21,8 @@ getTurma(request,response){
     console.log(result);
     return response.json(result);
     });
-    //connection.end()
-}
+ 
+},getTurmaQuiz
 
 
 }

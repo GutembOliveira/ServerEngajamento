@@ -2,11 +2,12 @@ const connection = require('./dbConfig.js');
 //app.use(express.json())
 const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
+
 var questionario;
-var contQuest = 0;
 var numAlunos = 0;
 var clientesId = [];
 let clients = [];
+let turma = [];
 // lista de alunos que responderam a questão e estão esperando a próxima
 let alunosProntos =[]
 let listaAlunosConectados = [];
@@ -123,7 +124,7 @@ function getQuestionarioAluno(request, response){
             // Converte o mapa em uma lista
             let questoesList = Object.values(questoesMap);
             questionario = questoesList;
-            console.log(questionario)
+            //console.log(questionario)
             if(canCallGetQuestionario==true){
                 console.log(canCallGetQuestionario);
                 console.log(questionario);
@@ -140,24 +141,16 @@ function getQuestionarioAluno(request, response){
 
 //Professor aperta para passar para a próxima questão   
 function liberaProximaQuestao(request, response) {
-    
+        listaAlunosConectados.length = 0;
+        
         // Envia o valor numérico para todos os clientes conectados
         //clients.forEach(client => client.response.write(`true\n\n`));
         sendEventToAllClients(1);
         response.json("Evento enviado para todos os clientes");
         console.log(clients.length);
         console.log("resposta mandada para todos os alunos");
-    //} else {
-        //response.json("Resposta não enviada");
-    //}
+    
    
-}
-//rota que coloca o aluno na lista de alunos conectados
-function conectaAluno(request,response){
-    //console.log(turma)
-    // const { matricula} = request.body;
-    // listaAlunosConectados.set("", "Aluno teste");
-
 }
 
 // Rota específica para SSE
@@ -175,6 +168,7 @@ function getProximaQuestao(request,response){
             response: response  
         };
         clients.push(newClient);
+        console.log("aluno adicionado:",clients)
         //response.write(`data: ${7}\n\n`);
         
         const intervalId = setInterval(() => {
@@ -195,13 +189,20 @@ function sendEventToAllClients(data) {
     });
   }
 
-  function addAlunoPronto(request,response){
-        alunosProntos.push(request.id);
+function addAlunoPronto(request,response){
+    turmaController.getTurmaQuiz()
+    console.log(turma);
+    //alunosProntos.push(request.id);
 
-  }
+}
 
+  async function carregaTurma(request,response){
+    turma = await  turmaController.getTurmaQuiz()
+    console.log(turma);
+    return response.status(200).end();
+    //alunosProntos.push(request.id);
 
-
+}
 
 function adicionarAluno(matricula, nome) {
   let aluno = {
@@ -245,42 +246,39 @@ function liberaQuestionario(request, response) {
 }
 
 async function alunosConectados(request,response){
-    // let turmas = await turmaController.getTurma();
-    // console.log(turmas)
-    // var aluno = JSON.parse(request.body);
-    // var matriculaAluno = aluno.
-
-    // clientesId.push(request.id);
-    // let dict = new Map();
-    // dict.set("1", "Aluno teste");
-
-    //returns "bar"
-    //dict.get("1");
-    
+   
     console.log("alunos:",listaAlunosConectados)
 
     response.json((listaAlunosConectados));
-    //response.json(listaAlunosConectados);
 }
 
-    function conectarAluno(request,response){
-    //let turmas = await turmaController.getTurma();
+function conectarAluno(request,response){
     const {matricula} = request.body;
-    console.log(matricula);
-    console.log("matricula do aluno: +",matricula)
+    let aluno = "";
+    for (let item of turma) {
 
-    //var matriculaAluno = aluno.
-    adicionarAluno(matricula, "aluno teste");
+        if(item['matricula']==matricula){
+            aluno = item['Nome']
+            break;
+        }
+    }
+    console.log(aluno)
+    if (aluno!="") {
+        console.log("matricula do aluno: +",matricula)
 
-    //clientesId.push(request.id);
-    console.log("aluno inserido")
-    response.status(200).json("aluno conectado");
+        adicionarAluno(matricula, aluno);
+        console.log("aluno inserido")
+        response.status(200).json("aluno conectado");
+    }else{
+        response.statusMessage = "aluno não encontrado. Você está cadastrado na turma?"
+        response.status(200).end();
+
+    }
+
 }
 
 function liberaQuestionario(request,response){
     const {valor} = request.body;
-    //console.log(request.body)
-    //console.log(jsonData.data)
     console.log('Recebida variavel:', valor);
     canCallGetQuestionario = valor;
     response.status(200).json("questionario liberado");
@@ -295,7 +293,6 @@ function iniciaQuestionario(request,response){
 
 }
 
-
  
 
 module.exports = {
@@ -306,5 +303,7 @@ module.exports = {
     getQuestionarioAluno,
     conectarAluno,
     alunosConectados,
-    liberaProximaQuestao
+    liberaProximaQuestao,
+    addAlunoPronto,
+    carregaTurma
 };

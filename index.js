@@ -11,16 +11,9 @@ const app=express();
     app.use(cors());
     app.use(routes);
     app.listen(5000,()=>console.log("servidor escutando"));
-    https.createServer({
-        cert:fs.readFileSync('SSL/code.crt'),
-        key:fs.readFileSync('SSL/code.key'),
+    // https.createServer({
+    //     cert:fs.readFileSync('SSL/code.crt'),
+    //     key:fs.readFileSync('SSL/code.key'),
         
-    },app).listen(3001,()=>console.log("Server https funcionando"))
+    // },app).listen(3001,()=>console.log("Server https funcionando"))
 
-
-    // app.get("/getAluno",(req,res)=>{
-
-
-    //     res.send("Conexão com sucesso")
-    //     console.log("conexão sucesso")
-    // })

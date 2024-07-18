@@ -20,6 +20,7 @@ routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuest
 //routes.get('/enableGetQuestionario',questionarioController.enableGetQuestionario);
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
+routes.get('/carregaTurma',questionarioController.carregaTurma);
 
 
 
