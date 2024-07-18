@@ -57,6 +57,7 @@ export default function NewClassScreen() {
           mode="outlined" 
           onPress={handleUpload} 
           style={{ backgroundColor: '#D3D3D3', width: '80%' }}
+          labelStyle={{ color: '#000000' }} 
         >
           {!fileName ? 'Planilha não lida' : fileName}
         </Button>
