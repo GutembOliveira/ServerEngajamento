@@ -1,6 +1,6 @@
-import { SafeAreaView, View } from 'react-native';
 import { useState } from 'react';
-import { Button, TextInput, useTheme } from 'react-native-paper';
+import { SafeAreaView, View, Text } from 'react-native';
+import { Button, TextInput, IconButton, useTheme } from 'react-native-paper';
 import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useQuizzes from '../hooks/useQuizzes';
@@ -53,15 +53,18 @@ export default function NewQuizScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <View style={{ alignItems: 'center', marginVertical: 10 }}>
-        <Button 
-          mode="outlined" 
-          onPress={handleUpload} 
-          style={{ backgroundColor: '#D3D3D3', width: '80%' }}
-          labelStyle={{ color: '#000000' }} 
-        >
+      <View style={{ alignItems: 'center', marginVertical: 20 }}>
+        <View style={{ position: 'relative', height: 150, width: 150, justifyContent: 'center', alignItems: 'center', marginBottom: -20 }}>
+          <IconButton 
+            icon="file-upload" 
+            size={150} 
+            onPress={handleUpload} 
+            style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
+          />
+        </View>
+        <Text style={{ color: '#000000', marginTop: 5 }}>
           {!fileName ? 'Planilha não lida' : fileName}
-        </Button>
+        </Text>
       </View>
       <TextInput label="Nome" placeholder="Nome do questionário" value={quizName} onChangeText={setQuizName} />
       <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de questões</Button>
