@@ -58,8 +58,8 @@ export default function NewQuizScreen() {
           <IconButton 
             icon="file-upload" 
             size={150} 
-            onPress={handleUpload} 
             style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
+            disabled
           />
         </View>
         <Text style={{ color: '#000000', marginTop: 5 }}>
