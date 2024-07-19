@@ -5,6 +5,7 @@ import globalStyles from "../utils/globalStyles";
 import useQuizStore from "../stores/QuizStore";
 import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
 import RNEventSource from "react-native-event-source";
+//import EventSource from "react-native-sse";
 
 // const [currentNumber, setCurrentNumber] = useState(0); // Estado para o número atual do evento SSE
 //     useEffect(() => {
@@ -33,9 +34,19 @@ export default function SolveQuestionScreen({ navigation }) {
     const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
-    const eventSource = new RNEventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`);
-    const eventSourceRef = useRef(null);
-    const prevTimeIsOver = useRef(false);
+    const eventSource = new RNEventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`,
+    //const eventSource = new EventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`,
+        {
+            headers: {
+                Connection: "keep-alive",
+                Accept: "text/event-stream",
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache",
+                "Access-Control-Allow-Origin": "*",
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        }
+    );
 
     useEffect(() => {
         resetQuiz();
@@ -109,6 +120,7 @@ export default function SolveQuestionScreen({ navigation }) {
                 console.log(event);
                 //setCurrentNumber(data.number);
             });
+
         }
 
     }, [timeIsOver])
@@ -198,12 +210,16 @@ export default function SolveQuestionScreen({ navigation }) {
                             {
                                 timeIsOver && (
                                     currentNumber === null ?
-                                    <Text variant="titleSmall">Aguardando mensagem</Text> :
-                                    <Text variant="titleSmall">Número recebido: {currentNumber}</Text>
+                                        <>
+                                            <Text variant="titleSmall">Aguarde a próxima questão</Text>
+                                            <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+                                        </>
+                                        :
+                                        <Text variant="titleSmall">Número recebido: {currentNumber}</Text>
                                 )
                             }
 
-                            
+
 
                         </>
                     )
