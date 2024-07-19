@@ -23,7 +23,7 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.engajamento.quizapp-student"
+      "package": "com.engajamento.engajamentoestudante"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
