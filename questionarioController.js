@@ -161,6 +161,7 @@ function getProximaQuestao(request,response){
     response.setHeader('Content-Type', 'text/event-stream');
     response.setHeader('Cache-Control', 'no-cache');
     response.setHeader('Connection', 'keep-alive');
+    response.setHeader('X-Requested-With','XMLHttpRequest');
     response.flushHeaders();
         console.log("aluno pedindo prox questão")
         const newClient = {
@@ -196,13 +197,7 @@ function addAlunoPronto(request,response){
 
 }
 
-  async function carregaTurma(request,response){
-    turma = await  turmaController.getTurmaQuiz()
-    console.log(turma);
-    return response.status(200).end();
-    //alunosProntos.push(request.id);
 
-}
 
 function adicionarAluno(matricula, nome) {
   let aluno = {
@@ -244,7 +239,38 @@ function liberaQuestionario(request, response) {
         numAlunos++;
     }
 }
+    async function carregaTurma(request,response){
+        turma = await  turmaController.getTurmaQuiz()
+        console.log(turma);
+        return response.status(200).end();
+        //alunosProntos.push(request.id);
 
+    }
+    function conectarAluno(request,response){
+        const {matricula} = request.body;
+        let aluno = "";
+        for (let item of turma) {
+    
+            if(item['matricula']==matricula){
+                aluno = item['Nome']
+                break;
+            }
+        }
+        console.log(aluno)
+        if (aluno!="") {
+            console.log("matricula do aluno: +",matricula)
+    
+            adicionarAluno(matricula, aluno);
+            console.log("aluno inserido")
+            response.status(200).json("aluno conectado");
+        }else{
+            response.statusMessage = "aluno não encontrado. Você está cadastrado na turma?"
+            response.status(200).end();
+    
+        }
+    
+    }
+    
 async function alunosConectados(request,response){
    
     console.log("alunos:",listaAlunosConectados)
@@ -252,30 +278,6 @@ async function alunosConectados(request,response){
     response.json((listaAlunosConectados));
 }
 
-function conectarAluno(request,response){
-    const {matricula} = request.body;
-    let aluno = "";
-    for (let item of turma) {
-
-        if(item['matricula']==matricula){
-            aluno = item['Nome']
-            break;
-        }
-    }
-    console.log(aluno)
-    if (aluno!="") {
-        console.log("matricula do aluno: +",matricula)
-
-        adicionarAluno(matricula, aluno);
-        console.log("aluno inserido")
-        response.status(200).json("aluno conectado");
-    }else{
-        response.statusMessage = "aluno não encontrado. Você está cadastrado na turma?"
-        response.status(200).end();
-
-    }
-
-}
 
 function liberaQuestionario(request,response){
     const {valor} = request.body;
