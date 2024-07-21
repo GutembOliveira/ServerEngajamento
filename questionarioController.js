@@ -4,7 +4,8 @@ const http = require('http');
 //app.use(express.json())
 const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
-const wss = new WebSocket.Server({ noServer: true });
+const webSocketController = require('./webSocketController');
+//const wss = new WebSocket.Server({ noServer: true });
 
 var questionario;
 var numAlunos = 0;
@@ -163,22 +164,22 @@ function wsConnection(ws, request) {
 }
 
 // Gerencia a atualização de protocolo
-function handleUpgrade(request, socket, head) {
-    if (request.url === '/proxQuestao') {
-        wss.handleUpgrade(request, socket, head, (ws) => {
-            wss.emit('connection', ws, request);
-        });
-    } else {
-        socket.destroy();
-    }
-}
+// function handleUpgrade(request, socket, head) {
+//     if (request.url === '/proxQuestao') {
+//         wss.handleUpgrade(request, socket, head, (ws) => {
+//             wss.emit('connection', ws, request);
+//         });
+//     } else {
+//         socket.destroy();
+//     }
+// }
 
-wss.on('connection', wsConnection);
+// wss.on('connection', wsConnection);
 
 //Professor aperta para passar para a próxima questão   
 function liberaProximaQuestao(request, response) {
         listaAlunosConectados.length = 0;
-        
+        webSocketController.sendToAllClients("true");
         // Envia o valor numérico para todos os clientes conectados
         //clients.forEach(client => client.response.write(`true\n\n`));
         sendToAllClients("true");
@@ -193,11 +194,11 @@ function liberaProximaQuestao(request, response) {
 //rota que ficará escutando pela resposta do servidor. Virá do lado do aluno
 
 function getProximaQuestao(request,response){
-    response.setHeader('Content-Type', 'text/event-stream');
-    response.setHeader('Cache-Control', 'no-cache');
-    response.setHeader('Connection', 'keep-alive');
-    response.setHeader('X-Requested-With','XMLHttpRequest');
-    response.flushHeaders();
+    // response.setHeader('Content-Type', 'text/event-stream');
+    // response.setHeader('Cache-Control', 'no-cache');
+    // response.setHeader('Connection', 'keep-alive');
+    // response.setHeader('X-Requested-With','XMLHttpRequest');
+    // response.flushHeaders();
         console.log("aluno pedindo prox questão")
         const newClient = {
             id: Date.now(),
@@ -212,10 +213,10 @@ function getProximaQuestao(request,response){
         }, 5000); // Envia dados a cada 5 segundos
     
             // Enviar o valor numérico atual ao cliente imediatamente após a conexão
-        request.on('close', () => {
-        console.log(`${newClient.id} Connection closed`);
-        clients = clients.filter(client => client.id !== newClient.id);
-        });
+        // request.on('close', () => {
+        // console.log(`${newClient.id} Connection closed`);
+        // clients = clients.filter(client => client.id !== newClient.id);
+        // });
     
     
 }
@@ -353,6 +354,7 @@ module.exports = {
     liberaProximaQuestao,
     addAlunoPronto,
     carregaTurma,
-    handleUpgrade,
+    //handleUpgrade,
+    wsConnection
     
 };

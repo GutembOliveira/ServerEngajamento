@@ -8,6 +8,7 @@ const jsonParser = bodyParser.json();
 // app.use('/api', Anyroute)
 const turmaController = require('./turmaController')
 const questionarioController = require('./questionarioController')
+const webSocketController = require('./webSocketController')
 //rota de retorno da turma
 
 routes.get('/turma',turmaController.getTurma);
@@ -21,8 +22,7 @@ routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuest
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 routes.get('/carregaTurma',questionarioController.carregaTurma);
-
-
+//routes.ws('/ws', webSocketController.handleConnection);
 
 module.exports = routes;
 
