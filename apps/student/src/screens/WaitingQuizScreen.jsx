@@ -27,7 +27,7 @@ export default function WaitingQuizScreen({ navigation }) {
         };
 
         if (!isSuccess) {
-            const id = setInterval(askForQuiz, 1000);
+            const id = setInterval(askForQuiz, 2000);
             return () => clearInterval(id);
         }
 

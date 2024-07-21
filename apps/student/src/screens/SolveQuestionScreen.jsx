@@ -1,20 +1,9 @@
 import { useRoute, useFocusEffect } from "@react-navigation/native";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Alert, BackHandler, Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import useQuizStore from "../stores/QuizStore";
 import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
-import RNEventSource from "react-native-event-source";
-//import EventSource from "react-native-sse";
-
-// const [currentNumber, setCurrentNumber] = useState(0); // Estado para o número atual do evento SSE
-//     useEffect(() => {
-//         const eventSource = new RNEventSource('https://serverengajamento.onrender.com/proxQuestao');
-//         
-//         return () => {
-//             eventSource.close();
-//         }
-//     }, []);
 
 export default function SolveQuestionScreen({ navigation }) {
     const route = useRoute();
@@ -22,7 +11,7 @@ export default function SolveQuestionScreen({ navigation }) {
 
     const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
-    const [currentNumber, setCurrentNumber] = useState(null); // Estado para o número atual do evento SSE
+    const [message, setMessage] = useState(null); // Mensagem do websocket
 
     //const quiz = useQuizStore((state) => state.quiz);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
@@ -34,19 +23,7 @@ export default function SolveQuestionScreen({ navigation }) {
     const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
-    const eventSource = new RNEventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`,
-    //const eventSource = new EventSource(`${process.env.EXPO_PUBLIC_API_URL}/proxQuestao`,
-        {
-            headers: {
-                Connection: "keep-alive",
-                Accept: "text/event-stream",
-                "Content-Type": "application/json",
-                "Cache-Control": "no-cache",
-                "Access-Control-Allow-Origin": "*",
-                "X-Requested-With": "XMLHttpRequest"
-            }
-        }
-    );
+    const socket = new WebSocket('ws://serverengajamento.onrender.com/proxQuestao');
 
     useEffect(() => {
         resetQuiz();
@@ -109,18 +86,25 @@ export default function SolveQuestionScreen({ navigation }) {
 
     useEffect(() => {
         if (timeIsOver) {
-            eventSource.addEventListener('message', (event) => {
-                //const data = JSON.parse(event.data);
-                //console.log(event);
-                setCurrentNumber(event.data);
-            });
+            // Event handler for when the connection is established
+            socket.onopen = function (event) {
+                console.log('WebSocket is open now.');
+            };
 
-            eventSource.addEventListener('error', (event) => {
-                //const data = JSON.parse(event.data);
-                console.log(event);
-                //setCurrentNumber(data.number);
-            });
+            // Event handler for when a message is received from the server
+            socket.onmessage = function (event) {
+                console.log('Message from server ', event.data);
+            };
 
+            // Event handler for when the connection is closed
+            socket.onclose = function (event) {
+                console.log('WebSocket is closed now.');
+            };
+
+            // Event handler for when an error occurs
+            socket.onerror = function (error) {
+                console.log('WebSocket Error: ', error);
+            };
         }
 
     }, [timeIsOver])
@@ -193,6 +177,18 @@ export default function SolveQuestionScreen({ navigation }) {
                                 </Text>
                             )}
 
+                            {
+                                timeIsOver && (
+                                    message === null ?
+                                        <>
+                                            <Text variant="titleSmall">Aguarde a próxima questão</Text>
+                                            <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+                                        </>
+                                        :
+                                        <Text variant="titleSmall">Mensagem recebida: {message}</Text>
+                                )
+                            }
+
                             {/* {
                                 timeIsOver &&
                                 (
@@ -206,21 +202,6 @@ export default function SolveQuestionScreen({ navigation }) {
                                         </Button>
                                 )
                             } */}
-
-                            {
-                                timeIsOver && (
-                                    currentNumber === null ?
-                                        <>
-                                            <Text variant="titleSmall">Aguarde a próxima questão</Text>
-                                            <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
-                                        </>
-                                        :
-                                        <Text variant="titleSmall">Número recebido: {currentNumber}</Text>
-                                )
-                            }
-
-
-
                         </>
                     )
             }
