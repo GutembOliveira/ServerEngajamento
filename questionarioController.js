@@ -164,7 +164,7 @@ function wsConnection(ws, request) {
 
 // Gerencia a atualização de protocolo
 function handleUpgrade(request, socket, head) {
-    if (request.url === '/ws') {
+    if (request.url === '/proxQuestao') {
         wss.handleUpgrade(request, socket, head, (ws) => {
             wss.emit('connection', ws, request);
         });
@@ -181,7 +181,7 @@ function liberaProximaQuestao(request, response) {
         
         // Envia o valor numérico para todos os clientes conectados
         //clients.forEach(client => client.response.write(`true\n\n`));
-        sendToAllClients("teste de websocket");
+        sendToAllClients("true");
         //sendEventToAllClients(1);
         response.json("Evento enviado para todos os clientes");
         console.log(clients.length);
