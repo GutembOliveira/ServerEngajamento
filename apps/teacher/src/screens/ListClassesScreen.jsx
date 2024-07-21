@@ -1,11 +1,13 @@
 import { Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet } from 'react-native';
 import { useTheme, ActivityIndicator, Card, Text } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 import globalStyles from '../utils/globalStyles';
 import useClasses from '../hooks/useClasses';
 
-export default function ListClassesScreen({ navigation }) {
+export default function ListClassesScreen() {
   const { classes } = useClasses();
+  const navigation = useNavigation();
 
   const theme = useTheme();
 
@@ -26,9 +28,11 @@ export default function ListClassesScreen({ navigation }) {
             <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Não há turmas cadastradas</Text>
               :
               <>
-                <Text variant="titleMedium" theme={{ colors: theme.colors.primary }}>Minhas turmas</Text>
-                <Card onPress={() => navigation.navigate('Class Detail', { item: classes })} style={{ marginVertical: 15 }}>
-                  <Card.Title title="Turma teste"/>
+                <Text variant="titleMedium" theme={{ colors: theme.colors.primary }} style={{ marginVertical: 20 }}>Minhas turmas</Text>
+                <Card 
+                onPress={() => navigation.navigate('Class Detail', { item: classes })} 
+                style={{ marginBottom: 15, paddingVertical: 15, paddingHorizontal: 40 }}>
+                  <Text>Turma Teste</Text>
                 </Card>
                 {/* <FlatList
                   data={classes}

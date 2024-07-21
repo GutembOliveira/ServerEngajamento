@@ -22,10 +22,10 @@ export default function SelectQuizScreen({ navigation }) {
             :
             (
               quizzes.length === 0 ?
-                <Text style={globalStyles.text}>Não há questionários cadastrados</Text>
+                <Text>Não há questionários cadastrados</Text>
                 :
                 <>
-                  <Text style={[globalStyles.text, globalStyles.heading]}>Selecione um questionário</Text>
+                  <Text>Selecione um questionário</Text>
                   <FlatList
                     data={quizzes}
                     keyExtractor={item => item.idQuestao}

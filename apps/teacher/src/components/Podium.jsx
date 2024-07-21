@@ -10,14 +10,14 @@ const Podium = ({ students }) => {
   const renderPodiumItem = ({ item, index }) => (
     <View style={styles.podiumItem}>
       <Text style={styles.podiumPosition}>{index + 1}º</Text>
-      <Text style={globalStyles.text}>{item.name}</Text>
-      <Text style={globalStyles.text}>Acertos: {item.acertos}</Text>
+      <Text>{item.name}</Text>
+      <Text>Acertos: {item.acertos}</Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={[globalStyles.heading, styles.title]}>Pódio</Text>
+      <Text>Pódio</Text>
       <FlatList
         data={sortedStudents}
         renderItem={renderPodiumItem}

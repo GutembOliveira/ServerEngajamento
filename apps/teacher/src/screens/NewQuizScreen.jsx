@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
-import { Button, TextInput, IconButton, useTheme } from 'react-native-paper';
+import { SafeAreaView, View, Text, Dimensions } from 'react-native';
+import { Button, Icon, TextInput, IconButton, useTheme } from 'react-native-paper';
 import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useQuizzes from '../hooks/useQuizzes';
@@ -46,28 +46,46 @@ export default function NewQuizScreen() {
       setQuizData(null);
       setFileName(null);
     })
-    .catch(function (error) {
-      console.error(error);
-    });
+      .catch(function (error) {
+        console.error(error);
+      });
   }
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <View style={{ alignItems: 'center', marginVertical: 20 }}>
-        <View style={{ position: 'relative', height: 150, width: 150, justifyContent: 'center', alignItems: 'center', marginBottom: -20 }}>
-          <IconButton 
-            icon="file-upload" 
-            size={150} 
-            style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
-            disabled
-          />
-        </View>
-        <Text style={{ color: '#000000', marginTop: 5 }}>
-          {!fileName ? 'Planilha não lida' : fileName}
-        </Text>
-      </View>
-      <TextInput label="Nome" placeholder="Nome do questionário" value={quizName} onChangeText={setQuizName} />
+      {
+        !quizData ? (
+          <>
+            <Icon
+              source="file-outline"
+              size={150}
+              style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
+            />
+            <Text>Planilha não lida</Text>
+          </>
+        )
+          :
+          (
+            <>
+              <Icon
+                source="file-excel"
+                size={150}
+                style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
+              />
+              <Text>{fileName}</Text>
+            </>
+          )
+      }
+
+      <TextInput 
+      label="Nome" 
+      placeholder="Nome do questionário" 
+      value={quizName}
+      onChangeText={setQuizName}
+      style={{ width: Dimensions.get('window').width * 0.5 }}/>
+  
       <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de questões</Button>
+      
       <Button mode="contained" style={{ marginVertical: 10 }} onPress={saveQuiz}>Salvar Questionário</Button>
     </SafeAreaView>
   );

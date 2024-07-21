@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { Dimensions, SafeAreaView } from 'react-native';
 import { Button, TextInput, Text } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
@@ -54,7 +54,13 @@ export default function BeginQuizScreen() {
             :
             <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>{connectedStudents} alunos conectados</Text>
       } */}
-      <TextInput lable="Código" placeholder="Digite código aqui" onChangeText={setQuizCode} value={quizCode} />
+      <TextInput 
+      label="Código" 
+      placeholder="Digite código aqui"
+      inputMode='numeric'
+      onChangeText={setQuizCode} value={quizCode}
+      style={{ width: Dimensions.get('window').width * 0.5 }}/>
+  
       {/* <Button onPress={liberarQuestionario} text="Iniciar questionário" /> */}
       <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
         Iniciar questionário

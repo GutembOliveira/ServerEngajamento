@@ -25,7 +25,7 @@ export default function ClassDetailScreen() {
   }, []);
 
   const renderItem = ({ item }) => (
-    <Card>
+    <Card style={{ marginBottom: 10 }}>
       <Card.Content>
         <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.idAluno}</Text>
         <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.Nome}</Text>

@@ -1,17 +1,19 @@
 import { Dimensions, FlatList, SafeAreaView } from 'react-native';
 import { useTheme, ActivityIndicator, Card, Text } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 import globalStyles from '../utils/globalStyles';
 import useQuizzes from '../hooks/useQuizzes';
 
-export default function ListQuizzesScreen({ navigation }) {
+export default function ListQuizzesScreen() {
   const { quizzes } = useQuizzes();
 
-  const theme = useTheme()
+  const navigation = useNavigation();
+  const theme = useTheme();
 
   const renderItem = ({ item }) => (
-    <Card onPress={() => navigation.navigate('Quiz Detail', { item: item})} style={{ marginBottom: 15, paddingVertical: 10 }}>
-      <Card.Title title="Quiz Teste"/>
+    <Card onPress={() => navigation.navigate('Quiz Detail', { item: item })} style={{ marginBottom: 15, paddingVertical: 10 }}>
+      <Card.Title title="Quiz Teste" />
     </Card>
   )
 

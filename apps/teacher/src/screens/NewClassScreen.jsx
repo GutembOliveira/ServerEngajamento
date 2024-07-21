@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
-import { Button, TextInput, IconButton, useTheme } from 'react-native-paper';
+import { Dimensions, SafeAreaView, Text, View } from 'react-native';
+import { Button, TextInput, Icon, useTheme } from 'react-native-paper';
 import { showErrorToast, showSuccessToast } from '../helpers/showToast';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useClasses from '../hooks/useClasses';
@@ -52,22 +52,40 @@ export default function NewClassScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <View style={{ alignItems: 'center', marginVertical: 20 }}>
-        <View style={{ position: 'relative', height: 150, width: 150, justifyContent: 'center', alignItems: 'center', marginBottom: -20 }}>
-          <IconButton 
-            icon="file-upload" 
-            size={150} 
-            style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
-            disabled
-          />
-        </View>
-        <Text style={{ color: '#000000', marginTop: 5 }}>
-          {!fileName ? 'Planilha não lida' : fileName}
-        </Text>
-      </View>
-      <TextInput label="Nome" placeholder="Nome da turma" value={className} onChangeText={setClassName} />
-      <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de alunos</Button>
-      <Button mode="contained" style={{ marginVertical: 10 }} onPress={saveClass}>Salvar turma</Button>
+      {
+        !students ? (
+          <View style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: theme.colors.outline, borderStyle: 'dashed'}}>
+            <Icon
+              source="file-outline"
+              size={150}
+              color={theme.colors.onSurface}
+            />
+            <Text style={{ textAlign: 'center' }}>Planilha não lida</Text>
+          </View>
+        )
+          :
+          (
+            <View style={{ marginBottom: 20, padding: 10, borderWidth: 2, borderColor: theme.colors.primary, borderStyle: 'solid'}}>
+              <Icon
+                source="file-excel"
+                size={150}
+                color={theme.colors.primary}
+              />
+              <Text style={{ textAlign: 'center' }}>{fileName}</Text>
+            </View>
+          )
+      }
+
+      <TextInput 
+      label="Nome" 
+      placeholder="Nome do questionário" 
+      value={className} 
+      onChangeText={setClassName} 
+      style={{ width: Dimensions.get('window').width * 0.5 }}/>
+
+      <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de questões</Button>
+      
+      <Button mode="contained" style={{ marginVertical: 10 }} onPress={saveClass}>Salvar Turma</Button>
     </SafeAreaView>
   );
 }

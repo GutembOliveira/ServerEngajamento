@@ -101,8 +101,8 @@ export default function ApplyQuizScreen() {
       case 0:
         return (
           <>
-            <Text style={[globalStyles.subheading, globalStyles.text, styles.stepTitle]}>Passo 1 de 3</Text>
-            <Text style={[globalStyles.subheading, globalStyles.text, styles.stepDescription]}>Selecionar questionário</Text>
+            <Text style={styles.stepTitle}>Passo 1 de 3</Text>
+            <Text style={styles.stepDescription}>Selecionar questionário</Text>
             {
               !quizzes ?
                 <ActivityIndicator size="large" color={theme.colors.lightBlue} />
@@ -115,8 +115,8 @@ export default function ApplyQuizScreen() {
       case 1:
         return (
           <>
-            <Text style={[globalStyles.subheading, globalStyles.text, styles.stepTitle]}>Passo 2 de 3</Text>
-            <Text style={[globalStyles.subheading, globalStyles.text, styles.stepDescription]}>Selecionar turma</Text>
+            <Text style={styles.stepTitle}>Passo 2 de 3</Text>
+            <Text style={styles.stepDescription}>Selecionar turma</Text>
 
             {
               !classes ?
@@ -140,13 +140,13 @@ export default function ApplyQuizScreen() {
                 <ActivityIndicator size="large" color={theme.colors.lightBlue} /> :
 
                 <>
-                  <Text style={[globalStyles.subheading, globalStyles.text, styles.stepTitle]}>Passo 3 de 3</Text>
-                  <Text style={[globalStyles.subheading, globalStyles.text, styles.stepDescription]}>Responder Perguntas</Text>
+                  <Text style={styles.stepTitle}>Passo 3 de 3</Text>
+                  <Text style={styles.stepDescription}>Responder Perguntas</Text>
 
                   {
                     questionIndex < quizToApply.questions.length ? // CHANGED
                       <>
-                        <Text style={globalStyles.text}>{quizToApply.questions[questionIndex].question}</Text> // CHANGED
+                        <Text>{quizToApply.questions[questionIndex].question}</Text> // CHANGED
                         <RadioButtons // CHANGED
                           key={questionIndex} // CHANGED
                           data={quizToApply.questions[questionIndex].options} // CHANGED
@@ -155,7 +155,7 @@ export default function ApplyQuizScreen() {
                       </>
                       :
                       <>
-                        <Text style={globalStyles.text}>Todas as perguntas foram respondidas!</Text>
+                        <Text>Todas as perguntas foram respondidas!</Text>
                         <Button text="Aplicar Questionário" onPress={applyQuiz} />
                       </>
                   }

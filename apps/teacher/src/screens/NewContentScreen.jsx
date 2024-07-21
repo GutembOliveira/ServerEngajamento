@@ -2,6 +2,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import NewClassScreen from './NewClassScreen';
 import NewQuizScreen from './NewQuizScreen';
+import { SafeAreaView } from 'react-native';
+import globalStyles from '../utils/globalStyles';
 
 const Tab = createMaterialTopTabNavigator();
 
