@@ -34,6 +34,7 @@ export default function InitialScreen({ navigation }) {
       <TextInput
         label="Matrícula"
         value={matricula}
+        inputMode='numeric'
         onChangeText={setMatricula}
         mode="outlined"
         placeholder='Digite seu número de matrícula'

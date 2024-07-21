@@ -39,7 +39,7 @@ export default function BeginQuizScreen() {
   // }
 
   const liberarProximaQuestao = async () => {
-    const result = await api.get('/proxQuestao');
+    const result = await api.get('/liberaProximaQuestao');
     console.log(result)
   }
 

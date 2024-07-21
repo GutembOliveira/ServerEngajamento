@@ -9,7 +9,8 @@ git clone https://github.com/andrecbs/engajamento
 ```
 cd apps/teacher (App do professor) ou cd apps/student (app do aluno)
 npm install (Para instalar dependências)
-npm start
+npm start (Modo de desenvolvimento)
+npx expo start --no-dev --minify (Modo de produção)
 ```
 
 ## Gerando Builds

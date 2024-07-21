@@ -31,6 +31,7 @@ export default function ConnectScreen({ navigation }) {
       <TextInput
         label="Código"
         value={quizCode}
+        inputMode='numeric'
         onChangeText={setQuizCode}
         mode="outlined"
         placeholder='Digite o código'
