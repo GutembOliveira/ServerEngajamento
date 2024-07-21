@@ -1,7 +1,10 @@
 const connection = require('./dbConfig.js');
+const WebSocket = require('ws');
+const http = require('http');
 //app.use(express.json())
 const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
+const wss = new WebSocket.Server({ noServer: true });
 
 var questionario;
 var numAlunos = 0;
@@ -138,6 +141,39 @@ function getQuestionarioAluno(request, response){
 
     
 }
+//=======================================================
+//WEBSOCKET
+// Função para gerenciar conexões WebSocket
+function wsConnection(ws, request) {
+    console.log('Novo cliente WebSocket conectado');
+    const clientId = Date.now();
+    const newClient = { id: clientId, ws };
+    clients.push(newClient);
+
+    ws.on('message', (message) => {
+        console.log(`Mensagem recebida do cliente ${clientId}: ${message}`);
+    });
+
+    ws.on('close', () => {
+        console.log(`Cliente WebSocket desconectado: ${clientId}`);
+        clients = clients.filter(client => client.id !== clientId);
+    });
+
+    ws.send(JSON.stringify({ message: 'Conexão estabelecida' }));
+}
+
+// Gerencia a atualização de protocolo
+function handleUpgrade(request, socket, head) {
+    if (request.url === '/ws') {
+        wss.handleUpgrade(request, socket, head, (ws) => {
+            wss.emit('connection', ws, request);
+        });
+    } else {
+        socket.destroy();
+    }
+}
+
+wss.on('connection', wsConnection);
 
 //Professor aperta para passar para a próxima questão   
 function liberaProximaQuestao(request, response) {
@@ -145,12 +181,11 @@ function liberaProximaQuestao(request, response) {
         
         // Envia o valor numérico para todos os clientes conectados
         //clients.forEach(client => client.response.write(`true\n\n`));
-        sendEventToAllClients(1);
+        sendToAllClients("teste de websocket");
+        //sendEventToAllClients(1);
         response.json("Evento enviado para todos os clientes");
         console.log(clients.length);
         console.log("resposta mandada para todos os alunos");
-    
-   
 }
 
 // Rota específica para SSE
@@ -190,6 +225,16 @@ function sendEventToAllClients(data) {
     });
   }
 
+  function sendToAllClients(message) {
+    clients.forEach(client => {
+        console.log(client.id)
+
+        //if (client.readyState === WebSocket.OPEN) { // Verifica se o cliente está aberto
+            console.log("conexao aberta");
+            client.ws.send(message);
+        //}
+    });
+}
 function addAlunoPronto(request,response){
     turmaController.getTurmaQuiz()
     console.log(turma);
@@ -239,37 +284,37 @@ function liberaQuestionario(request, response) {
         numAlunos++;
     }
 }
-    async function carregaTurma(request,response){
-        turma = await  turmaController.getTurmaQuiz()
-        console.log(turma);
-        return response.status(200).end();
-        //alunosProntos.push(request.id);
+async function carregaTurma(request,response){
+    turma = await  turmaController.getTurmaQuiz()
+    console.log(turma);
+    return response.status(200).end();
+    //alunosProntos.push(request.id);
+
+}
+function conectarAluno(request,response){
+    const {matricula} = request.body;
+    let aluno = "";
+    for (let item of turma) {
+
+        if(item['matricula']==matricula){
+            aluno = item['Nome']
+            break;
+        }
+    }
+    console.log(aluno)
+    if (aluno!="") {
+        console.log("matricula do aluno: +",matricula)
+
+        adicionarAluno(matricula, aluno);
+        console.log("aluno inserido")
+        response.status(200).json("aluno conectado");
+    }else{
+        response.statusMessage = "aluno não encontrado. Você está cadastrado na turma?"
+        response.status(200).end();
 
     }
-    function conectarAluno(request,response){
-        const {matricula} = request.body;
-        let aluno = "";
-        for (let item of turma) {
-    
-            if(item['matricula']==matricula){
-                aluno = item['Nome']
-                break;
-            }
-        }
-        console.log(aluno)
-        if (aluno!="") {
-            console.log("matricula do aluno: +",matricula)
-    
-            adicionarAluno(matricula, aluno);
-            console.log("aluno inserido")
-            response.status(200).json("aluno conectado");
-        }else{
-            response.statusMessage = "aluno não encontrado. Você está cadastrado na turma?"
-            response.status(200).end();
-    
-        }
-    
-    }
+
+}
     
 async function alunosConectados(request,response){
    
@@ -307,5 +352,7 @@ module.exports = {
     alunosConectados,
     liberaProximaQuestao,
     addAlunoPronto,
-    carregaTurma
+    carregaTurma,
+    handleUpgrade,
+    
 };
