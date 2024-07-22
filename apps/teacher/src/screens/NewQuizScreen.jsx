@@ -61,25 +61,25 @@ export default function NewQuizScreen() {
     <SafeAreaView style={globalStyles.container}>
       {
         !quizData ? (
-          <>
+          <View style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: theme.colors.outline, borderStyle: 'dashed'}}>
             <Icon
               source="file-outline"
               size={150}
-              style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
+              color={theme.colors.onSurface}
             />
-            <Text>Planilha não lida</Text>
-          </>
+            <Text style={{ textAlign: 'center' }}>Planilha não lida</Text>
+          </View>
         )
           :
           (
-            <>
+            <View style={{ marginBottom: 20, padding: 10, borderWidth: 2, borderColor: theme.colors.primary, borderStyle: 'solid'}}>
               <Icon
                 source="file-excel"
                 size={150}
-                style={{ backgroundColor: '#D3D3D3', borderRadius: 10, position: 'absolute' }}
+                color={theme.colors.primary}
               />
-              <Text>{fileName}</Text>
-            </>
+              <Text style={{ textAlign: 'center' }}>{fileName}</Text>
+            </View>
           )
       }
 
