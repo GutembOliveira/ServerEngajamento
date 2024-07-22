@@ -36,3 +36,5 @@ yarn-error.*
 
 #VS Code
 .vscode/
+
+package-lock.json

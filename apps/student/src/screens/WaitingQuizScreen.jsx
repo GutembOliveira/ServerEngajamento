@@ -1,7 +1,6 @@
 import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useTheme, ActivityIndicator, Button, Text } from 'react-native-paper';
-import RNEventSource from 'react-native-event-source';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
