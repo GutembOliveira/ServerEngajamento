@@ -23,7 +23,7 @@ export default function SolveQuestionScreen({ navigation }) {
     const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
-    const socket = new WebSocket('ws://serverengajamento.onrender.com/proxQuestao');
+    const socket = new WebSocket(process.env.EXPO_PUBLIC_WEBSOCKET_URL);
 
     useEffect(() => {
         resetQuiz();

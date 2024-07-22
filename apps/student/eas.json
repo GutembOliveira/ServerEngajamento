@@ -9,7 +9,8 @@
     },
     "production": {
       "env":{
-        "EXPO_PUBLIC_API_URL": "https://serverengajamento.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://serverengajamento.onrender.com",
+        "EXPO_PUBLIC_WEBSOCKET_URL": "ws://serverengajamento.onrender.com/proxQuestao"
       },
       "android": {
         "buildType": "apk"
