@@ -4,7 +4,6 @@ import { BottomNavigation } from 'react-native-paper';
 import ListClassesScreen from './ListClassesScreen';
 import ListQuizzesScreen from './ListQuizzesScreen';
 import NewContentScreen from './NewContentScreen';
-import ApplyQuizScreen from './ApplyQuizScreen';
 import BeginQuizScreen from './BeginQuizScreen';
 
 export default function TeacherScreen() {

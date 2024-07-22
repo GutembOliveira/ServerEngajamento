@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SafeAreaView, View, Text, Dimensions } from 'react-native';
 import { Button, Icon, TextInput, IconButton, useTheme } from 'react-native-paper';
-import { showErrorToast, showSuccessToast } from '../helpers/showToast';
+import Toast from 'react-native-toast-message';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useQuizzes from '../hooks/useQuizzes';
 import globalStyles from '../utils/globalStyles';
@@ -25,7 +25,10 @@ export default function NewQuizScreen() {
 
   const saveQuiz = async () => {
     if (!quizName || !quizData) {
-      showErrorToast('Nome do questionário e planilha de questões são obrigatórios');
+      Toast.show({
+        type: 'error',
+        text1: 'Nome e planilha de questões são obrigatórios'
+      })
       return;
     }
 
@@ -40,7 +43,10 @@ export default function NewQuizScreen() {
       name: quizName,
       questions: savedQuestions
     }).then(function (response) {
-      showSuccessToast('Questionário criado com sucesso');
+      Toast.show({
+        type: 'success',
+        text1: 'Questionário criado com sucesso'
+      })
 
       setQuizName('');
       setQuizData(null);
