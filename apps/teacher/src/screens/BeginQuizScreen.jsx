@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, SafeAreaView } from 'react-native';
-import { Button, TextInput, Text } from 'react-native-paper';
+import { Button, TextInput, Text, useTheme } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
@@ -9,6 +9,22 @@ export default function BeginQuizScreen() {
   const [quizCode, setQuizCode] = useState('');
   const [intervalId, setIntervalId] = useState(null);
   const [connectedStudents, setConnectedStudents] = useState(null);
+
+  const theme = useTheme()
+
+  useEffect(() => {
+    const loadClass = async () => {
+      await api.get('/carregaTurma')
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
+
+    loadClass();
+  }, [])
 
   useEffect(() => {
     const getConnectedStudents = async () => {
@@ -45,7 +61,7 @@ export default function BeginQuizScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      {/* {
+      {
         connectedStudents === 0 ?
           <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nenhum aluno conectado</Text>
           :
@@ -53,7 +69,8 @@ export default function BeginQuizScreen() {
             <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>1 aluno conectado</Text>
             :
             <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>{connectedStudents} alunos conectados</Text>
-      } */}
+      }
+
       <TextInput 
       label="Código" 
       placeholder="Digite código aqui"

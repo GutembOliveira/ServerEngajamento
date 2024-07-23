@@ -30,6 +30,15 @@ export default function SolveQuestionScreen({ navigation }) {
         fetchQuiz(quiz);
     }, []);
 
+    useEffect(async () => {
+        await api.post('/conectarAluno', true)
+            .then(response => 
+              console.log(response.data))
+            .finally(() => {
+              setLoading(false);
+            });
+    }, [currentQuestionIndex]);
+
     useFocusEffect(
         useCallback(() => {
             setTimer(5);
@@ -86,25 +95,13 @@ export default function SolveQuestionScreen({ navigation }) {
 
     useEffect(() => {
         if (timeIsOver) {
-            // Event handler for when the connection is established
-            socket.onopen = function (event) {
-                console.log('WebSocket is open now.');
-            };
-
             // Event handler for when a message is received from the server
             socket.onmessage = function (event) {
-                console.log('Message from server ', event.data);
+                if(event.data === true){
+                    nextQuestion()
+                }
             };
 
-            // Event handler for when the connection is closed
-            socket.onclose = function (event) {
-                console.log('WebSocket is closed now.');
-            };
-
-            // Event handler for when an error occurs
-            socket.onerror = function (error) {
-                console.log('WebSocket Error: ', error);
-            };
         }
 
     }, [timeIsOver])
@@ -179,13 +176,10 @@ export default function SolveQuestionScreen({ navigation }) {
 
                             {
                                 timeIsOver && (
-                                    message === null ?
                                         <>
                                             <Text variant="titleSmall">Aguarde a próxima questão</Text>
                                             <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
                                         </>
-                                        :
-                                        <Text variant="titleSmall">Mensagem recebida: {message}</Text>
                                 )
                             }
 
