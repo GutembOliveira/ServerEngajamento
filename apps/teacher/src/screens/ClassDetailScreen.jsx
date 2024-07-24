@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, FlatList, SafeAreaView } from 'react-native';
+import { Dimensions, FlatList, SafeAreaView, View } from 'react-native';
 import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
 
 import { useRoute } from '@react-navigation/native';
@@ -25,7 +25,7 @@ export default function ClassDetailScreen() {
   }, []);
 
   const renderItem = ({ item }) => (
-    <Card style={{ marginBottom: 10 }}>
+    <Card style={{ marginVertical: 12, backgroundColor: theme.colors.secondary }}>
       <Card.Content>
         <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.idAluno}</Text>
         <Text variant="titleSmall" theme={{ colors: theme.colors.onBackground }}>{item.Nome}</Text>
@@ -35,16 +35,16 @@ export default function ClassDetailScreen() {
   )
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
       {
         !selectedClass ?
           <ActivityIndicator animating={true} color={theme.colors.primary} />
           :
           (
-            <>
-              <Text variant="titleLarge" theme={{ colors: theme.colors.onBackground }}>Detalhes da turma</Text>
-              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nome: Turma teste </Text>
-              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Alunos: {selectedClass.length}</Text>
+            <View style={{ position: 'relative', top: 100}}> 
+              <Text variant="titleLarge" style={{ textAlign: 'center'}}>Detalhes da turma</Text>
+              <Text variant="titleMedium" style={{ textAlign: 'center'}}>Nome: Turma teste </Text>
+              <Text variant="titleMedium" style={{ textAlign: 'center'}}>Alunos: {selectedClass.length}</Text>
 
               <FlatList
                 data={selectedClass}
@@ -52,7 +52,7 @@ export default function ClassDetailScreen() {
                 renderItem={renderItem}
                 style={{ width: Dimensions.get('window').width * 0.9 }}
               />
-            </>
+            </View>
           )
       }
     </SafeAreaView>

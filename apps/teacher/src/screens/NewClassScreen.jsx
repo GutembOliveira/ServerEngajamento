@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Dimensions, SafeAreaView, Text, View } from 'react-native';
-import { Button, TextInput, Icon, useTheme } from 'react-native-paper';
+import { Dimensions, SafeAreaView, View } from 'react-native';
+import { Button, Text, TextInput, Icon, useTheme } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useClasses from '../hooks/useClasses';
@@ -57,7 +57,7 @@ export default function NewClassScreen() {
   }
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
       {
         !students ? (
           <View style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: theme.colors.outline, borderStyle: 'dashed'}}>
@@ -66,7 +66,7 @@ export default function NewClassScreen() {
               size={150}
               color={theme.colors.onSurface}
             />
-            <Text style={{ textAlign: 'center' }}>Planilha não lida</Text>
+            <Text variant='titleSmall' style={{ textAlign: 'center' }}>Planilha não lida</Text>
           </View>
         )
           :
@@ -77,7 +77,7 @@ export default function NewClassScreen() {
                 size={150}
                 color={theme.colors.primary}
               />
-              <Text style={{ textAlign: 'center' }}>{fileName}</Text>
+              <Text variant='titleSmall' style={{ textAlign: 'center' }}>{fileName}</Text>
             </View>
           )
       }

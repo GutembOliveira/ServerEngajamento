@@ -25,10 +25,10 @@ export default function ListClassesScreen() {
           :
           (
             classes.length === 0 ?
-              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Não há turmas cadastradas</Text>
+              <Text variant="titleMedium">Não há turmas cadastradas</Text>
               :
               <>
-                <Text variant="titleMedium" theme={{ colors: theme.colors.primary }} style={{ marginVertical: 20 }}>Minhas turmas</Text>
+                <Text variant="titleMedium" style={{ marginVertical: 20 }}>Minhas turmas</Text>
                 <Card
                   onPress={() => navigation.navigate('Class Detail', { item: classes })}
                   style={{ marginBottom: 15, paddingVertical: 15, paddingHorizontal: 40 }}>

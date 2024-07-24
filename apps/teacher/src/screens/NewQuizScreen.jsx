@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { SafeAreaView, View, Text, Dimensions } from 'react-native';
-import { Button, Icon, TextInput, useTheme } from 'react-native-paper';
+import { SafeAreaView, View, Dimensions } from 'react-native';
+import { Button, Icon, Text, TextInput, useTheme } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useQuizzes from '../hooks/useQuizzes';
@@ -58,7 +58,7 @@ export default function NewQuizScreen() {
   }
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
       {
         !quizData ? (
           <View style={{ marginBottom: 20, padding: 10, borderWidth: 1, borderColor: theme.colors.outline, borderStyle: 'dashed'}}>
@@ -67,7 +67,7 @@ export default function NewQuizScreen() {
               size={150}
               color={theme.colors.onSurface}
             />
-            <Text style={{ textAlign: 'center' }}>Planilha não lida</Text>
+            <Text variant='titleSmall' style={{ textAlign: 'center' }}>Planilha não lida</Text>
           </View>
         )
           :
@@ -78,7 +78,7 @@ export default function NewQuizScreen() {
                 size={150}
                 color={theme.colors.primary}
               />
-              <Text style={{ textAlign: 'center' }}>{fileName}</Text>
+              <Text variant='titleSmall' style={{ textAlign: 'center' }}>{fileName}</Text>
             </View>
           )
       }

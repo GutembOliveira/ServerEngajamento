@@ -62,16 +62,6 @@ export default function BeginQuizScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      {
-        connectedStudents === 0 ?
-          <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nenhum aluno conectado</Text>
-          :
-          connectedStudents === 1 ?
-            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>1 aluno conectado</Text>
-            :
-            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>{connectedStudents} alunos conectados</Text>
-      }
-
       <TextInput 
       label="Código" 
       placeholder="Digite código aqui"

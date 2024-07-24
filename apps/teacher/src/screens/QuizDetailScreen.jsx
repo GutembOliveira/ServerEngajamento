@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, FlatList, SafeAreaView } from 'react-native';
+import { Dimensions, FlatList, SafeAreaView, View } from 'react-native';
 import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
 
 import { useRoute } from '@react-navigation/native';
@@ -19,8 +19,8 @@ export default function QuizDetailScreen() {
 
   useEffect(() => {
     const fetchQuizDetails = async () => {
-      const result = await fetchQuizById(item.id);
-      setSelectedQuiz(result);
+      //const result = await fetchQuizById(item.id);
+      //setSelectedQuiz(result);
       // Simulando a obtenção dos dados dos alunos - ajuste conforme necessário
       setStudents([
         { id: 1, name: 'Aluno 1', acertos: 5 },
@@ -33,35 +33,38 @@ export default function QuizDetailScreen() {
     fetchQuizDetails();
   }, [item.id]);
 
-  // const renderItem = ({ item }) => (
-  //   <CardContent>
-  //     <Text>Geografia</Text>
-  //     <Text>Mundo</Text>
-  //     <Text>{item.descricao}</Text>
-  //   </CardContent>
-  // )
+  const renderItem = ({ item }) => (
+    <Card style={{ marginVertical: 15 }}>
+      <Card.Content>
+        <Text variant='titleSmall'>
+          {item.enunciado}
+        </Text>
+      </Card.Content>
+    </Card>
+  )
 
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
       {
         loading ? (
           <ActivityIndicator animating={true} color={theme.colors.primary} />
         ) : (
-          <>
-            <Text variant="titleLarge" theme={{ colors: theme.colors.onBackground }}>Detalhes do questionário</Text>
-            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Nome: {selectedQuiz?.name || 'Quiz teste'}</Text>
-            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Questões: {selectedQuiz?.alternativas?.length || 0}</Text>
-
+          <View style={{ position: 'relative', top: 100}}> 
+            <Text variant="titleLarge" style={{ textAlign: 'center'}}>Detalhes do questionário</Text>
+            <Text variant="titleMedium" style={{ textAlign: 'center'}}>Nome: Quiz teste</Text>
+            <Text variant="titleMedium" style={{ textAlign: 'center'}}>Questões: {item?.length}</Text>
+            
             {/* Adicionando o Podium */}
-            <Podium students={students} /> {/* CHANGED */}
+            {/* <Podium students={students} />  */}
+            {/* CHANGED */}
 
-            {/* <FlatList
-              data={selectedQuiz?.alternativas || []}
-              keyExtractor={item => item.idalternativas}
+            <FlatList
+              data={item}
+              keyExtractor={item => item.idQuestao}
               renderItem={renderItem}
               style={{ width: Dimensions.get('window').width * 0.9 }}
-            /> */}
-          </>
+            />
+          </View>
         )
       }
     </SafeAreaView>

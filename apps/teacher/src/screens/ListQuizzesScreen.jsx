@@ -25,16 +25,21 @@ export default function ListQuizzesScreen() {
           :
           (
             quizzes.length === 0 ?
-              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Não há questionários cadastrados</Text>
+              <Text variant="titleMedium">Não há questionários cadastrados</Text>
               :
               <>
-                <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }} style={{ marginVertical: 20 }}>Meus questionários</Text>
-                <FlatList
+                <Text variant="titleMedium" style={{ marginVertical: 20 }}>Meus questionários</Text>
+                {/* <FlatList
                   data={quizzes}
                   keyExtractor={item => item.idQuestao}
                   renderItem={renderItem}
                   style={{width: Dimensions.get('window').width * 0.9}}
-                />
+                /> */}
+                <Card
+                  onPress={() => navigation.navigate('Quiz Detail', { item: quizzes })}
+                  style={{ marginBottom: 15, paddingVertical: 15, paddingHorizontal: 40 }}>
+                  <Text>Quiz Teste</Text>
+                </Card>
               </>
           )
       }
