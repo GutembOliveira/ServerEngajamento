@@ -50,7 +50,7 @@ export default function ClassDetailScreen() {
                 data={selectedClass}
                 keyExtractor={item => item.idAluno}
                 renderItem={renderItem}
-                style={{ width: Dimensions.get('window').width * 0.9 }}
+                style={{ width: Dimensions.get('window').width * 0.9, maxHeight: '80%' }}
               />
             </View>
           )

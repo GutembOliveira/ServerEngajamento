@@ -62,12 +62,12 @@ export default function BeginQuizScreen() {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <TextInput 
+      {/* <TextInput 
       label="Código" 
       placeholder="Digite código aqui"
       inputMode='numeric'
       onChangeText={setQuizCode} value={quizCode}
-      style={{ width: Dimensions.get('window').width * 0.5 }}/>
+      style={{ width: Dimensions.get('window').width * 0.5 }}/> */}
   
       {/* <Button onPress={liberarQuestionario} text="Iniciar questionário" /> */}
       <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
