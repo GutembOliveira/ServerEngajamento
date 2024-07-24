@@ -163,27 +163,13 @@ function wsConnection(ws, request) {
     ws.send(JSON.stringify({ message: 'Conexão estabelecida' }));
 }
 
-// Gerencia a atualização de protocolo
-// function handleUpgrade(request, socket, head) {
-//     if (request.url === '/proxQuestao') {
-//         wss.handleUpgrade(request, socket, head, (ws) => {
-//             wss.emit('connection', ws, request);
-//         });
-//     } else {
-//         socket.destroy();
-//     }
-// }
-
-// wss.on('connection', wsConnection);
 
 //Professor aperta para passar para a próxima questão   
 function liberaProximaQuestao(request, response) {
         listaAlunosConectados.length = 0;
         webSocketController.sendToAllClients("true");
         // Envia o valor numérico para todos os clientes conectados
-        //clients.forEach(client => client.response.write(`true\n\n`));
         sendToAllClients("true");
-        //sendEventToAllClients(1);
         response.json("Evento enviado para todos os clientes");
         console.log(clients.length);
         console.log("resposta mandada para todos os alunos");
@@ -194,11 +180,7 @@ function liberaProximaQuestao(request, response) {
 //rota que ficará escutando pela resposta do servidor. Virá do lado do aluno
 
 function getProximaQuestao(request,response){
-    // response.setHeader('Content-Type', 'text/event-stream');
-    // response.setHeader('Cache-Control', 'no-cache');
-    // response.setHeader('Connection', 'keep-alive');
-    // response.setHeader('X-Requested-With','XMLHttpRequest');
-    // response.flushHeaders();
+  
         console.log("aluno pedindo prox questão")
         const newClient = {
             id: Date.now(),
@@ -206,17 +188,12 @@ function getProximaQuestao(request,response){
         };
         clients.push(newClient);
         console.log("aluno adicionado:",clients)
-        //response.write(`data: ${7}\n\n`);
         
         const intervalId = setInterval(() => {
             //response.write(`data: ${JSON.stringify({ number: 8 })}\n\n`);
         }, 5000); // Envia dados a cada 5 segundos
     
-            // Enviar o valor numérico atual ao cliente imediatamente após a conexão
-        // request.on('close', () => {
-        // console.log(`${newClient.id} Connection closed`);
-        // clients = clients.filter(client => client.id !== newClient.id);
-        // });
+       
     
     
 }
@@ -239,7 +216,6 @@ function sendEventToAllClients(data) {
 function addAlunoPronto(request,response){
     turmaController.getTurmaQuiz()
     console.log(turma);
-    //alunosProntos.push(request.id);
 
 }
 
@@ -248,7 +224,8 @@ function addAlunoPronto(request,response){
 function adicionarAluno(matricula, nome) {
   let aluno = {
     matricula: matricula,
-    nome: nome
+    nome: nome,
+    pontuacao: 0
   };
   listaAlunosConectados.push(aluno);
 }
@@ -341,8 +318,22 @@ function iniciaQuestionario(request,response){
 
 }
 
- 
+ //salva a pontuação do aluno no questionario
+function salvaPontuacao(request,response){
+    const {matricula,pontuacao} = request.body;
+    let aluno = "";
+    for (let item of listaAlunosConectados) {
 
+        if(item['matricula']==matricula){
+            console.log("aluno encontrado:"+item['Nome']+"  "+item['pontuacao']);
+            item["pontuacao"] = pontuacao
+            break;
+        }
+    }
+    console.log(listaAlunosConectados)
+    response.status(200).end();
+
+}
 module.exports = {
     getQuestionario,
     getProximaQuestao,
@@ -354,7 +345,7 @@ module.exports = {
     liberaProximaQuestao,
     addAlunoPronto,
     carregaTurma,
-    //handleUpgrade,
+    salvaPontuacao,
     wsConnection
     
 };
