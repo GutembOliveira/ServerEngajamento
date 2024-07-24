@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Alert, BackHandler, Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
-import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'; 
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import api from '../services/api';
 
 import globalStyles from "../utils/globalStyles";
@@ -14,7 +14,7 @@ export default function SolveQuestionScreen({ navigation }) {
 
     //const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
-    const [message, setMessage] = useState(null); // Mensagem do websocket
+    const [key, setKey] = useState(0);
 
     //const quiz = useQuizStore((state) => state.quiz);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
@@ -103,14 +103,9 @@ export default function SolveQuestionScreen({ navigation }) {
         if (timeIsOver) {
             const socket = new WebSocket(process.env.EXPO_PUBLIC_WEBSOCKET_URL);
 
-            socket.onopen = function (event) {
-                console.log(event);
-            };
-
             socket.onmessage = function (event) {
-                if (event.data === true) {
-                    console.log('MENSAGEM', event.data)
-                    nextQuestion()
+                if (event.data == 'true') {
+                    answerNextQuestion();
                 }
             };
 
@@ -124,12 +119,28 @@ export default function SolveQuestionScreen({ navigation }) {
         //setTimer(5);
         setTimeIsOver(false);
         setSelectedAnswer(null);
+        setKey(prevKey => prevKey + 1);
     }
 
     const finishQuiz = () => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta);
         navigation.navigate('Final', { quiz: quiz });
     }
+
+    const renderTime = ({ remainingTime }) => {
+        if (remainingTime === 0) {
+            return(
+                <>
+                    <Text variant="titleMedium">Tempo</Text>
+                    <Text variant="titleMedium">esgotado</Text>
+                </>
+            )
+        }
+
+        return (
+            <Text variant="titleMedium">{remainingTime}</Text>
+        );
+    };
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
@@ -140,16 +151,15 @@ export default function SolveQuestionScreen({ navigation }) {
                     (
                         <>
                             <CountdownCircleTimer
+                                key={key}
                                 isPlaying
                                 duration={5}
-                                size={120}
+                                size={140}
                                 strokeWidth={4}
                                 colors={['#fefefe', '#ffbcff', '#8c1d18']}
                                 colorsTime={[5, 3, 0]}
-                                onComplete={() => setTimeIsOver(true)
-                                }
-                                >
-                                    {({ remainingTime }) => <Text variant="titleMedium">{remainingTime}</Text>}
+                                onComplete={() => setTimeIsOver(true)}>
+                                {renderTime}
                             </CountdownCircleTimer>
 
                             <Text variant="headlineMedium" style={{ marginVertical: 20 }}>Quiz Teste</Text>
