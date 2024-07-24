@@ -84,10 +84,10 @@ export default function NewClassScreen() {
 
       <TextInput 
       label="Nome" 
-      placeholder="Nome do questionário" 
+      placeholder="Nome da turma" 
       value={className} 
       onChangeText={setClassName} 
-      style={{ width: Dimensions.get('window').width * 0.5 }}/>
+      style={{ width: Dimensions.get('window').width * 0.6, marginVertical: 20 }}/>
 
       <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de questões</Button>
       

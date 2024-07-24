@@ -1,5 +1,5 @@
 import { Dimensions, FlatList, Pressable, SafeAreaView, StyleSheet } from 'react-native';
-import { useTheme, ActivityIndicator, Card, Text } from 'react-native-paper';
+import { useTheme, ActivityIndicator, Card, FAB, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import globalStyles from '../utils/globalStyles';
@@ -13,7 +13,7 @@ export default function ListClassesScreen() {
 
   const renderItem = ({ item }) => (
     <Card onPress={() => navigation.navigate('Class Detail', { item: item })} style={{ marginVertical: 15, paddingVertical: 10 }}>
-      <Card.Title title="Turma teste"/>
+      <Card.Title title="Turma teste" />
     </Card>
   )
 
@@ -21,17 +21,17 @@ export default function ListClassesScreen() {
     <SafeAreaView style={globalStyles.container}>
       {
         !classes ?
-        <ActivityIndicator animating={true} color={theme.colors.primary} />
+          <ActivityIndicator animating={true} color={theme.colors.primary} />
           :
           (
             classes.length === 0 ?
-            <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Não há turmas cadastradas</Text>
+              <Text variant="titleMedium" theme={{ colors: theme.colors.onBackground }}>Não há turmas cadastradas</Text>
               :
               <>
                 <Text variant="titleMedium" theme={{ colors: theme.colors.primary }} style={{ marginVertical: 20 }}>Minhas turmas</Text>
-                <Card 
-                onPress={() => navigation.navigate('Class Detail', { item: classes })} 
-                style={{ marginBottom: 15, paddingVertical: 15, paddingHorizontal: 40 }}>
+                <Card
+                  onPress={() => navigation.navigate('Class Detail', { item: classes })}
+                  style={{ marginBottom: 15, paddingVertical: 15, paddingHorizontal: 40 }}>
                   <Text>Turma Teste</Text>
                 </Card>
                 {/* <FlatList
@@ -43,6 +43,11 @@ export default function ListClassesScreen() {
               </>
           )
       }
+      <FAB
+        icon="plus"
+        style={{ position: 'absolute', margin: 15, padding: 5, right: 15, bottom: 15 }}
+        onPress={() => navigation.navigate('New Class')}
+      />
     </SafeAreaView>
   )
 }

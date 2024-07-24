@@ -1,15 +1,18 @@
-import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { useEffect, useState, useCallback } from "react";
 import { Alert, BackHandler, Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
+import { useRoute, useFocusEffect } from "@react-navigation/native";
+import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'; 
+import api from '../services/api';
+
 import globalStyles from "../utils/globalStyles";
 import useQuizStore from "../stores/QuizStore";
-import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
 
 export default function SolveQuestionScreen({ navigation }) {
     const route = useRoute();
     const { quiz } = route.params;
 
-    const [timer, setTimer] = useState(5);
+    //const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
     const [message, setMessage] = useState(null); // Mensagem do websocket
 
@@ -23,25 +26,28 @@ export default function SolveQuestionScreen({ navigation }) {
     const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
-    const socket = new WebSocket(process.env.EXPO_PUBLIC_WEBSOCKET_URL);
 
     useEffect(() => {
         resetQuiz();
         fetchQuiz(quiz);
     }, []);
 
-    useEffect(async () => {
-        await api.post('/conectarAluno', true)
-            .then(response => 
-              console.log(response.data))
-            .finally(() => {
-              setLoading(false);
-            });
+    useEffect(() => {
+        async function connect() {
+            await api.post('/conectarAluno', true)
+                .then(response =>
+                    console.log(response.data))
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        connect();
     }, [currentQuestionIndex]);
 
     useFocusEffect(
         useCallback(() => {
-            setTimer(5);
+            //setTimer(5);
             setTimeIsOver(false);
             setSelectedAnswer(null);
         }, [])
@@ -79,25 +85,31 @@ export default function SolveQuestionScreen({ navigation }) {
         }, [])
     )
 
-    useEffect(() => {
-        let interval = null;
+    // useEffect(() => {
+    //     let interval = null;
 
-        if (!timeIsOver && timer > 0) {
-            interval = setInterval(() => {
-                setTimer((prevTimer) => prevTimer - 1);
-            }, 1000);
-        } else if (timer === 0) {
-            setTimeIsOver(true);
-        }
+    //     if (!timeIsOver && timer > 0) {
+    //         interval = setInterval(() => {
+    //             setTimer((prevTimer) => prevTimer - 1);
+    //         }, 1000);
+    //     } else if (timer === 0) {
+    //         setTimeIsOver(true);
+    //     }
 
-        return () => clearInterval(interval);
-    }, [timer, timeIsOver, currentQuestionIndex]);
+    //     return () => clearInterval(interval);
+    // }, [timer, timeIsOver, currentQuestionIndex]);
 
     useEffect(() => {
         if (timeIsOver) {
-            // Event handler for when a message is received from the server
+            const socket = new WebSocket(process.env.EXPO_PUBLIC_WEBSOCKET_URL);
+
+            socket.onopen = function (event) {
+                console.log(event);
+            };
+
             socket.onmessage = function (event) {
-                if(event.data === true){
+                if (event.data === true) {
+                    console.log('MENSAGEM', event.data)
                     nextQuestion()
                 }
             };
@@ -109,7 +121,7 @@ export default function SolveQuestionScreen({ navigation }) {
     const answerNextQuestion = () => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta)
         nextQuestion();
-        setTimer(5);
+        //setTimer(5);
         setTimeIsOver(false);
         setSelectedAnswer(null);
     }
@@ -127,13 +139,20 @@ export default function SolveQuestionScreen({ navigation }) {
                     :
                     (
                         <>
-                            <Text variant="headlineMedium" style={{ marginBottom: 20 }}>Quiz Teste</Text>
-                            {
-                                timeIsOver ?
-                                    <Text variant="titleMedium" style={{ marginBottom: 30 }}>Tempo esgotado</Text>
-                                    :
-                                    <Text variant="titleMedium" style={{ marginBottom: 30 }}>Tempo:  {timer}</Text>
-                            }
+                            <CountdownCircleTimer
+                                isPlaying
+                                duration={5}
+                                size={120}
+                                strokeWidth={4}
+                                colors={['#fefefe', '#ffbcff', '#8c1d18']}
+                                colorsTime={[5, 3, 0]}
+                                onComplete={() => setTimeIsOver(true)
+                                }
+                                >
+                                    {({ remainingTime }) => <Text variant="titleMedium">{remainingTime}</Text>}
+                            </CountdownCircleTimer>
+
+                            <Text variant="headlineMedium" style={{ marginVertical: 20 }}>Quiz Teste</Text>
 
                             <Text variant="titleMedium">Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
                             <Text variant="titleMedium" style={{ marginBottom: 30 }}>{quiz[currentQuestionIndex].alternativas[0].descricao}</Text>
@@ -176,10 +195,10 @@ export default function SolveQuestionScreen({ navigation }) {
 
                             {
                                 timeIsOver && (
-                                        <>
-                                            <Text variant="titleSmall">Aguarde a próxima questão</Text>
-                                            <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
-                                        </>
+                                    <>
+                                        <Text variant="titleSmall">Aguarde a próxima questão</Text>
+                                        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+                                    </>
                                 )
                             }
 

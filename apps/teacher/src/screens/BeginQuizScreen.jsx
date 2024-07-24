@@ -30,6 +30,7 @@ export default function BeginQuizScreen() {
     const getConnectedStudents = async () => {
       await api.get('/alunosConectados')
         .then(response => {
+          console.log(response.data)
           setConnectedStudents(response.data);
         })
         .catch(error => {

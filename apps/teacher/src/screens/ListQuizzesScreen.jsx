@@ -1,5 +1,5 @@
 import { Dimensions, FlatList, SafeAreaView } from 'react-native';
-import { useTheme, ActivityIndicator, Card, Text } from 'react-native-paper';
+import { useTheme, ActivityIndicator, Card, FAB, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import globalStyles from '../utils/globalStyles';
@@ -38,6 +38,11 @@ export default function ListQuizzesScreen() {
               </>
           )
       }
+      <FAB
+        icon="plus"
+        style={{ position: 'absolute', margin: 15, padding: 5, right: 15, bottom: 15 }}
+        onPress={() => navigation.navigate('New Quiz')}
+      />
     </SafeAreaView>
   )
 }

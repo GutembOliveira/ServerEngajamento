@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SafeAreaView, View, Text, Dimensions } from 'react-native';
-import { Button, Icon, TextInput, IconButton, useTheme } from 'react-native-paper';
+import { Button, Icon, TextInput, useTheme } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { pickDocumentAsync } from '../helpers/pickDocument';
 import useQuizzes from '../hooks/useQuizzes';
@@ -88,7 +88,7 @@ export default function NewQuizScreen() {
       placeholder="Nome do questionário" 
       value={quizName}
       onChangeText={setQuizName}
-      style={{ width: Dimensions.get('window').width * 0.5 }}/>
+      style={{ width: Dimensions.get('window').width * 0.6, marginVertical: 20 }}/>
   
       <Button mode="contained" style={{ marginVertical: 10 }} onPress={handleUpload}>Ler planilha de questões</Button>
       

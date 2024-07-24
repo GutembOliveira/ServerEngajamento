@@ -8,21 +8,19 @@ import api from '../services/api';
 export default function ConnectScreen({ navigation }) {
   const [quizCode, setQuizCode] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const theme = useTheme();
 
   async function connect() {
-    setLoading(true);
-      // await api.post('/conectarAluno', JSON.stringify({
-      //   matricula
-      // }))
-      //   .then(response => console.log(response.data));
-      if(quizCode == 123){
-        setLoading(false);
-        navigation.navigate('Waiting')
-      }
+    // await api.post('/conectarAluno', JSON.stringify({
+    //   matricula
+    // }))
+    //   .then(response => console.log(response.data));
+
+    navigation.navigate('Waiting')
+
   }
-  
+
   return (
     <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
       <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Conectar</Text>

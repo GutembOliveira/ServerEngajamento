@@ -5,6 +5,8 @@ import { ThemeProvider } from './src/contexts/themeContext';
 import Toast from 'react-native-toast-message';
 
 import TeacherScreen from './src/screens/TeacherScreen';
+import NewClassScreen from './src/screens/NewClassScreen';
+import NewQuizScreen from './src/screens/NewQuizScreen';
 import ClassDetailScreen from './src/screens/ClassDetailScreen';
 import QuizDetailScreen from './src/screens/QuizDetailScreen';
 
@@ -20,6 +22,8 @@ export default function App() {
           headerShown: false
         }}>
           <Stack.Screen name='Teacher' component={TeacherScreen} />
+          <Stack.Screen name='New Class' component={NewClassScreen} />
+          <Stack.Screen name='New Quiz' component={NewQuizScreen} />
           <Stack.Screen name='Class Detail' component={ClassDetailScreen} />
           <Stack.Screen name='Quiz Detail' component={QuizDetailScreen} />
         </Stack.Navigator>
