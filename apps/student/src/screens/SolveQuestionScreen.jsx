@@ -105,12 +105,12 @@ export default function SolveQuestionScreen({ navigation }) {
 
             socket.onmessage = function (event) {
                 if (event.data == 'true') {
-
                     if(currentQuestionIndex === quiz.length - 1){
                         finishQuiz();
                     }else{
-                        answerNextQuestion();
+                        answerNextQuestion(); 
                     }
+                    socket.close();
                 }
             };
 
