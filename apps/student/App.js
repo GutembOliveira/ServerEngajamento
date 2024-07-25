@@ -8,6 +8,7 @@ import InitialScreen from './src/screens/InitialScreen';
 import ConnectScreen from './src/screens/ConnectScreen';
 import SolveQuestionScreen from './src/screens/SolveQuestionScreen';
 import WaitingQuizScreen from './src/screens/WaitingQuizScreen';
+import FinalResultsScreen from './src/screens/FinalResultsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export default function App() {
               <Stack.Screen name='Connect' component={ConnectScreen} />
               <Stack.Screen name='Solve' component={SolveQuestionScreen} />
               <Stack.Screen name='Waiting' component={WaitingQuizScreen} />
+              <Stack.Screen name='Final' component={FinalResultsScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </RootSiblingParent>

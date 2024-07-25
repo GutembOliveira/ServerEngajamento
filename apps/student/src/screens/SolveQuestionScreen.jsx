@@ -34,7 +34,7 @@ export default function SolveQuestionScreen({ navigation }) {
 
     useEffect(() => {
         async function connect() {
-            await api.post('/conectarAluno', true)
+            await api.post('/conectarAluno', JSON.stringify({ valor: true}))
                 .then(response =>
                     console.log(response.data))
                 .catch((error) => {
@@ -105,7 +105,12 @@ export default function SolveQuestionScreen({ navigation }) {
 
             socket.onmessage = function (event) {
                 if (event.data == 'true') {
-                    answerNextQuestion();
+
+                    if(currentQuestionIndex === quiz.length - 1){
+                        finishQuiz();
+                    }else{
+                        answerNextQuestion();
+                    }
                 }
             };
 
@@ -115,11 +120,11 @@ export default function SolveQuestionScreen({ navigation }) {
 
     const answerNextQuestion = () => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta)
-        nextQuestion();
         //setTimer(5);
-        setTimeIsOver(false);
         setSelectedAnswer(null);
         setKey(prevKey => prevKey + 1);
+        setTimeIsOver(false);
+        nextQuestion();
     }
 
     const finishQuiz = () => {
@@ -131,8 +136,7 @@ export default function SolveQuestionScreen({ navigation }) {
         if (remainingTime === 0) {
             return(
                 <>
-                    <Text variant="titleMedium">Tempo</Text>
-                    <Text variant="titleMedium">esgotado</Text>
+                    <Text variant="titleMedium">Tempo esgotado</Text>
                 </>
             )
         }
@@ -154,7 +158,7 @@ export default function SolveQuestionScreen({ navigation }) {
                                 key={key}
                                 isPlaying
                                 duration={5}
-                                size={140}
+                                size={120}
                                 strokeWidth={4}
                                 colors={['#fefefe', '#ffbcff', '#8c1d18']}
                                 colorsTime={[5, 3, 0]}
@@ -162,10 +166,8 @@ export default function SolveQuestionScreen({ navigation }) {
                                 {renderTime}
                             </CountdownCircleTimer>
 
-                            <Text variant="headlineMedium" style={{ marginVertical: 20 }}>Quiz Teste</Text>
-
-                            <Text variant="titleMedium">Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
-                            <Text variant="titleMedium" style={{ marginBottom: 30 }}>{quiz[currentQuestionIndex].alternativas[0].descricao}</Text>
+                            <Text variant="titleLarge" style={{ marginVertical: 30}}>Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
+                            <Text variant="titleLarge" style={{ marginBottom: 30 }}>{quiz[currentQuestionIndex].alternativas[0].descricao}</Text>
 
                             <View style={styles.buttonContainer}>
                                 <Button
@@ -212,19 +214,6 @@ export default function SolveQuestionScreen({ navigation }) {
                                 )
                             }
 
-                            {/* {
-                                timeIsOver &&
-                                (
-                                    currentQuestionIndex === quiz.length - 1 ?
-                                        <Button mode="contained" onPress={finishQuiz} style={{ marginTop: 30 }}>
-                                            Finalizar
-                                        </Button>
-                                        :
-                                        <Button mode="contained" onPress={answerNextQuestion} style={{ marginTop: 30 }}>
-                                            Próxima Questão
-                                        </Button>
-                                )
-                            } */}
                         </>
                     )
             }
