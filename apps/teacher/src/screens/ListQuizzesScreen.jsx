@@ -48,7 +48,7 @@ export default function ListQuizzesScreen() {
                     <Button onPress={() => navigation.navigate('Quiz Detail', { item: quizzes })}>
                       Detalhes
                     </Button>
-                    <Button onPress={() => navigation.navigate('Lobby')}>
+                    <Button onPress={() => navigation.navigate('Lobby', { quiz: quizzes })}>
                       Iniciar
                     </Button>
                   </Card.Actions>

@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { FlatList, SafeAreaView } from "react-native";
 import { Button, Card, Text, useTheme } from "react-native-paper";
+import { useRoute } from '@react-navigation/native';
+
 import globalStyles from "../utils/globalStyles";
 import api from "../services/api";
 import { useNavigation } from "@react-navigation/native";
 
 export default function LobbyQuizScreen() {
+    const route = useRoute();
+    const { quiz } = route.params;
+
     const [connectedStudents, setConnectedStudents] = useState(null);
     const [intervalId, setIntervalId] = useState(null);
 
@@ -46,7 +51,7 @@ export default function LobbyQuizScreen() {
     const liberarQuestionario = async () => {
         await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
             .then((response) => {
-                () => navigation.navigate('Show')
+                () => navigation.navigate('Show', { quiz: quiz })
             })
             .catch((error) => { console.error(error) });
     }
