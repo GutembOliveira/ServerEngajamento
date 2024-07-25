@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlatList, SafeAreaView } from "react-native";
-import { Button, Card, Text, useTheme } from "react-native-paper";
+import { Appbar, Button, Card, Text, useTheme } from "react-native-paper";
 import { useRoute } from '@react-navigation/native';
 
 import globalStyles from "../utils/globalStyles";
@@ -66,24 +66,30 @@ export default function LobbyQuizScreen() {
     )
 
     return (
-        <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
-            {
-                !connectedStudents || connectedStudents.length === 0 ?
-                    <Text>Ainda não há alunos conectados</Text>
-                    :
-                    <>
-                        <Text variant="titleMedium">Alunos conectados</Text>
-                        <FlatList
-                            data={connectedStudents}
-                            keyExtractor={student => student.matricula}
-                            renderItem={renderItem}
-                        />
-                        <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
-                            Iniciar questionário
-                        </Button>
-                    </>
-            }
+        <>
+            <Appbar.Header>
+                <Appbar.BackAction onPress={() => navigation.goBack()} />
+            </Appbar.Header>
 
-        </SafeAreaView>
+            <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+                {
+                    !connectedStudents || connectedStudents.length === 0 ?
+                        <Text>Ainda não há alunos conectados</Text>
+                        :
+                        <>
+                            <Text variant="titleMedium">Alunos conectados</Text>
+                            <FlatList
+                                data={connectedStudents}
+                                keyExtractor={student => student.matricula}
+                                renderItem={renderItem}
+                            />
+                            <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
+                                Iniciar questionário
+                            </Button>
+                        </>
+                }
+
+            </SafeAreaView>
+        </>
     )
 }

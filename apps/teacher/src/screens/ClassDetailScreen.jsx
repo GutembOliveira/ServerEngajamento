@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, SafeAreaView, View } from 'react-native';
-import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Appbar, Card, Text, useTheme } from 'react-native-paper';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { useRoute } from '@react-navigation/native';
 import useClasses from '../hooks/useClasses';
 import globalStyles from '../utils/globalStyles';
 
@@ -12,6 +12,7 @@ export default function ClassDetailScreen() {
   const { item } = route.params;
   const [selectedClass, setSelectedClass] = useState(null);
   const { fetchClassById } = useClasses();
+  const navigation = useNavigation();
 
   const theme = useTheme()
 
@@ -35,26 +36,31 @@ export default function ClassDetailScreen() {
   )
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
-      {
-        !selectedClass ?
-          <ActivityIndicator animating={true} color={theme.colors.primary} />
-          :
-          (
-            <View style={{ position: 'relative', top: 100}}> 
-              <Text variant="titleLarge" style={{ textAlign: 'center'}}>Detalhes da turma</Text>
-              <Text variant="titleMedium" style={{ textAlign: 'center'}}>Nome: Turma teste </Text>
-              <Text variant="titleMedium" style={{ textAlign: 'center'}}>Alunos: {selectedClass.length}</Text>
+    <>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      </Appbar.Header>
+      <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+        {
+          !selectedClass ?
+            <ActivityIndicator animating={true} color={theme.colors.primary} />
+            :
+            (
+              <View style={{ position: 'relative', top: 100 }}>
+                <Text variant="titleLarge" style={{ textAlign: 'center' }}>Detalhes da turma</Text>
+                <Text variant="titleMedium" style={{ textAlign: 'center' }}>Nome: Turma teste </Text>
+                <Text variant="titleMedium" style={{ textAlign: 'center' }}>Alunos: {selectedClass.length}</Text>
 
-              <FlatList
-                data={selectedClass}
-                keyExtractor={item => item.idAluno}
-                renderItem={renderItem}
-                style={{ width: Dimensions.get('window').width * 0.9, maxHeight: '80%' }}
-              />
-            </View>
-          )
-      }
-    </SafeAreaView>
+                <FlatList
+                  data={selectedClass}
+                  keyExtractor={item => item.idAluno}
+                  renderItem={renderItem}
+                  style={{ width: Dimensions.get('window').width * 0.9, maxHeight: '80%' }}
+                />
+              </View>
+            )
+        }
+      </SafeAreaView>
+    </>
   )
 }

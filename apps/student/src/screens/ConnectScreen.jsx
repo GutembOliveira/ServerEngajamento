@@ -1,6 +1,6 @@
 import { SafeAreaView } from 'react-native';
 import { useState } from 'react';
-import { useTheme, Button, Text, TextInput } from 'react-native-paper';
+import { useTheme, Appbar, Button, Text, TextInput } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
@@ -22,7 +22,14 @@ export default function ConnectScreen({ navigation }) {
   }
 
   return (
+    <>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.Content title="Conectar" />
+      </Appbar.Header>
+    
     <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+      
       <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Conectar</Text>
       <Text variant="labelLarge" style={{ marginBottom: 40 }}>Digite o código informado pelo professor</Text>
 
@@ -51,5 +58,6 @@ export default function ConnectScreen({ navigation }) {
         Conectar
       </Button>
     </SafeAreaView>
+    </>
   )
 }

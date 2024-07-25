@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, SafeAreaView, View } from 'react-native';
-import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Appbar, Card, Text, useTheme } from 'react-native-paper';
 
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import globalStyles from '../utils/globalStyles';
 import useQuizzes from '../hooks/useQuizzes';
 import Podium from '../components/Podium'; // CHANGED
@@ -16,6 +16,7 @@ export default function QuizDetailScreen() {
   const [loading, setLoading] = useState(true); // CHANGED
 
   const theme = useTheme();
+  const navigation = useNavigation()
 
   useEffect(() => {
     const fetchQuizDetails = async () => {
@@ -44,29 +45,34 @@ export default function QuizDetailScreen() {
   )
 
   return (
-    <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
-      {
-        loading ? (
-          <ActivityIndicator animating={true} color={theme.colors.primary} />
-        ) : (
-          <View style={{ position: 'relative', top: 100}}> 
-            <Text variant="titleLarge" style={{ textAlign: 'center'}}>Detalhes do questionário</Text>
-            <Text variant="titleMedium" style={{ textAlign: 'center'}}>Nome: Quiz teste</Text>
-            <Text variant="titleMedium" style={{ textAlign: 'center'}}>Questões: {item?.length}</Text>
-            
-            {/* Adicionando o Podium */}
-            {/* <Podium students={students} />  */}
-            {/* CHANGED */}
+    <>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      </Appbar.Header>
+      <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+        {
+          loading ? (
+            <ActivityIndicator animating={true} color={theme.colors.primary} />
+          ) : (
+            <View style={{ position: 'relative', top: 100 }}>
+              <Text variant="titleLarge" style={{ textAlign: 'center' }}>Detalhes do questionário</Text>
+              <Text variant="titleMedium" style={{ textAlign: 'center' }}>Nome: Quiz teste</Text>
+              <Text variant="titleMedium" style={{ textAlign: 'center' }}>Questões: {item?.length}</Text>
 
-            <FlatList
-              data={item}
-              keyExtractor={item => item.idQuestao}
-              renderItem={renderItem}
-              style={{ width: Dimensions.get('window').width * 0.9 }}
-            />
-          </View>
-        )
-      }
-    </SafeAreaView>
+              {/* Adicionando o Podium */}
+              {/* <Podium students={students} />  */}
+              {/* CHANGED */}
+
+              <FlatList
+                data={item}
+                keyExtractor={item => item.idQuestao}
+                renderItem={renderItem}
+                style={{ width: Dimensions.get('window').width * 0.9 }}
+              />
+            </View>
+          )
+        }
+      </SafeAreaView>
+    </>
   );
 }
