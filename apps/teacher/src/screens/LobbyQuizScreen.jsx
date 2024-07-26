@@ -51,9 +51,10 @@ export default function LobbyQuizScreen() {
     const liberarQuestionario = async () => {
         await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
             .then((response) => {
-                () => navigation.navigate('Show', { quiz: quiz })
+                navigation.navigate('Show', { quiz: quiz })
             })
             .catch((error) => { console.error(error) });
+        
     }
 
     const renderItem = ({ student }) => (
@@ -83,11 +84,11 @@ export default function LobbyQuizScreen() {
                                 keyExtractor={student => student.matricula}
                                 renderItem={renderItem}
                             />
+                        </>
+                }
                             <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
                                 Iniciar questionário
                             </Button>
-                        </>
-                }
 
             </SafeAreaView>
         </>
