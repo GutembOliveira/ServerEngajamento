@@ -163,6 +163,12 @@ function wsConnection(ws, request) {
     ws.send(JSON.stringify({ message: 'Conexão estabelecida' }));
 }
 
+function retornaPodio(request, response) {
+    
+    let podio = listaAlunosConectados.sort((a, b) => b["pontuacao"] - a["pontuacao"]);
+    console.log(podio);
+    return response.json(podio);
+}
 
 //Professor aperta para passar para a próxima questão   
 function liberaProximaQuestao(request, response) {
@@ -346,6 +352,7 @@ module.exports = {
     addAlunoPronto,
     carregaTurma,
     salvaPontuacao,
-    wsConnection
+    wsConnection,
+    retornaPodio
     
 };

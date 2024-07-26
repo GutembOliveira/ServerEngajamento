@@ -23,6 +23,7 @@ routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuest
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 routes.get('/carregaTurma',questionarioController.carregaTurma);
+routes.get('/retornaPodio',questionarioController.retornaPodio);
 //routes.ws('/ws', webSocketController.handleConnection);
 
 module.exports = routes;
