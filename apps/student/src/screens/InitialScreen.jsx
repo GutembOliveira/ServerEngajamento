@@ -5,9 +5,14 @@ import { useTheme, Button, Text, TextInput } from 'react-native-paper';
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
+import useStudentStore from "../stores/StudentStore";
+
 export default function InitialScreen({ navigation }) {
-  const [matricula, setMatricula] = useState('');
+  const [numMatricula, setNumMatricula] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const matricula = useStudentStore((state) => state.matricula);
+  const setMatricula = useStudentStore((state) => state.setMatricula);
 
   const theme = useTheme();
 
@@ -15,11 +20,12 @@ export default function InitialScreen({ navigation }) {
     setLoading(true);
 
     await api.post('/conectarAluno', JSON.stringify({
-      matricula
+      numMatricula
     }))
-      .then(response => 
-        console.log(response.data))
-      .finally(() => {
+      .then(response => {
+        setMatricula(numMatricula);
+      }
+      ).finally(() => {
         setLoading(false);
       });
 
@@ -35,7 +41,7 @@ export default function InitialScreen({ navigation }) {
         label="Matrícula"
         value={matricula}
         inputMode='numeric'
-        onChangeText={setMatricula}
+        onChangeText={setNumMatricula}
         mode="outlined"
         placeholder='Digite seu número de matrícula'
         activeOutlineColor={theme.colors.onBackground}

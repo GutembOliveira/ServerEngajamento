@@ -1,6 +1,7 @@
 // components/Podium.js
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { Text } from 'react-native-paper';
 import globalStyles from '../utils/globalStyles';
 
 const Podium = ({ students }) => {
@@ -17,8 +18,9 @@ const Podium = ({ students }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[globalStyles.heading, styles.title]}>Pódio</Text>
+      <Text variant='titleMedium'>Pódio</Text>
       <FlatList
+        style={{ flexGrow: 0}}
         data={sortedStudents}
         renderItem={renderPodiumItem}
         keyExtractor={(item) => item.id.toString()}

@@ -1,13 +1,16 @@
 import { SafeAreaView } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme, Appbar, Button, Text, TextInput } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
+import useStudentStore from '../stores/StudentStore';
 
 export default function ConnectScreen({ navigation }) {
   const [quizCode, setQuizCode] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const matricula = useStudentStore((state) => state.matricula);
 
   const theme = useTheme();
 
@@ -29,7 +32,6 @@ export default function ConnectScreen({ navigation }) {
       </Appbar.Header>
     
     <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
-      
       <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Conectar</Text>
       <Text variant="labelLarge" style={{ marginBottom: 40 }}>Digite o código informado pelo professor</Text>
 

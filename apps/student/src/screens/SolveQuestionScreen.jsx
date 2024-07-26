@@ -85,20 +85,6 @@ export default function SolveQuestionScreen({ navigation }) {
         }, [])
     )
 
-    // useEffect(() => {
-    //     let interval = null;
-
-    //     if (!timeIsOver && timer > 0) {
-    //         interval = setInterval(() => {
-    //             setTimer((prevTimer) => prevTimer - 1);
-    //         }, 1000);
-    //     } else if (timer === 0) {
-    //         setTimeIsOver(true);
-    //     }
-
-    //     return () => clearInterval(interval);
-    // }, [timer, timeIsOver, currentQuestionIndex]);
-
     useEffect(() => {
         if (timeIsOver) {
             const socket = new WebSocket(process.env.EXPO_PUBLIC_WEBSOCKET_URL);
@@ -119,7 +105,7 @@ export default function SolveQuestionScreen({ navigation }) {
     }, [timeIsOver])
 
     const answerNextQuestion = () => {
-        computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta)
+        computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[1].resposta)
         //setTimer(5);
         setSelectedAnswer(null);
         setKey(prevKey => prevKey + 1);
@@ -128,7 +114,7 @@ export default function SolveQuestionScreen({ navigation }) {
     }
 
     const finishQuiz = () => {
-        computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[0].resposta);
+        computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[1].resposta);
         navigation.navigate('Final', { quiz: quiz });
     }
 
@@ -142,7 +128,7 @@ export default function SolveQuestionScreen({ navigation }) {
         }
 
         return (
-            <Text variant="titleMedium">{remainingTime}</Text>
+            <Text variant="titleLarge">{remainingTime}</Text>
         );
     };
 
@@ -157,17 +143,18 @@ export default function SolveQuestionScreen({ navigation }) {
                             <CountdownCircleTimer
                                 key={key}
                                 isPlaying
-                                duration={5}
+                                duration={10}
                                 size={120}
-                                strokeWidth={4}
-                                colors={['#fefefe', '#ffbcff', '#8c1d18']}
-                                colorsTime={[5, 3, 0]}
+                                strokeWidth={6}
+                                //'#fefefe', '#ffbcff', '#8c1d18'
+                                colors={['#ededed', '#663399', '#8c1d18']}
+                                colorsTime={[10, 9, 0]}
                                 onComplete={() => setTimeIsOver(true)}>
                                 {renderTime}
                             </CountdownCircleTimer>
 
                             <Text variant="titleLarge" style={{ marginVertical: 30}}>Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
-                            <Text variant="titleLarge" style={{ marginBottom: 30 }}>{quiz[currentQuestionIndex].alternativas[0].descricao}</Text>
+                            <Text variant="titleLarge" style={{ marginBottom: 30, width: '90%', textAlign: 'center' }}>{quiz[currentQuestionIndex].alternativas[1].descricao}</Text>
 
                             <View style={styles.buttonContainer}>
                                 <Button
@@ -207,11 +194,18 @@ export default function SolveQuestionScreen({ navigation }) {
 
                             {
                                 timeIsOver && (
-                                    <>
-                                        <Text variant="titleSmall">Aguarde a próxima questão</Text>
-                                        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
-                                    </>
+                                    currentQuestionIndex === quiz.length - 1 ?
+                                        <>
+                                            <Text variant="titleSmall" style={{ marginVertical: 20 }}>Aguarde a finalização do questionário</Text>
+                                            <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+                                        </>
+                                    :
+                                        <>
+                                            <Text variant="titleSmall" style={{ marginVertical: 20 }}>Aguarde a próxima questão</Text>
+                                            <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+                                        </>
                                 )
+                                
                             }
 
                         </>
