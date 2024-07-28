@@ -5,25 +5,30 @@ import { useTheme, Button, Text, TextInput } from 'react-native-paper';
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
-import useStudentStore from "../stores/StudentStore";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function InitialScreen({ navigation }) {
   const [numMatricula, setNumMatricula] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const matricula = useStudentStore((state) => state.matricula);
-  const setMatricula = useStudentStore((state) => state.setMatricula);
-
   const theme = useTheme();
+
+  const storeMatricula = async (value) => {
+    try {
+      await AsyncStorage.setItem('matricula', value);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   async function connect() {
     setLoading(true);
 
     await api.post('/conectarAluno', JSON.stringify({
-      numMatricula
+      matricula: Number(numMatricula)
     }))
       .then(response => {
-        setMatricula(numMatricula);
+        storeMatricula(numMatricula);
       }
       ).finally(() => {
         setLoading(false);
@@ -39,7 +44,7 @@ export default function InitialScreen({ navigation }) {
 
       <TextInput
         label="Matrícula"
-        value={matricula}
+        value={numMatricula}
         inputMode='numeric'
         onChangeText={setNumMatricula}
         mode="outlined"

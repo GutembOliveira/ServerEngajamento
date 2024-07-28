@@ -5,11 +5,31 @@ import { useTheme, ActivityIndicator, Button, Text, Appbar } from 'react-native-
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function WaitingQuizScreen({ navigation }) {
     const [isSuccess, setIsSuccess] = useState(false);
     const [quizToSolve, setQuizToSolve] = useState(null);
-
+    
+    //const matricula = useStudentStore((state) => state.matricula);
+    
     const theme = useTheme();
+    
+    const [matricula, setMatricula] = useState(null);
+
+    useEffect(() => {
+        const getMatricula = async () => {
+            try {
+              const value = await AsyncStorage.getItem('matricula');
+              setMatricula(value);
+            } catch (e) {
+              console.error(e)
+            }
+          };
+
+          getMatricula();
+    }, [])
+
 
     useEffect(() => {
         const askForQuiz = async () => {
