@@ -11,8 +11,9 @@ export default function LobbyQuizScreen() {
     const route = useRoute();
     const { quiz } = route.params;
 
-    const [connectedStudents, setConnectedStudents] = useState(null);
+    const [connectedStudents, setConnectedStudents] = useState([]);
     const [intervalId, setIntervalId] = useState(null);
+    const [classLoaded, setClassLoaded] = useState(false);
 
     const theme = useTheme();
     const navigation = useNavigation();
@@ -21,7 +22,7 @@ export default function LobbyQuizScreen() {
         const loadClass = async () => {
             await api.get('/carregaTurma')
                 .then(response => {
-
+                    setClassLoaded(true)
                 })
                 .catch(error => {
                     console.error(error)
@@ -32,9 +33,12 @@ export default function LobbyQuizScreen() {
     }, [])
 
     useEffect(() => {
+        if (!classLoaded) return;
+
         const getConnectedStudents = async () => {
             await api.get('/alunosConectados')
                 .then(response => {
+                    console.log(response.data);
                     setConnectedStudents(response.data);
                 })
                 .catch(error => {
@@ -46,22 +50,21 @@ export default function LobbyQuizScreen() {
         setIntervalId(id);
 
         return () => clearInterval(id);
-    }, []);
+    }, [classLoaded]);
 
     const liberarQuestionario = async () => {
         await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
             .then((response) => {
                 navigation.navigate('Show', { quiz: quiz })
             })
-            .catch((error) => { console.error(error) });
-        
+            .catch((error) => { console.error(error) });  
     }
 
-    const renderItem = ({ student }) => (
-        <Card type="outlined">
+    const renderItem = ({ item }) => (
+        <Card type="outlined" style={{ marginVertical: 10 }}>
             <Card.Content>
-                <Text variant="titleSmall">{student.idAluno}</Text>
-                <Text variant="titleSmall">{student.Nome}</Text>
+                <Text variant="titleSmall">{item.matricula}</Text>
+                <Text variant="titleSmall">{item.nome}</Text>
             </Card.Content>
         </Card>
     )
@@ -74,7 +77,7 @@ export default function LobbyQuizScreen() {
 
             <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
                 {
-                    !connectedStudents || connectedStudents.length === 0 ?
+                    connectedStudents.length === 0 ?
                         <Text>Ainda não há alunos conectados</Text>
                         :
                         <>
@@ -83,6 +86,7 @@ export default function LobbyQuizScreen() {
                                 data={connectedStudents}
                                 keyExtractor={student => student.matricula}
                                 renderItem={renderItem}
+                                style={{ flexGrow: 0 }}
                             />
                         </>
                 }

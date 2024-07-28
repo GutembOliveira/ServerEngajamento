@@ -9,18 +9,10 @@ export default function ConnectScreen({ navigation }) {
   const [quizCode, setQuizCode] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const matricula = useStudentStore((state) => state.matricula);
-
   const theme = useTheme();
 
   async function connect() {
-    // await api.post('/conectarAluno', JSON.stringify({
-    //   matricula
-    // }))
-    //   .then(response => console.log(response.data));
-
     navigation.navigate('Waiting')
-
   }
 
   return (

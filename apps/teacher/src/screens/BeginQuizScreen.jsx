@@ -9,6 +9,7 @@ export default function BeginQuizScreen() {
   const [quizCode, setQuizCode] = useState('');
   const [intervalId, setIntervalId] = useState(null);
   const [connectedStudents, setConnectedStudents] = useState(null);
+  const [classLoaded, setClassLoaded] = useState(false);
 
   const theme = useTheme()
 
@@ -16,7 +17,7 @@ export default function BeginQuizScreen() {
     const loadClass = async () => {
       await api.get('/carregaTurma')
         .then(response => {
-          console.log(response.data);
+          setClassLoaded(true);
         })
         .catch(error => {
           console.error(error)
@@ -27,6 +28,8 @@ export default function BeginQuizScreen() {
   }, [])
 
   useEffect(() => {
+    if (!classLoaded) return;
+
     const getConnectedStudents = async () => {
       await api.get('/alunosConectados')
         .then(response => {
@@ -42,7 +45,7 @@ export default function BeginQuizScreen() {
     setIntervalId(id);
 
     return () => clearInterval(id);
-  }, []);
+  }, [classLoaded]);
 
   const liberarQuestionario = async () => {
     await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
