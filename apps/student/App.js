@@ -1,8 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootSiblingParent } from 'react-native-root-siblings';
 import { ThemeProvider } from './src/contexts/themeContext';
 import { StatusBar } from 'expo-status-bar';
+import Toast from 'react-native-toast-message';
 
 import InitialScreen from './src/screens/InitialScreen';
 import ConnectScreen from './src/screens/ConnectScreen';
@@ -15,15 +15,12 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <ThemeProvider>
-        <RootSiblingParent>
           <StatusBar translucent />
 
           <NavigationContainer>
             <Stack.Navigator initialRouteName='Initial' screenOptions={{
               headerShown: false
             }}>
-              {/* <Stack.Screen name='Student' component={StudentScreen} /> */}
-
               <Stack.Screen name='Initial' component={InitialScreen} />
               <Stack.Screen name='Connect' component={ConnectScreen} />
               <Stack.Screen name='Solve' component={SolveQuestionScreen} />
@@ -31,7 +28,8 @@ export default function App() {
               <Stack.Screen name='Final' component={FinalResultsScreen} />
             </Stack.Navigator>
           </NavigationContainer>
-        </RootSiblingParent>
+        
+        <Toast/>
     </ThemeProvider>
   );
 }

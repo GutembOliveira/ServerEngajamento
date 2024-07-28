@@ -1,11 +1,12 @@
 import { SafeAreaView } from 'react-native';
 import { useState } from 'react';
 import { useTheme, Button, Text, TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function InitialScreen({ navigation }) {
   const [numMatricula, setNumMatricula] = useState(null);
@@ -22,6 +23,15 @@ export default function InitialScreen({ navigation }) {
   };
 
   async function connect() {
+    if(!numMatricula){
+      Toast.show({
+        type: 'error',
+        text1: 'Informe um número de matrícula'
+      })
+
+      return;
+    }
+
     setLoading(true);
 
     await api.post('/conectarAluno', JSON.stringify({

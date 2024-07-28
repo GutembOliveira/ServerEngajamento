@@ -4,7 +4,6 @@ import { useTheme, Appbar, Button, Text, TextInput } from 'react-native-paper';
 
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
-import useStudentStore from '../stores/StudentStore';
 
 export default function ConnectScreen({ navigation }) {
   const [quizCode, setQuizCode] = useState('');
