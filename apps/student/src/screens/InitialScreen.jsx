@@ -7,7 +7,6 @@ import Toast from 'react-native-toast-message';
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
-
 export default function InitialScreen({ navigation }) {
   const [numMatricula, setNumMatricula] = useState(null);
   const [loading, setLoading] = useState(false);

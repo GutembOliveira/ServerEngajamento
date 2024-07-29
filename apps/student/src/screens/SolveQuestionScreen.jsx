@@ -143,7 +143,7 @@ export default function SolveQuestionScreen({ navigation }) {
                             <CountdownCircleTimer
                                 key={key}
                                 isPlaying
-                                duration={10}
+                                duration={3}
                                 size={120}
                                 strokeWidth={6}
                                 //'#fefefe', '#ffbcff', '#8c1d18'

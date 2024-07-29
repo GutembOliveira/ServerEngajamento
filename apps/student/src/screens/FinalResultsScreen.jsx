@@ -3,43 +3,70 @@ import { useTheme, Button, Text } from 'react-native-paper';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import globalStyles from "../utils/globalStyles";
 import useQuizStore from '../stores/QuizStore';
-import useStudentStore from '../stores/QuizStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Podium from '../components/Podium';
 import api from '../services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FinalResultsScreen() {
+    const [matricula, setMatricula] = useState(null);
+    const [hasMatricula, setHasMatricula] = useState(false);
+    const [resultsSent, setResultsSent] = useState(false);
+    const [students, setStudents] = useState([]);
+
     const route = useRoute();
     const { quiz } = route.params;
     const navigation = useNavigation();
     const correctAnswers = useQuizStore((state) => state.correctAnswers);
-    const matricula = useStudentStore((state) => state.matricula);
-
     const theme = useTheme();
 
-    const students = [
-        { id: 1, name: 'Aluno 1', acertos: 5 },
-        { id: 2, name: 'Aluno 2', acertos: 7 },
-        { id: 3, name: 'Aluno 3', acertos: 9 },
-        { id: 4, name: 'Aluno 4', acertos: 6 },
-    ]
 
     useEffect(() => {
+        const getMatricula = async () => {
+            try {
+              const value = await AsyncStorage.getItem('matricula');
+              setMatricula(value);
+              setHasMatricula(true);
+            } catch (e) {
+              console.error(e)
+            }
+          };
+
+          getMatricula();
+    }, [])
+
+    useEffect(() => {
+        if (!hasMatricula) return;
+
         async function sendResults(){
-            await api.post('/salvaPontuacao', JSON.stringify({
-                matricula,
-                pontuacao: correctAnswers
-            }))
-            .then(response => {
-
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-
+                await api.post('/salvaPontuacao', JSON.stringify({
+                    matricula: Number(matricula),
+                    pontuacao: correctAnswers
+                }))
+                .then(response => {
+                    setResultsSent(true);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
         sendResults()
-    }, []);
+    }, [hasMatricula]);
+
+    useEffect(() => {
+        if (!resultsSent) return;
+
+        async function sendResults(){
+                await api.get('/retornaPodio')
+                .then(response => {
+                    setStudents(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            }
+        sendResults()
+    }, [hasMatricula]);
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
