@@ -1,6 +1,6 @@
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useTheme, ActivityIndicator, Button, Text, Appbar } from 'react-native-paper';
+import { useTheme, ActivityIndicator, Text, Appbar } from 'react-native-paper';
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
@@ -28,8 +28,13 @@ export default function WaitingQuizScreen({ navigation }) {
             const id = setInterval(askForQuiz, 2000);
             return () => clearInterval(id);
         }
-
     }, [isSuccess]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            navigation.navigate('Solve', { quiz: quizToSolve });
+        }
+    }, [isSuccess, quizToSolve, navigation]);
 
     return (
         <>
@@ -40,30 +45,9 @@ export default function WaitingQuizScreen({ navigation }) {
 
             <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
                 {
-                    isSuccess ?
-                    <>
-                        <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Quiz Teste</Text>
-                        <Text variant="titleMedium" style={{ marginBottom: 10 }}>{quizToSolve.length} questões</Text>
-
-                        <View style={styles.buttonArea}>
-                            <Button
-                                mode="outlined"
-                                onPress={() => { navigation.goBack() }}
-                                style={{ width: '35%', marginRight: 30 }}
-                            >
-                                Voltar
-                            </Button>
-
-                            <Button
-                                mode="contained"
-                                onPress={() => { navigation.navigate('Solve', { quiz: quizToSolve }) }}
-                                style={{ width: '35%' }}
-                            >
-                                Responder
-                            </Button>
-                        </View>
-                    </>
-                    :
+                    isSuccess ? (
+                        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
+                    ) : (
                         <>
                             <Text variant="titleLarge" style={{ marginBottom: 10 }}>Aguardando autorização</Text>
                             <Text variant="titleMedium">Aguarde o professor iniciar o questionário</Text>
@@ -71,18 +55,9 @@ export default function WaitingQuizScreen({ navigation }) {
 
                             <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
                         </>
+                    )
                 }
             </SafeAreaView>
         </>
-    )
+    );
 }
-
-
-const styles = StyleSheet.create({
-    buttonArea: {
-        //flex: 1,
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        marginTop: 25
-    },
-})

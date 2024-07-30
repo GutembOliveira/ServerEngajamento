@@ -56,7 +56,7 @@ export default function FinalResultsScreen() {
     useEffect(() => {
         if (!resultsSent) return;
 
-        async function sendResults(){
+        async function getPodium(){
                 await api.get('/retornaPodio')
                 .then(response => {
                     setStudents(response.data);
@@ -65,8 +65,8 @@ export default function FinalResultsScreen() {
                     console.log(error);
                 })
             }
-        sendResults()
-    }, [hasMatricula]);
+        getPodium()
+    }, [resultsSent]);
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
