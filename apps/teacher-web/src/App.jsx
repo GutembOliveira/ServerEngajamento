@@ -1,9 +1,9 @@
-function App() {
+export default function App() {
   return (
     <>
-      <h1>Engajamento web - professor</h1>
+      <header>
+      </header>
     </>
+
   )
 }
-
-export default App
