@@ -8,7 +8,7 @@ import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
 export default function InitialScreen({ navigation }) {
-  const [numMatricula, setNumMatricula] = useState(null);
+  const [numMatricula, setNumMatricula] = useState('');
   const [loading, setLoading] = useState(false);
 
   const theme = useTheme();
@@ -22,7 +22,7 @@ export default function InitialScreen({ navigation }) {
   };
 
   async function connect() {
-    if(!numMatricula){
+    if(numMatricula === ''){
       Toast.show({
         type: 'error',
         text1: 'Informe um número de matrícula'

@@ -19,16 +19,22 @@ export default function LobbyQuizScreen() {
     const navigation = useNavigation();
 
     useEffect(() => {
+        const reset = async () => {
+            await api.post('/conectaQuestionario', JSON.stringify({ valor: false }))
+            .then((response) => { console.log(response.data) })
+            .catch((error) => { console.error(error) })
+        }
         const loadClass = async () => {
             await api.get('/carregaTurma')
-                .then(response => {
-                    setClassLoaded(true)
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+            .then(response => {
+                setClassLoaded(true)
+            })
+            .catch(error => {
+                console.error(error)
+            })
         }
-
+        
+        reset();
         loadClass();
     }, [])
 

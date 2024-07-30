@@ -1,36 +1,15 @@
-import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useTheme, ActivityIndicator, Button, Text, Appbar } from 'react-native-paper';
-
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WaitingQuizScreen({ navigation }) {
     const [isSuccess, setIsSuccess] = useState(false);
     const [quizToSolve, setQuizToSolve] = useState(null);
-    
-    //const matricula = useStudentStore((state) => state.matricula);
-    
+
     const theme = useTheme();
     
-    const [matricula, setMatricula] = useState(null);
-
-    useEffect(() => {
-        const getMatricula = async () => {
-            try {
-              const value = await AsyncStorage.getItem('matricula');
-              setMatricula(value);
-            } catch (e) {
-              console.error(e)
-            }
-          };
-
-          getMatricula();
-    }, [])
-
-
     useEffect(() => {
         const askForQuiz = async () => {
             try {
@@ -62,29 +41,29 @@ export default function WaitingQuizScreen({ navigation }) {
             <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
                 {
                     isSuccess ?
-                        <>
-                            <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Quiz Teste</Text>
-                            <Text variant="titleMedium" style={{ marginBottom: 10 }}>{quizToSolve.length} questões</Text>
+                    <>
+                        <Text variant="headlineSmall" style={{ marginBottom: 20 }}>Quiz Teste</Text>
+                        <Text variant="titleMedium" style={{ marginBottom: 10 }}>{quizToSolve.length} questões</Text>
 
-                            <View style={styles.buttonArea}>
-                                <Button
-                                    mode="outlined"
-                                    onPress={() => { navigation.goBack() }}
-                                    style={{ width: '35%', marginRight: 30 }}
-                                >
-                                    Voltar
-                                </Button>
+                        <View style={styles.buttonArea}>
+                            <Button
+                                mode="outlined"
+                                onPress={() => { navigation.goBack() }}
+                                style={{ width: '35%', marginRight: 30 }}
+                            >
+                                Voltar
+                            </Button>
 
-                                <Button
-                                    mode="contained"
-                                    onPress={() => { navigation.navigate('Solve', { quiz: quizToSolve }) }}
-                                    style={{ width: '35%' }}
-                                >
-                                    Responder
-                                </Button>
-                            </View>
-                        </>
-                        :
+                            <Button
+                                mode="contained"
+                                onPress={() => { navigation.navigate('Solve', { quiz: quizToSolve }) }}
+                                style={{ width: '35%' }}
+                            >
+                                Responder
+                            </Button>
+                        </View>
+                    </>
+                    :
                         <>
                             <Text variant="titleLarge" style={{ marginBottom: 10 }}>Aguardando autorização</Text>
                             <Text variant="titleMedium">Aguarde o professor iniciar o questionário</Text>
