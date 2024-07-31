@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { useTheme, Button, Text } from 'react-native-paper';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import globalStyles from "../utils/globalStyles";
@@ -24,8 +24,10 @@ export default function FinalResultsScreen() {
         const getMatricula = async () => {
             try {
                 const value = await AsyncStorage.getItem('matricula');
-                setMatricula(value);
-                setHasMatricula(true);
+                if (value !== null) {
+                    setMatricula(value);
+                    setHasMatricula(true);
+                }
             } catch (e) {
                 console.error(e)
             }
@@ -34,61 +36,27 @@ export default function FinalResultsScreen() {
         getMatricula();
     }, [])
 
-    // useEffect(() => {
-    //     if (!hasMatricula) return;
-
-    //     async function sendResults() {
-    //         await api.post('/salvaPontuacao', JSON.stringify({
-    //             matricula: Number(matricula),
-    //             pontuacao: correctAnswers
-    //         }))
-    //             .then(response => {
-    //                 setResultsSent(true);
-    //             })
-    //             .catch(error => {
-    //                 console.log(error);
-    //             })
-    //     }
-    //     sendResults()
-    // }, [hasMatricula]);
-
-    // useEffect(() => {
-    //     if (!resultsSent) return;
-
-    //     async function getPodium() {
-    //         await api.get('/retornaPodio')
-    //             .then(response => {
-    //                 setStudents(response.data);
-    //             })
-    //             .catch(error => {
-    //                 console.log(error);
-    //             })
-    //     }
-    //     getPodium()
-    // }, [resultsSent]);
-
     useEffect(() => {
         if (!hasMatricula) return;
 
         async function finishQuiz(){
-            await api.post('/conectarAluno', JSON.stringify({
-                matricula: Number(matricula)
-            }))
-                .then(response1 => {
-                    return api.post('/salvaPontuacao', JSON.stringify({
-                        matricula: Number(matricula),
-                        pontuacao: correctAnswers
-                    }))
-                })
-                .then(response2 => {
-                    return api.get('/retornaPodio');
-                })
-                .then(response3 => {
-                    setStudents(response3.data);
-                })
-                .catch(error => {
-                    console.error('Error making API call:', error);
-                });
+            try {
+                const response1 = await api.post('/conectarAluno', JSON.stringify({
+                    matricula: Number(matricula)
+                }));
+                
+                const response2 = await api.post('/salvaPontuacao', JSON.stringify({
+                    matricula: Number(matricula),
+                    pontuacao: correctAnswers
+                }));
+                
+                setResultsSent(true);
+                
+                const response3 = await api.get('/retornaPodio');
+                setStudents(response3.data);
+            } catch (error) {
+                console.error('Error making API call:', error);
+            }
         }
 
         finishQuiz();
@@ -107,8 +75,6 @@ export default function FinalResultsScreen() {
                 onPress={() => navigation.popToTop()}>
                 Encerrar
             </Button>
-
-
         </SafeAreaView>
     )
 }

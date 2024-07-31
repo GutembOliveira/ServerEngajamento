@@ -5,26 +5,26 @@ import { Text } from 'react-native-paper';
 import globalStyles from '../utils/globalStyles';
 
 const Podium = ({ students }) => {
-  // Ordena alunos 
-  const sortedStudents = students.sort((a, b) => b.acertos - a.acertos).slice(0, 3);
+  // Ordena alunos por pontuação
+  const sortedStudents = students.sort((a, b) => b.pontuacao - a.pontuacao).slice(0, 3);
 
   const renderPodiumItem = ({ item, index }) => (
     <View style={styles.podiumItem}>
       <Text style={styles.podiumPosition}>{index + 1}º</Text>
-      <Text style={globalStyles.text}>{item.name}</Text>
-      <Text style={globalStyles.text}>Acertos: {item.acertos}</Text>
+      <Text style={globalStyles.text}>{item.nome}</Text>
+      <Text style={globalStyles.text}>Pontuação: {item.pontuacao}</Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
       <Text variant='titleMedium'>Pódio</Text>
-      {/* <FlatList
+      <FlatList
         style={{ flexGrow: 0}}
         data={sortedStudents}
         renderItem={renderPodiumItem}
-        keyExtractor={(item) => item.id.toString()}
-      /> */}
+        keyExtractor={(item) => item.matricula.toString()}
+      />
     </View>
   );
 };
