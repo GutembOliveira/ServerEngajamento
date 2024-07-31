@@ -3,6 +3,7 @@ import { Alert, BackHandler, Dimensions, SafeAreaView, StyleSheet, View } from "
 import { useRoute, useFocusEffect } from "@react-navigation/native";
 import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 
 import globalStyles from "../utils/globalStyles";
@@ -15,6 +16,8 @@ export default function SolveQuestionScreen({ navigation }) {
     //const [timer, setTimer] = useState(5);
     const [timeIsOver, setTimeIsOver] = useState(false);
     const [key, setKey] = useState(0);
+    const [matricula, setMatricula] = useState(null);
+    const [hasMatricula, setHasMatricula] = useState(false);
 
     //const quiz = useQuizStore((state) => state.quiz);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
@@ -33,8 +36,26 @@ export default function SolveQuestionScreen({ navigation }) {
     }, []);
 
     useEffect(() => {
+        const getMatricula = async () => {
+            try {
+              const value = await AsyncStorage.getItem('matricula');
+              setMatricula(value);
+              setHasMatricula(true);
+            } catch (e) {
+              console.error(e)
+            }
+          };
+
+          getMatricula();
+    }, [])
+
+    useEffect(() => {
+        if(!hasMatricula) return;
+
         async function connect() {
-            await api.post('/conectarAluno', JSON.stringify({ valor: true}))
+            await api.post('/conectarAluno', JSON.stringify({
+                matricula: Number(matricula)
+              }))
                 .then(response =>
                     console.log(response.data))
                 .catch((error) => {
@@ -43,11 +64,10 @@ export default function SolveQuestionScreen({ navigation }) {
         }
 
         connect();
-    }, [currentQuestionIndex]);
+    }, [currentQuestionIndex, hasMatricula]);
 
     useFocusEffect(
         useCallback(() => {
-            //setTimer(5);
             setTimeIsOver(false);
             setSelectedAnswer(null);
         }, [])
@@ -101,12 +121,10 @@ export default function SolveQuestionScreen({ navigation }) {
             };
 
         }
-
     }, [timeIsOver])
 
     const answerNextQuestion = () => {
         computeAnswer(lastAnswer, quiz[currentQuestionIndex].alternativas[1].resposta)
-        //setTimer(5);
         setSelectedAnswer(null);
         setKey(prevKey => prevKey + 1);
         setTimeIsOver(false);

@@ -20,53 +20,79 @@ export default function FinalResultsScreen() {
     const correctAnswers = useQuizStore((state) => state.correctAnswers);
     const theme = useTheme();
 
-
     useEffect(() => {
         const getMatricula = async () => {
             try {
-              const value = await AsyncStorage.getItem('matricula');
-              setMatricula(value);
-              setHasMatricula(true);
+                const value = await AsyncStorage.getItem('matricula');
+                setMatricula(value);
+                setHasMatricula(true);
             } catch (e) {
-              console.error(e)
+                console.error(e)
             }
-          };
+        };
 
-          getMatricula();
+        getMatricula();
     }, [])
+
+    // useEffect(() => {
+    //     if (!hasMatricula) return;
+
+    //     async function sendResults() {
+    //         await api.post('/salvaPontuacao', JSON.stringify({
+    //             matricula: Number(matricula),
+    //             pontuacao: correctAnswers
+    //         }))
+    //             .then(response => {
+    //                 setResultsSent(true);
+    //             })
+    //             .catch(error => {
+    //                 console.log(error);
+    //             })
+    //     }
+    //     sendResults()
+    // }, [hasMatricula]);
+
+    // useEffect(() => {
+    //     if (!resultsSent) return;
+
+    //     async function getPodium() {
+    //         await api.get('/retornaPodio')
+    //             .then(response => {
+    //                 setStudents(response.data);
+    //             })
+    //             .catch(error => {
+    //                 console.log(error);
+    //             })
+    //     }
+    //     getPodium()
+    // }, [resultsSent]);
 
     useEffect(() => {
         if (!hasMatricula) return;
 
-        async function sendResults(){
-                await api.post('/salvaPontuacao', JSON.stringify({
-                    matricula: Number(matricula),
-                    pontuacao: correctAnswers
-                }))
-                .then(response => {
-                    setResultsSent(true);
+        async function finishQuiz(){
+            await api.post('/conectarAluno', JSON.stringify({
+                matricula: Number(matricula)
+            }))
+                .then(response1 => {
+                    return api.post('/salvaPontuacao', JSON.stringify({
+                        matricula: Number(matricula),
+                        pontuacao: correctAnswers
+                    }))
+                })
+                .then(response2 => {
+                    return api.get('/retornaPodio');
+                })
+                .then(response3 => {
+                    setStudents(response3.data);
                 })
                 .catch(error => {
-                    console.log(error);
-                })
-            }
-        sendResults()
+                    console.error('Error making API call:', error);
+                });
+        }
+
+        finishQuiz();
     }, [hasMatricula]);
-
-    useEffect(() => {
-        if (!resultsSent) return;
-
-        async function getPodium(){
-                await api.get('/retornaPodio')
-                .then(response => {
-                    setStudents(response.data);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            }
-        getPodium()
-    }, [resultsSent]);
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
@@ -74,7 +100,7 @@ export default function FinalResultsScreen() {
             <Text variant='titleLarge' style={{ marginVertical: 30 }}>Você acertou {correctAnswers} de {quiz.length} questões</Text>
 
             <Podium students={students} />
-           
+
             <Button
                 mode="contained"
                 style={{ padding: 10 }}

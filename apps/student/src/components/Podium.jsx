@@ -19,12 +19,12 @@ const Podium = ({ students }) => {
   return (
     <View style={styles.container}>
       <Text variant='titleMedium'>Pódio</Text>
-      <FlatList
+      {/* <FlatList
         style={{ flexGrow: 0}}
         data={sortedStudents}
         renderItem={renderPodiumItem}
         keyExtractor={(item) => item.id.toString()}
-      />
+      /> */}
     </View>
   );
 };
