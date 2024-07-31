@@ -1,7 +1,8 @@
-import { SafeAreaView } from "react-native";
+import { useCallback } from 'react';
+import { Alert, BackHandler, SafeAreaView } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 import globalStyles from "../utils/globalStyles";
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useState } from "react";
 import api from "../services/api";
 
@@ -13,6 +14,38 @@ export default function ShowQuizScreen() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
     const theme = useTheme();
+
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                Alert.alert(
+                    "Alerta",
+                    "Você quer mesmo sair do questionário?",
+                    [
+                        {
+                            text: "Cancelar",
+                            onPress: () => null,
+                            style: "cancel"
+                        },
+                        {
+                            text: "Sair",
+                            onPress: () => navigation.popToTop()
+                        }
+                    ]
+                );
+                return true;
+            }
+
+            const backHandler = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
+        }, [])
+    )
 
     const liberarProximaQuestao = async () => {
         const result = await api.get('/liberaProximaQuestao');

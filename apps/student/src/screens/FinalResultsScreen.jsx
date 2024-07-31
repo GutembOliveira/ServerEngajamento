@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { useTheme, Button, Text } from 'react-native-paper';
+import { useTheme, ActivityIndicator, Button, Text } from 'react-native-paper';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import globalStyles from "../utils/globalStyles";
 import useQuizStore from '../stores/QuizStore';
@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function FinalResultsScreen() {
     const [matricula, setMatricula] = useState(null);
     const [hasMatricula, setHasMatricula] = useState(false);
-    const [resultsSent, setResultsSent] = useState(false);
+    const [podiumReceived, setPodiumReceived] = useState(false);
     const [students, setStudents] = useState([]);
 
     const route = useRoute();
@@ -50,10 +50,10 @@ export default function FinalResultsScreen() {
                     pontuacao: correctAnswers
                 }));
                 
-                setResultsSent(true);
                 
                 const response3 = await api.get('/retornaPodio');
                 setStudents(response3.data);
+                setPodiumReceived(true);
             } catch (error) {
                 console.error('Error making API call:', error);
             }
@@ -67,7 +67,14 @@ export default function FinalResultsScreen() {
             <Text variant='headlineSmall'>Questionário finalizado</Text>
             <Text variant='titleLarge' style={{ marginVertical: 30 }}>Você acertou {correctAnswers} de {quiz.length} questões</Text>
 
-            <Podium students={students} />
+            {
+                podiumReceived ? (
+                    <Podium students={students} />
+                ) : (
+                    <ActivityIndicator animating={true} size="large" color={theme.colors.primary} style={{ marginVertical: 20 }}/>
+                )
+
+            }
 
             <Button
                 mode="contained"
@@ -78,14 +85,3 @@ export default function FinalResultsScreen() {
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    podiumItem: {
-        alignItems: 'center',
-        marginVertical: 10
-    },
-    podiumPosition: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-});
