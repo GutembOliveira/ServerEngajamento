@@ -1,9 +1,8 @@
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useTheme, Button, Text, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-
 import globalStyles from '../utils/globalStyles';
 import api from '../services/api';
 
@@ -22,11 +21,11 @@ export default function InitialScreen({ navigation }) {
   };
 
   async function connect() {
-    if(numMatricula === ''){
+    if (numMatricula === '') {
       Toast.show({
         type: 'error',
         text1: 'Informe um número de matrícula'
-      })
+      });
 
       return;
     }
@@ -38,12 +37,12 @@ export default function InitialScreen({ navigation }) {
     }))
       .then(response => {
         storeMatricula(numMatricula);
-      }
-      ).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
       });
 
-    navigation.navigate('Connect')
+    navigation.navigate('Connect');
   }
 
   return (
@@ -77,5 +76,7 @@ export default function InitialScreen({ navigation }) {
         Entrar
       </Button>
     </SafeAreaView>
-  )
+  );
 }
+
+const styles = StyleSheet.create({});

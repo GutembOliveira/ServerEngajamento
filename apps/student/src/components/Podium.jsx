@@ -20,7 +20,7 @@ const Podium = ({ students }) => {
     <View style={styles.container}>
       <Text variant='titleMedium'>Pódio</Text>
       <FlatList
-        style={{ flexGrow: 0}}
+        style={{ flexGrow: 0 }}
         data={sortedStudents}
         renderItem={renderPodiumItem}
         keyExtractor={(item) => item.matricula.toString()}

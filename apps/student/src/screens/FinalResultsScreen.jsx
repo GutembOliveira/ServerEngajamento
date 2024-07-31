@@ -29,17 +29,17 @@ export default function FinalResultsScreen() {
                     setHasMatricula(true);
                 }
             } catch (e) {
-                console.error(e)
+                console.error(e);
             }
         };
 
         getMatricula();
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (!hasMatricula) return;
 
-        async function finishQuiz(){
+        async function finishQuiz() {
             try {
                 const response1 = await api.post('/conectarAluno', JSON.stringify({
                     matricula: Number(matricula)
@@ -76,7 +76,7 @@ export default function FinalResultsScreen() {
                 Encerrar
             </Button>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
