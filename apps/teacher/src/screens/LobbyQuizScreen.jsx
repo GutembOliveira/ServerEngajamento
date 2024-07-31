@@ -59,6 +59,10 @@ export default function LobbyQuizScreen() {
     }, [classLoaded]);
 
     const liberarQuestionario = async () => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+        
         await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
             .then((response) => {
                 navigation.navigate('Show', { quiz: quiz })
