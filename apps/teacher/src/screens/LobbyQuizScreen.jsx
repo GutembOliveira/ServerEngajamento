@@ -94,11 +94,11 @@ export default function LobbyQuizScreen() {
                                 renderItem={renderItem}
                                 style={{ flexGrow: 0 }}
                             />
-                        </>
-                }
                             <Button mode="contained" onPress={liberarQuestionario} style={{ marginTop: 20 }}>
                                 Iniciar questionário
                             </Button>
+                        </>
+                }
 
             </SafeAreaView>
         </>
