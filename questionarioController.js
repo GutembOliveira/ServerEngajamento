@@ -5,6 +5,7 @@ const http = require('http');
 const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
 const webSocketController = require('./webSocketController');
+const { response } = require('express');
 //const wss = new WebSocket.Server({ noServer: true });
 
 var questionario;
@@ -233,6 +234,15 @@ function adicionarAluno(matricula, nome) {
     nome: nome,
     pontuacao: 0
   };
+  var alunoConectado = false;
+  listaAlunosConectados.forEach(item => {
+    if(item['matricula']==aluno['matricula']){
+        console.log("aluno já conectado")
+        alunoConectado = true;
+        return;;
+    }
+  });
+  if(!alunoConectado)
   listaAlunosConectados.push(aluno);
 }
 
