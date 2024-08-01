@@ -161,12 +161,12 @@ export default function SolveQuestionScreen({ navigation }) {
                             <CountdownCircleTimer
                                 key={key}
                                 isPlaying
-                                duration={3}
+                                duration={15}
                                 size={120}
                                 strokeWidth={6}
                                 //'#fefefe', '#ffbcff', '#8c1d18'
                                 colors={['#ededed', '#663399', '#8c1d18']}
-                                colorsTime={[10, 9, 0]}
+                                colorsTime={[15, 8, 0]}
                                 onComplete={() => setTimeIsOver(true)}>
                                 {renderTime}
                             </CountdownCircleTimer>

@@ -59,6 +59,7 @@ export default function ShowQuizScreen() {
 
     const liberarProximaQuestao = async () => {
         const result = await api.get('/liberaProximaQuestao');
+        setVisible(false);
         setKey(prevKey => prevKey + 1);
         setTimeIsOver(false);
         setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -88,11 +89,11 @@ export default function ShowQuizScreen() {
             <CountdownCircleTimer
                 key={key}
                 isPlaying
-                duration={3}
+                duration={15}
                 size={120}
                 strokeWidth={6}
                 colors={['#ededed', '#663399', '#8c1d18']}
-                colorsTime={[10, 9, 0]}
+                colorsTime={[15, 8, 0]}
                 onComplete={() => setTimeIsOver(true)}>
                 {renderTime}
             </CountdownCircleTimer>
@@ -104,30 +105,30 @@ export default function ShowQuizScreen() {
 
             {
                 visible ?
-                <Button mode="text" onPress={() => setVisible(!visible)} style={{ marginTop: 20 }} disabled={!timeIsOver}>
-                    <Icon source="eye-off" size={20}/>
-                </Button>
+                    <Button mode="text" onPress={() => setVisible(!visible)} style={{ marginTop: 20 }} disabled={!timeIsOver}>
+                        <Icon source="eye-off" size={20} />
+                    </Button>
 
-                :
+                    :
 
-                <Button mode="text" onPress={() => setVisible(!visible)} style={{ marginTop: 20 }} disabled={!timeIsOver}>
-                    <Icon source="eye" size={20}/>
-                </Button>
+                    <Button mode="text" onPress={() => setVisible(!visible)} style={{ marginTop: 20 }} disabled={!timeIsOver}>
+                        <Icon source="eye" size={20} />
+                    </Button>
 
             }
 
             {
                 visible ?
-            (
+                    (
                         quiz[currentQuestionIndex].alternativas[1].resposta === 'V' ?
                             <Text variant='titleLarge' style={{ marginVertical: 10 }}>Verdadeiro</Text>
                             :
                             <Text variant='titleLarge' style={{ marginVertical: 10 }}>Falso</Text>
-            ) : (
-                <Surface style={styles.surface} elevation={4}></Surface>
-            )
+                    ) : (
+                        <Surface style={styles.surface} elevation={4}></Surface>
+                    )
             }
-            
+
 
             {
                 currentQuestionIndex === quiz.length - 1 ? (
@@ -149,11 +150,11 @@ export default function ShowQuizScreen() {
 
 const styles = StyleSheet.create({
     surface: {
-      padding: 8,
-      marginVertical: 20,
-      height: 50,
-      width: 200,
-      alignItems: 'center',
-      justifyContent: 'center',
+        padding: 8,
+        marginVertical: 20,
+        height: 50,
+        width: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-  });
+});
