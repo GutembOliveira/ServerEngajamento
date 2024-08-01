@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { Alert, BackHandler, SafeAreaView } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Alert, BackHandler, SafeAreaView, StyleSheet } from "react-native";
+import { Button, Icon, Surface, Text, useTheme } from "react-native-paper";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import globalStyles from "../utils/globalStyles";
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -15,6 +15,7 @@ export default function ShowQuizScreen() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [timeIsOver, setTimeIsOver] = useState(false);
     const [key, setKey] = useState(0);
+    const [visible, setVisible] = useState(false);
 
     const theme = useTheme();
 
@@ -99,6 +100,34 @@ export default function ShowQuizScreen() {
 
             <Text variant="titleLarge" style={{ marginVertical: 30 }}>Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
             <Text variant="titleLarge" style={{ marginBottom: 30, width: '90%', textAlign: 'center' }}>{quiz[currentQuestionIndex].alternativas[1].descricao}</Text>
+            <Text variant='titleMedium'>Resposta correta</Text>
+
+            {
+                visible ?
+                <Button mode="text" onPress={() => setVisible(!visible)} style={{ marginTop: 20 }} disabled={!timeIsOver}>
+                    <Icon source="eye-off" size={20}/>
+                </Button>
+
+                :
+
+                <Button mode="text" onPress={() => setVisible(!visible)} style={{ marginTop: 20 }} disabled={!timeIsOver}>
+                    <Icon source="eye" size={20}/>
+                </Button>
+
+            }
+
+            {
+                visible ?
+            (
+                        quiz[currentQuestionIndex].alternativas[1].resposta === 'V' ?
+                            <Text variant='titleLarge' style={{ marginVertical: 10 }}>Verdadeiro</Text>
+                            :
+                            <Text variant='titleLarge' style={{ marginVertical: 10 }}>Falso</Text>
+            ) : (
+                <Surface style={styles.surface} elevation={4}></Surface>
+            )
+            }
+            
 
             {
                 currentQuestionIndex === quiz.length - 1 ? (
@@ -110,8 +139,6 @@ export default function ShowQuizScreen() {
                         <Button mode="contained" onPress={liberarProximaQuestao} style={{ marginTop: 20 }} disabled={!timeIsOver}>
                             Próxima questão
                         </Button>
-
-
                     )
             }
 
@@ -119,3 +146,14 @@ export default function ShowQuizScreen() {
     )
 
 }
+
+const styles = StyleSheet.create({
+    surface: {
+      padding: 8,
+      marginVertical: 20,
+      height: 50,
+      width: 200,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
