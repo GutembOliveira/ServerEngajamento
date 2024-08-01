@@ -13,6 +13,7 @@ export default function FinalResultsScreen() {
     const [hasMatricula, setHasMatricula] = useState(false);
     const [podiumReceived, setPodiumReceived] = useState(false);
     const [students, setStudents] = useState([]);
+    const [intervalId, setIntervalId] = useState(null);
 
     const route = useRoute();
     const { quiz } = route.params;
@@ -41,19 +42,26 @@ export default function FinalResultsScreen() {
 
         async function finishQuiz() {
             try {
-                const response1 = await api.post('/conectarAluno', JSON.stringify({
+                await api.post('/conectarAluno', JSON.stringify({
                     matricula: Number(matricula)
                 }));
                 
-                const response2 = await api.post('/salvaPontuacao', JSON.stringify({
+                await api.post('/salvaPontuacao', JSON.stringify({
                     matricula: Number(matricula),
                     pontuacao: correctAnswers
                 }));
                 
-                
-                const response3 = await api.get('/retornaPodio');
-                setStudents(response3.data);
-                setPodiumReceived(true);
+                const id = setInterval(async () => {
+                    try {
+                        const response = await api.get('/retornaPodio');
+                        setStudents(response.data);
+                        setPodiumReceived(true);
+                    } catch (error) {
+                        console.error('Error making API call:', error);
+                    }
+                }, 2000);
+
+                setIntervalId(id);
             } catch (error) {
                 console.error('Error making API call:', error);
             }
@@ -61,6 +69,13 @@ export default function FinalResultsScreen() {
 
         finishQuiz();
     }, [hasMatricula]);
+
+    const handleEnd = () => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+        navigation.popToTop();
+    };
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
@@ -79,7 +94,7 @@ export default function FinalResultsScreen() {
             <Button
                 mode="contained"
                 style={{ padding: 10 }}
-                onPress={() => navigation.popToTop()}>
+                onPress={handleEnd}>
                 Encerrar
             </Button>
         </SafeAreaView>

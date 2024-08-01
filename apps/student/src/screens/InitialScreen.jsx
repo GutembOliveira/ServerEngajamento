@@ -42,7 +42,7 @@ export default function InitialScreen({ navigation }) {
         setLoading(false);
       });
 
-    navigation.navigate('Connect');
+    navigation.navigate('Waiting');
   }
 
   return (

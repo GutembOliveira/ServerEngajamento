@@ -11,22 +11,40 @@ export default function FinalQuizScreen() {
     //const { quiz } = route.params;
     const navigation = useNavigation();
     const [students, setStudents] = useState([]);
+    const [intervalId, setIntervalId] = useState(null);
     
     const theme = useTheme();
 
     useEffect(() => {
         async function getPodium(){
-            await api.get('/retornaPodio')
-            .then(response => {
-                setStudents(response.data)
-            })
-            .catch(error => {
-                console.error(error);
-            })
+            const id = setInterval(async () => {
+                try {
+                    const response = await api.get('/retornaPodio');
+                    setStudents(response.data);
+                } catch (error) {
+                    console.error('Error making API call:', error);
+                }
+            }, 2000);
+    
+            setIntervalId(id);
+            // await api.get('/retornaPodio')
+            // .then(response => {
+            //     setStudents(response.data)
+            // })
+            // .catch(error => {
+            //     console.error(error);
+            // })
         }
 
         getPodium();
     }, []);
+
+    const handleEnd = () => {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+        navigation.popToTop();
+    };
 
 
     return (
@@ -45,7 +63,7 @@ export default function FinalQuizScreen() {
             <Button
                 mode="contained"
                 style={{ padding: 10 }}
-                onPress={() => navigation.popToTop()}>
+                onPress={handleEnd}>
                 Encerrar
             </Button>
 
@@ -53,14 +71,3 @@ export default function FinalQuizScreen() {
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    podiumItem: {
-        alignItems: 'center',
-        marginVertical: 10
-    },
-    podiumPosition: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-});
