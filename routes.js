@@ -13,6 +13,8 @@ const webSocketController = require('./webSocketController')
 
 routes.get('/turma',turmaController.getTurma);
 routes.get('/Questionarios',questionarioController.getQuestionario);
+routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);
+routes.get('/QuestionariosP',questionarioController.getQuestionarioPosgress);
 routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);

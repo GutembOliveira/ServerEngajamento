@@ -13,6 +13,7 @@ var numAlunos = 0;
 var clientesId = [];
 let clients = [];
 let turma = [];
+var questaoAtual = 0;
 // lista de alunos que responderam a questão e estão esperando a próxima
 let alunosProntos =[]
 let listaAlunosConectados = [];
@@ -22,6 +23,24 @@ let canCallGetQuestionario = false;
 
 const jsonParser = bodyParser.json();
 //let turma = turmaController.getTurma();
+
+
+function getQuestionarioPosgress(request,response){
+     var sql = `
+            SELECT 
+               *
+            FROM 
+                mydb.questao q
+         
+            ORDER BY 
+                q.idQuestao
+        `;
+        var query = connection.query(sql);
+        console.log(query)
+        response.json(queery);
+
+
+}
 
 function getQuestionario(request, response){
 
@@ -73,12 +92,18 @@ function getQuestionario(request, response){
             // Converte o mapa em uma lista
             let questoesList = Object.values(questoesMap);
             questionario = questoesList;
-            //console.log(questionario)
+
+            console.log(questionario.length)
             response.json(questionario);
         });
 
     
 }
+
+function retornaQuestaoAtual(request,response){
+    response.json(questaoAtual);
+}
+
 function getQuestionarioAluno(request, response){
     clientesId.push(request.id);
     requestQueue.push({ request, response });
@@ -177,6 +202,8 @@ function liberaProximaQuestao(request, response) {
         webSocketController.sendToAllClients("true");
         // Envia o valor numérico para todos os clientes conectados
         sendToAllClients("true");
+        questaoAtual+=1;
+        console.log(questaoAtual)
         response.json("Evento enviado para todos os clientes");
         console.log(clients.length);
         console.log("resposta mandada para todos os alunos");
@@ -282,7 +309,6 @@ async function carregaTurma(request,response){
     turma = await  turmaController.getTurmaQuiz()
     console.log(turma);
     return response.status(200).end();
-    //alunosProntos.push(request.id);
 
 }
 function conectarAluno(request,response){
@@ -317,19 +343,20 @@ async function alunosConectados(request,response){
     response.json((listaAlunosConectados));
 }
 
-
 function liberaQuestionario(request,response){
     const {valor} = request.body;
     console.log('Recebida variavel:', valor);
     canCallGetQuestionario = valor;
+    if(valor==false){
+        questaoAtual=0;
+    }
     response.status(200).json("questionario liberado");
 
 }
 
-
-
 function iniciaQuestionario(request,response){
     console.log(canCallGetQuestionario)
+    questaoAtual+=1;
     return response.json(canCallGetQuestionario);
 
 }
@@ -352,6 +379,7 @@ function salvaPontuacao(request,response){
 }
 module.exports = {
     getQuestionario,
+    getQuestionarioPosgress,
     getProximaQuestao,
     liberaQuestionario,
     iniciaQuestionario,
@@ -363,6 +391,7 @@ module.exports = {
     carregaTurma,
     salvaPontuacao,
     wsConnection,
-    retornaPodio
+    retornaPodio,
+    retornaQuestaoAtual
     
 };
