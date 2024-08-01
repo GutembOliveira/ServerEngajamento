@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Alert, BackHandler, SafeAreaView } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import globalStyles from "../utils/globalStyles";
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useState } from "react";
@@ -12,6 +13,8 @@ export default function ShowQuizScreen() {
     const { quiz } = route.params;
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [timeIsOver, setTimeIsOver] = useState(false);
+    const [key, setKey] = useState(0);
 
     const theme = useTheme();
 
@@ -47,9 +50,17 @@ export default function ShowQuizScreen() {
         }, [])
     )
 
+    useFocusEffect(
+        useCallback(() => {
+            setTimeIsOver(false);
+        }, [])
+    );
+
     const liberarProximaQuestao = async () => {
         const result = await api.get('/liberaProximaQuestao');
-        setCurrentQuestionIndex(currentQuestionIndex + 1)
+        setKey(prevKey => prevKey + 1);
+        setTimeIsOver(false);
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
 
     const finalizarQuestionario = async () => {
@@ -57,19 +68,46 @@ export default function ShowQuizScreen() {
         navigation.navigate('Final')
     }
 
+    const renderTime = ({ remainingTime }) => {
+        if (remainingTime === 0) {
+            return (
+                <>
+                    <Text variant="titleMedium">Tempo esgotado</Text>
+                </>
+            )
+        }
+
+        return (
+            <Text variant="titleLarge">{remainingTime}</Text>
+        );
+    };
+
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+            <CountdownCircleTimer
+                key={key}
+                isPlaying
+                duration={3}
+                size={120}
+                strokeWidth={6}
+                colors={['#ededed', '#663399', '#8c1d18']}
+                colorsTime={[10, 9, 0]}
+                onComplete={() => setTimeIsOver(true)}>
+                {renderTime}
+            </CountdownCircleTimer>
+
+
             <Text variant="titleLarge" style={{ marginVertical: 30 }}>Questão {currentQuestionIndex + 1} de {quiz.length}</Text>
             <Text variant="titleLarge" style={{ marginBottom: 30, width: '90%', textAlign: 'center' }}>{quiz[currentQuestionIndex].alternativas[1].descricao}</Text>
 
             {
                 currentQuestionIndex === quiz.length - 1 ? (
-                    <Button mode="contained" onPress={finalizarQuestionario} style={{ marginTop: 20 }}>
+                    <Button mode="contained" onPress={finalizarQuestionario} style={{ marginTop: 20 }} disabled={!timeIsOver}>
                         Finalizar questionário
                     </Button>
                 )
                     : (
-                        <Button mode="contained" onPress={liberarProximaQuestao} style={{ marginTop: 20 }}>
+                        <Button mode="contained" onPress={liberarProximaQuestao} style={{ marginTop: 20 }} disabled={!timeIsOver}>
                             Próxima questão
                         </Button>
 

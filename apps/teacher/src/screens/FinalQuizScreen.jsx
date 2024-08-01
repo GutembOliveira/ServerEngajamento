@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { useTheme, Button, Text } from 'react-native-paper';
+import { useTheme, Button, Text, ActivityIndicator } from 'react-native-paper';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import globalStyles from "../utils/globalStyles";
 import Podium from '../components/Podium';
@@ -9,21 +10,37 @@ export default function FinalQuizScreen() {
     //const route = useRoute();
     //const { quiz } = route.params;
     const navigation = useNavigation();
+    const [students, setStudents] = useState([]);
     
     const theme = useTheme();
 
-    const students = [
-        { id: 1, name: 'Aluno 1', acertos: 5 },
-        { id: 2, name: 'Aluno 2', acertos: 7 },
-        { id: 3, name: 'Aluno 3', acertos: 9 },
-        { id: 4, name: 'Aluno 4', acertos: 6 },
-    ]
+    useEffect(() => {
+        async function getPodium(){
+            await api.get('/retornaPodio')
+            .then(response => {
+                setStudents(response.data)
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        }
+
+        getPodium();
+    }, []);
+
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
             <Text variant='headlineSmall'>Questionário finalizado</Text>
             
-            <Podium students={students} />
+            {
+                students.length === 0 ? (
+                    <ActivityIndicator animating={true} size="large" color={theme.colors.primary} style={{ marginVertical: 20 }}/>
+                ) : (
+                    <Podium students={students} />
+                )
+
+            }
            
             <Button
                 mode="contained"
