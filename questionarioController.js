@@ -110,24 +110,26 @@ function getQuestionarioAluno(request, response){
     clientesId.push(request.id);
     requestQueue.push({ request, response });
     var sql = `
-            SELECT 
-                q.idQuestao,
-                q.enunciado,  
-                q.fkAssunto,
-                q.tipoQuestao,
-                a.idalternativas,
-                a.Questao_idQuestao,
-                a.Questao_fkAssunto,
-                a.letra,
-                a.descricao,
-                a.resposta
-            FROM 
-                mydb.Questao q
-            INNER JOIN 
-                mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
-            ORDER BY 
-                q.idQuestao, a.letra
-        `;
+    SELECT 
+        q.idQuestao,
+        q.enunciado,  
+        q.fkAssunto,
+        q.tipoQuestao,
+        a.idalternativas,
+        a.Questao_idQuestao,
+        a.Questao_fkAssunto,
+        a.letra,
+        a.descricao,
+        a.resposta
+    FROM 
+        mydb.Questao q
+    INNER JOIN 
+        mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
+    WHERE 
+         q.fkAssunto = 12
+    ORDER BY 
+        q.idQuestao, a.letra
+`;
         connection.query(sql, function (err, result) {
             if (err) {
                 return "error:"+ (err);
