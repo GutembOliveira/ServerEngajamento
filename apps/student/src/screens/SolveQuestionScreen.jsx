@@ -5,6 +5,7 @@ import { useTheme, ActivityIndicator, Button, Text } from "react-native-paper";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
+import NetInfo from '@react-native-community/netinfo';
 
 import globalStyles from "../utils/globalStyles";
 import useQuizStore from "../stores/QuizStore";
@@ -18,6 +19,7 @@ export default function SolveQuestionScreen({ navigation }) {
     const [key, setKey] = useState(0);
     const [matricula, setMatricula] = useState(null);
     const [hasMatricula, setHasMatricula] = useState(false);
+    const [isConnected, setIsConnected] = useState(true);
 
     //const quiz = useQuizStore((state) => state.quiz);
     const currentQuestionIndex = useQuizStore((state) => state.currentQuestionIndex);
@@ -29,6 +31,19 @@ export default function SolveQuestionScreen({ navigation }) {
     const resetQuiz = useQuizStore((state) => state.reset);
 
     const theme = useTheme();
+
+    useEffect(() => {
+        // Subscribe to network state updates
+        const unsubscribe = NetInfo.addEventListener(state => {
+          setIsConnected(state.isConnected);
+        });
+    
+        // Unsubscribe to network state updates on cleanup
+        return () => {
+          unsubscribe();
+        };
+      }, []);
+
 
     useEffect(() => {
         resetQuiz();
@@ -152,6 +167,16 @@ export default function SolveQuestionScreen({ navigation }) {
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+            {
+                !isConnected ?
+                <>
+                    <Text style={{ marginBottom: 30}}>Offline</Text>
+                </>
+                :
+                <>
+                </>
+            }
+
             {
                 !quiz ?
                     <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />

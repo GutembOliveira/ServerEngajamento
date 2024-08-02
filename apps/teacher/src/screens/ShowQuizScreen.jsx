@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Alert, BackHandler, SafeAreaView, StyleSheet } from "react-native";
 import { Button, Icon, Surface, Text, useTheme } from "react-native-paper";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
@@ -6,6 +6,7 @@ import globalStyles from "../utils/globalStyles";
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useState } from "react";
 import api from "../services/api";
+import NetInfo from '@react-native-community/netinfo';
 
 export default function ShowQuizScreen() {
     const navigation = useNavigation();
@@ -16,8 +17,21 @@ export default function ShowQuizScreen() {
     const [timeIsOver, setTimeIsOver] = useState(false);
     const [key, setKey] = useState(0);
     const [visible, setVisible] = useState(false);
+    const [isConnected, setIsConnected] = useState(true);
 
     const theme = useTheme();
+
+    useEffect(() => {
+        // Subscribe to network state updates
+        const unsubscribe = NetInfo.addEventListener(state => {
+          setIsConnected(state.isConnected);
+        });
+    
+        // Unsubscribe to network state updates on cleanup
+        return () => {
+          unsubscribe();
+        };
+      }, []);
 
     useFocusEffect(
         useCallback(() => {
@@ -86,6 +100,16 @@ export default function ShowQuizScreen() {
 
     return (
         <SafeAreaView style={[globalStyles.container, { backgroundColor: theme.colors.background }]}>
+            {
+                !isConnected ?
+                <>
+                    <Text style={{ marginBottom: 30}}>Offline</Text>
+                </>
+                :
+                <>
+                </>
+            }
+
             <CountdownCircleTimer
                 key={key}
                 isPlaying
