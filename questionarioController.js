@@ -61,6 +61,8 @@ function getQuestionario(request, response){
                 mydb.Questao q
             INNER JOIN 
                 mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
+            WHERE 
+                 q.fkAssunto = 12
             ORDER BY 
                 q.idQuestao, a.letra
         `;

@@ -2,17 +2,14 @@ const mysql = require("mysql");
 const csvtojson = require('csvtojson');
 
 const db = mysql.createConnection({
-    //host: "projetoengajamento.czuc0qggowbu.us-east-1.rds.amazonaws.com",
-    host: "nakedly-novel-asp.data-1.use1.tembo.io",
-    port: "5432",
-    user: "postgres",
-    password: "bxqFKZWcpg5cZ1kM",
-    database: "postgres",
-    // password: "dev@engaj24",
-    // database: "mysql",
-});
+    host:"projetoengajamento.czuc0qggowbu.us-east-1.rds.amazonaws.com",
+    port:"3306",
+    user:"devTime",
+    password:"dev@engaj24",
+    database:"mydb",
+})
 
-const arquivo = "./baseQuestao.csv";
+const arquivo = "./questoes.csv";
 
 csvtojson().fromFile(arquivo).then(source => {
     source.forEach((row, i) => {
@@ -20,7 +17,7 @@ csvtojson().fromFile(arquivo).then(source => {
 
         // Inserir Questão
         db.query('INSERT INTO mydb.Questao (Enunciado, fkAssunto, tipoQuestao) VALUES (?, ?, ?)',
-            [Enunciado, '2', '1'],
+            [Enunciado, '12', '1'],
             (err, result) => {
                 if (err) {
                     console.error("Erro ao inserir questão:", err);
