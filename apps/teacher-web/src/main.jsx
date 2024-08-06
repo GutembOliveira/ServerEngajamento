@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './reset.css';
 
 import App from './App.jsx'
 import Quizzes from './screens/Quizzes';
