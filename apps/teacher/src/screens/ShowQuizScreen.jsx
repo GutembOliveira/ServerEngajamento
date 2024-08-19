@@ -6,7 +6,6 @@ import globalStyles from "../utils/globalStyles";
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useState } from "react";
 import api from "../services/api";
-import NetInfo from '@react-native-community/netinfo';
 
 export default function ShowQuizScreen() {
     const navigation = useNavigation();
@@ -20,18 +19,6 @@ export default function ShowQuizScreen() {
     const [isConnected, setIsConnected] = useState(true);
 
     const theme = useTheme();
-
-    useEffect(() => {
-        // Subscribe to network state updates
-        const unsubscribe = NetInfo.addEventListener(state => {
-          setIsConnected(state.isConnected);
-        });
-    
-        // Unsubscribe to network state updates on cleanup
-        return () => {
-          unsubscribe();
-        };
-      }, []);
 
     useFocusEffect(
         useCallback(() => {
