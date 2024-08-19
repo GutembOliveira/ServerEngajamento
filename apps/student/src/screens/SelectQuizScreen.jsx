@@ -1,11 +1,12 @@
-import { ActivityIndicator, Dimensions, FlatList, SafeAreaView, Text, View } from "react-native";
+import { Dimensions, FlatList, SafeAreaView, Text, View } from "react-native";
+import { ActivityIndicator, useTheme } from 'react-native-paper'
 import globalStyles from '../utils/globalStyles';
 import useQuizzes from "../hooks/useQuizzes";
-import theme from "../theme";
 import Card from "../components/Card";
 
 export default function SelectQuizScreen({ navigation }) {
   const { quizzes } = useQuizzes();
+  const theme = useTheme();
   
   const renderItem = ({ item }) => (
     <Card onPress={() => navigation.navigate('Confirm', { item: item })}>
@@ -17,7 +18,7 @@ export default function SelectQuizScreen({ navigation }) {
     <SafeAreaView style={globalStyles.container}>
       {
         !quizzes ?
-          <ActivityIndicator size="large" color={theme.colors.lightBlue} />
+        <ActivityIndicator animating={true} size="large" color={theme.colors.primary} />
           :
           (
             quizzes.length === 0 ?
