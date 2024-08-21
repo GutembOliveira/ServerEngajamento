@@ -1,5 +1,7 @@
 export default function Classes(){
-    <div>
-        <h2>Classes</h2>
-    </div>
+    return(
+        <div>
+            <h2>Classes</h2>
+        </div>
+    )
 }

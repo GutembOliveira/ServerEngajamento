@@ -1,9 +1,7 @@
-import HeaderNav from './components/HeaderNav';
+import Layout from './screens/Layout';
 
 export default function App() {
   return (
-    <>
-    <h1>App</h1>
-    </>
+    <Layout/>
   )
 }
