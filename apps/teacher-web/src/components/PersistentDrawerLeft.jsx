@@ -24,6 +24,8 @@ import { Link, Route, Routes } from 'react-router-dom';
 import Home from '../pages/Home';
 import Quizzes from '../pages/Quizzes';
 import Classes from '../pages/Classes';
+import NewQuiz from '../pages/NewQuiz';
+import NewClass from '../pages/NewClass';
 
 const drawerWidth = 240;
 
@@ -154,8 +156,10 @@ export default function PersistentDrawerLeft() {
 
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="Quizzes" element={<Quizzes />} />
-                    <Route path="Classes" element={<Classes />} />
+                    <Route path="/quizzes" element={<Quizzes />} />
+                    <Route path="/classes" element={<Classes />} />
+                    <Route path="/quizzes/new" element={<NewQuiz />} />
+                    <Route path="/classes/new" element={<NewClass />} />
                 </Routes>
 
             </Main>

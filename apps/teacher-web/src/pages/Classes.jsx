@@ -1,6 +1,14 @@
-import { Card, CardContent, CardMedia, CardActionArea, Typography, Grid } from '@mui/material';
+import { Card, CardContent, CardMedia, CardActionArea, Typography, Grid, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 import classImage from '../assets/class.jpeg';
+import { Link } from 'react-router-dom';
+
+const fabStyle = {
+    position: 'absolute',
+    bottom: 30,
+    right: 30
+};
 
 export default function Classes(){
     return(
@@ -81,6 +89,10 @@ export default function Classes(){
                 </Grid>
 
             </Grid>
+
+            <Fab color="secondary" aria-label="novo quiz" sx={fabStyle} LinkComponent={Link} to='/classes/new'>
+                <AddIcon />
+            </Fab>
         </div>
     )
 }
