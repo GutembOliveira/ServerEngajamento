@@ -1,17 +1,6 @@
-import { Button, FormControl, FormHelperText, FormLabel, Grid, Input, InputLabel, OutlinedInput, styled } from "@mui/material";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
+import { Button, FormControl, FormLabel, Grid, OutlinedInput } from "@mui/material";
+import Dropzone from "../components/Dropzone";
+import { Save } from '@mui/icons-material';
 
 const saveClass = () => {
     console.log('SALVEI A TURMA');
@@ -22,7 +11,7 @@ export default function NewClass() {
         <div>
             <h2>Nova turma</h2>
 
-            <Grid container spacing={3}>
+            <Grid container direction="column" spacing={3}>
                 <Grid item xs={4}>
                     <FormControl>
                         <FormLabel htmlFor="class-name">Nome da turma</FormLabel>
@@ -31,24 +20,13 @@ export default function NewClass() {
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                    >
-                        Ler planilha de alunos
-                        <VisuallyHiddenInput
-                            type="file"
-                            onChange={(event) => console.log(event.target.files)}
-                        />
-                    </Button>
+                   <Dropzone />
                 </Grid>
 
                 <Grid item xs={4}>
                     <Button 
                     variant="contained"
+                    startIcon={<Save/>}
                     onClick={saveClass}>
                         Salvar Turma
                     </Button>
@@ -59,6 +37,3 @@ export default function NewClass() {
         </div>
     )
 }
-
-//Area pra subir planilha
-//Botão pra salvar

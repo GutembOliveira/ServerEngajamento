@@ -1,17 +1,6 @@
-import { Button, FormControl, FormHelperText, FormLabel, Grid, Input, InputLabel, OutlinedInput, styled } from "@mui/material";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-});
+import { Button, FormControl, FormLabel, Grid, OutlinedInput } from "@mui/material";
+import Dropzone from '../components/Dropzone';
+import { Save } from '@mui/icons-material';
 
 const saveQuiz = () => {
     console.log('SALVEI O QUIZ');
@@ -22,7 +11,7 @@ export default function NewQuiz() {
         <div>
             <h2>Novo questionário</h2>
 
-            <Grid container spacing={3}>
+            <Grid container direction="column" spacing={3}>
                 <Grid item xs={4}>
                     <FormControl>
                         <FormLabel htmlFor="class-name">Nome do questionário</FormLabel>
@@ -31,25 +20,14 @@ export default function NewQuiz() {
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                    >
-                        Ler planilha de questões
-                        <VisuallyHiddenInput
-                            type="file"
-                            onChange={(event) => console.log(event.target.files)}
-                        />
-                    </Button>
+                    <Dropzone />
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Button 
-                    variant="contained"
-                    onClick={saveQuiz}>
+                    <Button
+                        variant="contained"
+                        startIcon={<Save/>}
+                        onClick={saveQuiz}>
                         Salvar Questionário
                     </Button>
                 </Grid>
