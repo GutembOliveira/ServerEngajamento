@@ -27,6 +27,7 @@ import Classes from '../pages/Classes';
 import NewQuiz from '../pages/NewQuiz';
 import NewClass from '../pages/NewClass';
 import Lobby from '../pages/Lobby';
+import Question from '../pages/Question';
 
 const drawerWidth = 240;
 
@@ -162,6 +163,7 @@ export default function PersistentDrawerLeft() {
                     <Route path="/quizzes/new" element={<NewQuiz />} />
                     <Route path="/classes/new" element={<NewClass />} />
                     <Route path="/lobby" element={<Lobby />} />
+                    <Route path="/question" element={<Question />} />
                 </Routes>
 
             </Main>

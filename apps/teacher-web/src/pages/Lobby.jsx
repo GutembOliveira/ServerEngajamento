@@ -1,4 +1,5 @@
-import { Button, Grid } from "@mui/material"
+import { Button, Container, Grid } from "@mui/material"
+import { Link } from "react-router-dom"
 
 const students = [
     {
@@ -21,7 +22,7 @@ const students = [
 
 export default function Lobby(){
     return(
-        <div>
+        <Container sx={{ textAlign: 'center'}} >
             <h2>Alunos conectados</h2>
 
             <Grid container direction="column" spacing={2}>
@@ -35,12 +36,15 @@ export default function Lobby(){
             }
 
             <Button
-            sx={{ marginTop: '1rem', width: '50%' }}
+            sx={{ margin: '1rem auto', width: '50%' }}
             variant="contained"
-            >Iniciar questionário</Button>
+            LinkComponent={Link}
+            to="/question">
+                Iniciar questionário
+            </Button>
 
             </Grid>
-        </div>
+        </Container >
 
     )
 }
