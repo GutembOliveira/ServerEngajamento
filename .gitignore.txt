@@ -1,5 +1,6 @@
 #arquivos ignorados
 mockTeste.js
 turma.csv
+dbConfig.js
 baseQuestao.csv
 repositorys/

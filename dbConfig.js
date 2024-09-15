@@ -1,10 +1,18 @@
 const mysql = require("mysql");
+const mongoose = require("mongoose");
 
-const connection = mysql.createConnection({
-    host:"projetoengajamento.czuc0qggowbu.us-east-1.rds.amazonaws.com",
-    port:"3306",
-    user:"devTime",
-    password:"dev@engaj24",
-    database:"mydb",
-})
+
+// Configuração da conexão com MongoDB Atlas
+const connection = async () => {
+    try {
+        await mongoose.connect('mongodb+srv://devTime:dev%40engaj24@dbengajamento.yntmu.mongodb.net/DBEngajamento?retryWrites=true&w=majority', {
+        });
+        console.info("Connected to the database");
+    } catch (error) {
+        console.error("Error connecting to the database:", error);
+        throw error; // Re-throw the error to be handled by the caller
+    }
+};
+
+  
 module.exports = connection;
