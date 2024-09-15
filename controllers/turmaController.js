@@ -5,19 +5,33 @@ const alunoModel = require("../Models/alunoModel.js")
 const Aluno = mongoose.model('Aluno', alunoModel);
 
 
-function getTurmaQuiz() {
-    return new Promise((resolve, reject) => {
-        const sql = "SELECT * FROM mydb.Aluno";
-        connection.query(sql, (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
-}
+// function getTurmaQuiz() {
+//     return new Promise((resolve, reject) => {
+//         const sql = "SELECT * FROM mydb.Aluno";
+//         connection.query(sql, (err, result) => {
+//             if (err) return reject(err);
+//             resolve(result);
+//         });
+//     });
+// }
+
+
+async function getTurmaQuiz() {
+    try {
+      // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
+      await connection(); 
+      // Verifica se a coleção "aluno" existe
+    const  alunos = await mongoose.connection.db.collection("Aluno").find().toArray();
+     
+      // Retorna o resultado
+      console.log(alunos);
+      return json(alunos);
+    } catch (error) {
+    }
+  }
+ 
 
 async function getTurma(request, response) {
-    
-        
     try {
       // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
       await connection(); 

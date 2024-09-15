@@ -7,15 +7,15 @@ const turmaController = require('./controllers/turmaController')
 const questionarioController = require('./controllers/questionarioController')
 const webSocketController = require('./webSocketController')
 //rota de retorno da turma
-//Precisa reescrever chamada de banco - Thalys
+//funcionando
 routes.get('/turma',turmaController.getTurma);
-//precisa reescrever chamada de banco
+//funcionando
 routes.get('/Questionarios',questionarioController.getQuestionario);
-routes.get('/getQuestoes',questionarioController.getQuestoes);
 routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);
 routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
+//funcionando
 routes.get('/getQuestionarioAluno',questionarioController.getQuestionarioAluno);
 //routes.get('/proxQuestao',questionarioController.getProximaQuestao);
 routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuestionario);
@@ -23,7 +23,7 @@ routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuest
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 
-//Precisa reescrever a função, mesma função de getTurma
+//funcionando
 routes.get('/carregaTurma',questionarioController.carregaTurma);
 routes.get('/retornaPodio',questionarioController.retornaPodio);
 //routes.ws('/ws', webSocketController.handleConnection);

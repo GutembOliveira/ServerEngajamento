@@ -66,97 +66,110 @@ function retornaQuestaoAtual(request,response){
     response.json(questaoAtual);
 }
 
-  async function getQuestoes(request, response) {
-    // Define o modelo de dados para a coleção 'Aluno'
-        const alunoSchema = new mongoose.Schema({
-            nome: { type: String, required: true },
-            matricula: { type: Number, default: null }, // Permite valores null
-            email: { type: String, default: null } // Permite valores null
-        });
-        
-        const Aluno = mongoose.model('Aluno', alunoSchema);
-        
-    try {
-      // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
-      await connection(); 
-      // Verifica se a coleção "aluno" existe
-    const  alunos = await mongoose.connection.db.collection("Aluno").find().toArray();
-     
-      // Retorna o resultado
-      response.json(alunos);
-    } catch (error) {
-      console.error('Erro ao consultar a coleção aluno:', error);
-      response.status(500).json({ error: 'Erro ao consultar a coleção aluno' });
-    }
-  }
  
+ 
+  
+async function getQuestionarioAluno(request, response){
 
-function getQuestionarioAluno(request, response){
-    clientesId.push(request.id);
-    requestQueue.push({ request, response });
-    var sql = `
-    SELECT 
-        q.idQuestao,
-        q.enunciado,  
-        q.fkAssunto,
-        q.tipoQuestao,
-        a.idalternativas,
-        a.Questao_idQuestao,
-        a.Questao_fkAssunto,
-        a.letra,
-        a.descricao,
-        a.resposta
-    FROM 
-        mydb.Questao q
-    INNER JOIN 
-        mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
-    WHERE 
-         q.fkAssunto = 12
-    ORDER BY 
-        q.idQuestao, a.letra
-`;
-        connection.query(sql, function (err, result) {
-            if (err) {
-                return "error:"+ (err);
-            }
-            // Processa os resultados para montar o JSON personalizado
-            let questoesMap = {};
+    // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
+    await connection(); 
+    // Verifica se a coleção "aluno" existe
+    let questionario = await mongoose.connection.db.collection("Questao").find().toArray();
+   
+    // Retorna o resultado
+    //response.json(questionario);
+              // Processa os resultados para montar o JSON personalizado
+              //let questoesMap = {};
+              // result.forEach(row => {
+              //     if (!questoesMap[row.idQuestao]) {
+              //         questoesMap[row.idQuestao] = {
+              //             idQuestao: row.idQuestao,
+              //             enunciado: "Determine se as afirmações abaixo são verdadeiras (V) ou falsas (F)",
+              //             alternativas: []
+              //         };
+              //     }
+  
+              //     questoesMap[row.idQuestao].alternativas.push({
+              //         questao: row.idQuestao,
+              //         idalternativas: row.idalternativas,
+              //         letra: row.letra,
+              //         descricao: row.descricao,
+              //         resposta: row.resposta
+              //     });
+              // });
+              // // Converte o mapa em uma lista
+              // let questoesList = Object.values(questoesMap);
+              // questionario = questoesList;
+              console.log(questionario.length)
+              response.json(questionario);
+  
+      
+  }
 
-            result.forEach(row => {
-                if (!questoesMap[row.idQuestao]) {
-                    questoesMap[row.idQuestao] = {
-                        idQuestao: row.idQuestao,
-                        enunciado: "Determine se as afirmações abaixo são verdadeiras (V) ou falsas (F)",
-                        alternativas: []
-                    };
-                }
+// function getQuestionarioAluno(request, response){
+//     clientesId.push(request.id);
+//     requestQueue.push({ request, response });
+//     var sql = `
+//     SELECT 
+//         q.idQuestao,
+//         q.enunciado,  
+//         q.fkAssunto,
+//         q.tipoQuestao,
+//         a.idalternativas,
+//         a.Questao_idQuestao,
+//         a.Questao_fkAssunto,
+//         a.letra,
+//         a.descricao,
+//         a.resposta
+//     FROM 
+//         mydb.Questao q
+//     INNER JOIN 
+//         mydb.alternativas a ON q.idQuestao = a.Questao_idQuestao
+//     WHERE 
+//          q.fkAssunto = 12
+//     ORDER BY 
+//         q.idQuestao, a.letra
+// `;
+//         connection.query(sql, function (err, result) {
+//             if (err) {
+//                 return "error:"+ (err);
+//             }
+//             // Processa os resultados para montar o JSON personalizado
+//             let questoesMap = {};
 
-                questoesMap[row.idQuestao].alternativas.push({
-                    questao: row.idQuestao,
-                    idalternativas: row.idalternativas,
-                    letra: row.letra,
-                    descricao: row.descricao,
-                    resposta: row.resposta
-                });
-            });
+//             result.forEach(row => {
+//                 if (!questoesMap[row.idQuestao]) {
+//                     questoesMap[row.idQuestao] = {
+//                         idQuestao: row.idQuestao,
+//                         enunciado: "Determine se as afirmações abaixo são verdadeiras (V) ou falsas (F)",
+//                         alternativas: []
+//                     };
+//                 }
 
-            // Converte o mapa em uma lista
-            let questoesList = Object.values(questoesMap);
-            questionario = questoesList;
-            //console.log(questionario)
-            if(canCallGetQuestionario==true){
-                console.log(canCallGetQuestionario);
-                console.log(questionario);
-                response.json(questionario);
-            }
-            else{
-                console.log(canCallGetQuestionario)
-                 response.json("questionario não liberado");
-                }
-        });
+//                 questoesMap[row.idQuestao].alternativas.push({
+//                     questao: row.idQuestao,
+//                     idalternativas: row.idalternativas,
+//                     letra: row.letra,
+//                     descricao: row.descricao,
+//                     resposta: row.resposta
+//                 });
+//             });
 
-    
-}
+//             // Converte o mapa em uma lista
+//             let questoesList = Object.values(questoesMap);
+//             questionario = questoesList;
+//             //console.log(questionario)
+//             if(canCallGetQuestionario==true){
+//                 console.log(canCallGetQuestionario);
+//                 console.log(questionario);
+//                 response.json(questionario);
+//             }
+//             else{
+//                 console.log(canCallGetQuestionario)
+//                  response.json("questionario não liberado");
+//                 }
+//         });
+// }
 //=======================================================
 //WEBSOCKET
 // Função para gerenciar conexões WebSocket
@@ -289,8 +302,8 @@ function liberaQuestionario(request, response) {
         numAlunos++;
     }
 }
-async function carregaTurma(request,response){
-    turma = await  turmaController.getTurmaQuiz()
+function carregaTurma(request,response){
+    turma =   turmaController.getTurmaQuiz()
     console.log(turma);
     return response.status(200).end();
 
@@ -376,6 +389,5 @@ module.exports = {
     wsConnection,
     retornaPodio,
     retornaQuestaoAtual,
-    getQuestoes,
     
 };
