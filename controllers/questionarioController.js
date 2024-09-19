@@ -302,10 +302,9 @@ function liberaQuestionario(request, response) {
         numAlunos++;
     }
 }
-function carregaTurma(request,response){
-    console.log("chamando carrega Turma");
-
-    turma =   turmaController.getTurmaQuiz()
+async function carregaTurma(request,response){
+    turma = await turmaController.getTurmaQuiz()
+    
     console.log(turma);
     return response.status(200).end();
 
@@ -313,12 +312,15 @@ function carregaTurma(request,response){
 function conectarAluno(request,response){
     const {matricula} = request.body;
     let aluno = "";
+    console.log("turma carregada");
+    //console.log(turma);
     for (let item of turma) {
 
         if(item['matricula']==matricula){
             aluno = item['Nome']
             break;
-        }
+        }else
+            console.log("não encontrado");
     }
     console.log(aluno)
     if (aluno!="") {
