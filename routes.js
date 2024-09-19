@@ -24,7 +24,7 @@ routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 
 //funcionando
-routes.get('/carregaTurma',questionarioController.carregaTurma);
+routes.get('/carregaturma',questionarioController.carregaTurma);
 routes.get('/retornaPodio',questionarioController.retornaPodio);
 //routes.ws('/ws', webSocketController.handleConnection);
 

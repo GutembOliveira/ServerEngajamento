@@ -5,15 +5,6 @@ const alunoModel = require("../Models/alunoModel.js")
 const Aluno = mongoose.model('Aluno', alunoModel);
 
 
-// function getTurmaQuiz() {
-//     return new Promise((resolve, reject) => {
-//         const sql = "SELECT * FROM mydb.Aluno";
-//         connection.query(sql, (err, result) => {
-//             if (err) return reject(err);
-//             resolve(result);
-//         });
-//     });
-// }
 
 
 async function getTurmaQuiz() {
@@ -21,7 +12,7 @@ async function getTurmaQuiz() {
       // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
       await connection(); 
       // Verifica se a coleção "aluno" existe
-    const  alunos = await mongoose.connection.db.collection("Aluno").find().toArray();
+      const  alunos = await mongoose.connection.db.collection("Aluno").find().toArray();
      
       // Retorna o resultado
       console.log(alunos);
