@@ -303,6 +303,8 @@ function liberaQuestionario(request, response) {
     }
 }
 function carregaTurma(request,response){
+    console.log("chamando carrega Turma");
+
     turma =   turmaController.getTurmaQuiz()
     console.log(turma);
     return response.status(200).end();

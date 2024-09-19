@@ -9,6 +9,8 @@ const Aluno = mongoose.model('Aluno', alunoModel);
 
 async function getTurmaQuiz() {
     try {
+    console.log("Dentro do método correto de carregar turma");
+
       // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
       await connection(); 
       // Verifica se a coleção "aluno" existe
