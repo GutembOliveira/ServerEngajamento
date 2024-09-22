@@ -2,8 +2,10 @@ const connection = require('../dbConfig.js');
 const WebSocket = require('ws');
 const mongoose = require("mongoose");
 const http = require('http');
-const questionarioModel = require("../Models/questionarioModel.js")
-const questoes = mongoose.model('Questao', questionarioModel);
+const QuestaoModel = require("../Models/questaoModel.js")
+const QuestionarioModel = require('../Models/questionarioModel.js');
+
+//const questoes = mongoose.model('Questao', questaoModel);
 const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
 const webSocketController = require('../webSocketController.js');
@@ -73,35 +75,36 @@ async function getQuestionarioAluno(request, response){
 
     // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
     await connection(); 
-    // Verifica se a coleção "aluno" existe
-    let questionario = await mongoose.connection.db.collection("Questao").find().toArray();
-   
-    // Retorna o resultado
-    //response.json(questionario);
-              // Processa os resultados para montar o JSON personalizado
-              //let questoesMap = {};
-              // result.forEach(row => {
-              //     if (!questoesMap[row.idQuestao]) {
-              //         questoesMap[row.idQuestao] = {
-              //             idQuestao: row.idQuestao,
-              //             enunciado: "Determine se as afirmações abaixo são verdadeiras (V) ou falsas (F)",
-              //             alternativas: []
-              //         };
-              //     }
-  
-              //     questoesMap[row.idQuestao].alternativas.push({
-              //         questao: row.idQuestao,
-              //         idalternativas: row.idalternativas,
-              //         letra: row.letra,
-              //         descricao: row.descricao,
-              //         resposta: row.resposta
-              //     });
-              // });
-              // // Converte o mapa em uma lista
-              // let questoesList = Object.values(questoesMap);
-              // questionario = questoesList;
-              console.log(questionario.length)
-              response.json(questionario);
+
+        // Busca o questionário com código '1'
+        let questionario = await mongoose.connection.db.collection("Questionario").findOne({ codigo: '1' });
+
+        if (!questionario) {
+          console.log('Questionário não encontrado com o código: 1');
+          return response.status(404).json({ message: 'Questionário não encontrado' });
+        }
+    
+        // Busca as questões associadas ao questionário
+        const questoes = await mongoose.connection.db.collection("Questao").find({ codigoQuestionario: questionario.codigo }).toArray();
+    
+        // Adiciona as questões ao questionário
+        questionario.questoes = questoes;
+ 
+
+        console.log(questionario)
+        if(canCallGetQuestionario==true){
+            console.log(canCallGetQuestionario);
+            console.log(questionario);
+            response.json(questionario);
+        }
+        else{
+            console.log(canCallGetQuestionario)
+                response.json("questionario não liberado");
+            }
+        // console.log(questionario)
+        // response.json(questionario);
+
+
   
       
   }

@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
-// Define o modelo de dados para a coleção 'Aluno'
+const mongoose = require('mongoose');
+
 const questionarioSchema = new mongoose.Schema({
-    enunciado: { type: String, required: true },
-    resposta: { type: String, default: null }, // Permite valores null
-    
+  nome: { type: String, required: true },
+  descricao: { type: String, default: '' },
+  codigo: { type: String, required: true },
+  questoes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Questao' }],
 });
 
-module.exports= {
-    questionarioSchema,
-}
+const Questionario = mongoose.model('Questionario', questionarioSchema);
+module.exports = Questionario;
