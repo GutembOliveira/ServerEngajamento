@@ -32,7 +32,7 @@ async function getQuestionario(request, response){
   // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
   await connection(); 
   // Verifica se a coleção "aluno" existe
-  let questionario = await mongoose.connection.db.collection("Questao").find().toArray();
+  let questionario = await mongoose.connection.db.collection("Questionario").find().toArray();
  
   // Retorna o resultado
   //response.json(questionario);
