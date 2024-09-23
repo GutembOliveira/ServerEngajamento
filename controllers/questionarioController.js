@@ -10,7 +10,6 @@ const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
 const webSocketController = require('../webSocketController.js');
 const { response } = require('express');
-//const wss = new WebSocket.Server({ noServer: true });
 var questionario;
 var numAlunos = 0;
 var clientesId = [];
@@ -46,7 +45,6 @@ async function getQuestionario(request, response){
             //             alternativas: []
             //         };
             //     }
-
             //     questoesMap[row.idQuestao].alternativas.push({
             //         questao: row.idQuestao,
             //         idalternativas: row.idalternativas,
@@ -365,6 +363,21 @@ function iniciaQuestionario(request,response){
 
 }
 
+function limparEstado(request,response){
+     questionario;
+     numAlunos = 0;
+     clientesId = [];
+     clients = [];
+     turma = [];
+     questaoAtual = 0;
+    // lista de alunos que responderam a questão e estão esperando a próxima
+     alunosProntos =[]
+     listaAlunosConectados = [];
+     requestQueue = [];
+     canCallGetQuestionario = false;
+     response.status(200).json("estado do processo de questionario limpo");
+
+}
  //salva a pontuação do aluno no questionario
 function salvaPontuacao(request,response){
     const {matricula,pontuacao} = request.body;
@@ -396,5 +409,6 @@ module.exports = {
     wsConnection,
     retornaPodio,
     retornaQuestaoAtual,
+    limparEstado,
     
 };

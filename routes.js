@@ -9,6 +9,7 @@ const webSocketController = require('./webSocketController')
 //rota de retorno da turma
 //funcionando
 routes.get('/turma',turmaController.getTurma);
+routes.get('/getTurmas',turmaController.getTurmas);
 //funcionando
 routes.get('/Questionarios',questionarioController.getQuestionario);
 routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);
@@ -22,11 +23,10 @@ routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuest
 //routes.get('/enableGetQuestionario',questionarioController.enableGetQuestionario);
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
-
 //funcionando
 routes.get('/carregaturma',questionarioController.carregaTurma);
 routes.get('/retornaPodio',questionarioController.retornaPodio);
-//routes.ws('/ws', webSocketController.handleConnection);
+routes.get('/limparEstado',questionarioController.limparEstado);
 
 
 module.exports = routes;
