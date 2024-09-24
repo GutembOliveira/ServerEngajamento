@@ -261,7 +261,7 @@ function adicionarAluno(matricula, nome) {
   };
   var alunoConectado = false;
   listaAlunosConectados.forEach(item => {
-    if(item['matricula']==aluno['matricula']){
+    if(item['Matricula']==aluno['Matricula']){
         console.log("aluno já conectado")
         alunoConectado = true;
         return;;
@@ -305,25 +305,28 @@ function liberaQuestionario(request, response) {
 }
 async function carregaTurma(request,response){
     turma = await turmaController.getTurmaQuiz()
-    
-    console.log(turma);
     return response.status(200).end();
 
 }
 function conectarAluno(request,response){
     const {matricula} = request.body;
-    let aluno = "";
-    console.log("turma carregada");
+    console.log("Matrícula recebida no request body:", matricula);
+    var aluno = "";
+    //console.log("Turma carregada:", JSON.stringify(turma, null, 2));
     //console.log(turma);
     for (let item of turma) {
 
-        if(item['matricula']==matricula){
-            aluno = item['Nome']
+        if(item['Matricula']== matricula){
+            console.log("ALUNO ENCONTRADO");
+            aluno = item['nome']
             break;
-        }else
+        }else{
+            console.log(item['Matricula'])
             console.log("não encontrado");
+        }
     }
-    console.log(aluno)
+       // Debug: Log do aluno encontrado
+       console.log("Aluno encontrado:", aluno);
     if (aluno!="") {
         console.log("matricula do aluno: +",matricula)
 
