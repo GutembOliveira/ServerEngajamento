@@ -18,6 +18,6 @@ const app=express();
         webSocketController.handleConnection(ws);
     });
   
-    server.listen(5000, () => {
+    server.listen(5001, () => {
         console.log('Servidor escutando na porta 5000');
     });

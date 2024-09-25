@@ -292,7 +292,9 @@ function adicionarAluno(matricula, nome) {
   };
   var alunoConectado = false;
   listaAlunosConectados.forEach(item => {
-    if(item['Matricula']==aluno['Matricula']){
+    console.log("aluno a ser verificado: "+ aluno.matricula)
+    console.log("item a ser verificado: "+ item.matricula)
+    if(item.matricula==aluno['Matricula']){
         console.log("aluno já conectado")
         alunoConectado = true;
         return;;
