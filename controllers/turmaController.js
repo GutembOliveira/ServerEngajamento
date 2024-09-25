@@ -41,6 +41,21 @@ async function getTurmaQuiz() {
 //     }
 //   }
 
+async function getTurmaTeste(request, response) {
+  try {
+    // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
+    await connection(); 
+    // Verifica se a coleção "aluno" existe
+  const  alunos = await mongoose.connection.db.collection("Aluno").find({ Turma: 2 }).toArray();
+   
+    // Retorna o resultado
+    response.json(alunos);
+  } catch (error) {
+    console.error('Erro ao consultar a coleção aluno:', error);
+    response.status(500).json({ error: 'Erro ao consultar a coleção aluno' });
+  }
+}
+
 
 
   async function getTurma(request, response) {
@@ -90,7 +105,8 @@ async function getTurmaQuiz() {
 module.exports = {
 getTurmaQuiz,
 getTurma,
-getTurmas
+getTurmas,
+getTurmaTeste
 
 
 }

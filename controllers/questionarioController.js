@@ -62,6 +62,37 @@ async function getQuestionario(request, response){
     
 }
 
+
+  
+async function getQuestionarioTeste(request, response){
+
+    // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
+    await connection(); 
+
+        // Busca o questionário com código '1'
+        let questionario = await mongoose.connection.db.collection("Questionario").findOne({ codigo: '1' });
+
+        if (!questionario) {
+          console.log('Questionário não encontrado com o código: 1');
+          return response.status(404).json({ message: 'Questionário não encontrado' });
+        }
+    
+        // Busca as questões associadas ao questionário
+        const questoes = await mongoose.connection.db.collection("Questao").find({ codigoQuestionario: questionario.codigo }).toArray();
+    
+        // Adiciona as questões ao questionário
+        questionario.questoes = questoes;
+        console.log(questionario);
+        response.json(questionario);
+
+
+  
+      
+  }
+
+  
+
+
 function retornaQuestaoAtual(request,response){
     response.json(questaoAtual);
 }
@@ -413,5 +444,5 @@ module.exports = {
     retornaPodio,
     retornaQuestaoAtual,
     limparEstado,
-    
+    getQuestionarioTeste
 };
