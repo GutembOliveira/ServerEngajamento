@@ -7,20 +7,25 @@ const Aluno = mongoose.model('Aluno', alunoModel);
 
 
 
-async function getTurmaQuiz() {
+async function getTurmaQuiz(codigoTurma) {
     try {
-
       // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
       await connection(); 
+      console.log("codigo turma recebido:"+codigoTurma);
       // Verifica se a coleção "aluno" existe
-      const  alunos = await mongoose.connection.db.collection("Aluno").find().toArray();
-     
-      //console.log(alunos);
-
+      if(codigoTurma!=0){
+        const alunos = await mongoose.connection.db.collection("Aluno").find({Turma:codigoTurma}).toArray();
+        console.log(alunos);
+        return alunos;
+      }
+      else{
+         const alunos = await mongoose.connection.db.collection("Aluno").find().toArray();
+         console.log(alunos);
+         return alunos;
+        }
       // Retorna o resultado
       //descomentar somente para teste em localhost, impacta no desempenho do servidor.
       //console.log(alunos);
-      return alunos;
     } catch (error) {
     }
   }

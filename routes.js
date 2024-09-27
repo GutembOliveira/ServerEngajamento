@@ -26,7 +26,7 @@ routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuest
 routes.get('/iniciaQuestionario',questionarioController.iniciaQuestionario);
 routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 //funcionando
-routes.get('/carregaturma',questionarioController.carregaTurma);
+routes.post('/carregaturma',jsonParser,questionarioController.carregaTurma);
 routes.get('/retornaPodio',questionarioController.retornaPodio);
 routes.get('/limparEstado',questionarioController.limparEstado);
 
