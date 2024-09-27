@@ -104,12 +104,12 @@ async function getQuestionarioAluno(request, response){
 
     // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
     await connection(); 
-
+        const {codigoQuestionario} = request.body;
         // Busca o questionário com código '1'
-        let questionario = await mongoose.connection.db.collection("Questionario").findOne({ codigo: '1' });
+        let questionario = await mongoose.connection.db.collection("Questionario").findOne({ codigo: codigoQuestionario });
 
         if (!questionario) {
-          console.log('Questionário não encontrado com o código: 1');
+          console.log('Questionário não encontrado com o código: '+codigoQuestionario);
           return response.status(404).json({ message: 'Questionário não encontrado' });
         }
     
@@ -120,7 +120,7 @@ async function getQuestionarioAluno(request, response){
         questionario.questoes = questoes;
  
 
-        console.log(questionario)
+        //console.log(questionario)
         if(canCallGetQuestionario==true){
             console.log(canCallGetQuestionario);
             console.log(questionario);
@@ -292,8 +292,8 @@ function adicionarAluno(matricula, nome) {
   };
   var alunoConectado = false;
   listaAlunosConectados.forEach(item => {
-    console.log("aluno a ser verificado: "+ aluno.matricula)
-    console.log("item a ser verificado: "+ item.matricula)
+    //console.log("aluno a ser verificado: "+ aluno.matricula)
+    //console.log("item a ser verificado: "+ item.matricula)
     if(item.matricula==aluno.matricula){
         console.log("aluno já conectado")
         alunoConectado = true;

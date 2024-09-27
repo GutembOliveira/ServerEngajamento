@@ -19,7 +19,7 @@ routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
 //funcionando
-routes.get('/getQuestionarioAluno',questionarioController.getQuestionarioAluno);
+routes.post('/getQuestionarioAluno',jsonParser,questionarioController.getQuestionarioAluno);
 //routes.get('/proxQuestao',questionarioController.getProximaQuestao);
 routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuestionario);
 //routes.get('/enableGetQuestionario',questionarioController.enableGetQuestionario);
