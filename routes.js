@@ -12,6 +12,7 @@ routes.get('/turma',turmaController.getTurma);
 routes.get('/getTurmas',turmaController.getTurmas);
 //funcionando
 routes.get('/Questionarios',questionarioController.getQuestionario);
+routes.post('/carregaQuestionario',jsonParser,questionarioController.carregaQuestionario);
 routes.get('/getTurmaTeste',turmaController.getTurmaTeste);
 routes.get('/getQuestionarioTeste',questionarioController.getQuestionarioTeste);
 routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);
@@ -19,7 +20,7 @@ routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
 //funcionando
-routes.post('/getQuestionarioAluno',jsonParser,questionarioController.getQuestionarioAluno);
+routes.get('/getQuestionarioAluno',questionarioController.getQuestionarioAluno);
 //routes.get('/proxQuestao',questionarioController.getProximaQuestao);
 routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuestionario);
 //routes.get('/enableGetQuestionario',questionarioController.enableGetQuestionario);
