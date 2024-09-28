@@ -98,36 +98,27 @@ function retornaQuestaoAtual(request,response){
  
 async function carregaQuestionario(request, response){
      const {codigoQuestionario} = request.body;
-
-    // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
-    await connection(); 
+     // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
+     await connection(); 
         // Busca o questionário com código '1'
-        let questionarioCarregado = await mongoose.connection.db.collection("Questionario").findOne({codigo:codigoQuestionario});
+     let questionarioCarregado = await mongoose.connection.db.collection("Questionario").findOne({codigo:codigoQuestionario});
 
-        if (!questionarioCarregado) {
-          console.log('Questionário não encontrado com o código: '+codigoQuestionario);
-          return response.status(404).json({ message: 'Questionário não encontrado' });
-        }
-    
-        // Busca as questões associadas ao questionário
-        const questoes = await mongoose.connection.db.collection("Questao").find({ codigoQuestionario: questionarioCarregado.codigo }).toArray();
-    
-        // Adiciona as questões ao questionário
-        questionarioCarregado.questoes = questoes;
- 
-        questionario = questionarioCarregado
-        //console.log(questionario)
-        //if(canCallGetQuestionario==true){
-            console.log(canCallGetQuestionario);
-            console.log(questionario);
-            response.json(questionario);
-        // }
-        // else{
-        //     console.log(canCallGetQuestionario)
-        //         response.json("questionario não liberado");
-        //     }
-        // // console.log(questionario)
-        // response.json(questionario);
+    if (!questionarioCarregado) {
+        console.log('Questionário não encontrado com o código: '+codigoQuestionario);
+        return response.status(404).json({ message: 'Questionário não encontrado' });
+    }
+
+    // Busca as questões associadas ao questionário
+    const questoes = await mongoose.connection.db.collection("Questao").find({ codigoQuestionario: questionarioCarregado.codigo }).toArray();
+
+    // Adiciona as questões ao questionário
+    questionarioCarregado.questoes = questoes;
+
+    questionario = questionarioCarregado
+    console.log(canCallGetQuestionario);
+    console.log(questionario);
+    response.json(questionario);
+
 
 
   

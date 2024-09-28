@@ -14,7 +14,7 @@ async function getTurmaQuiz(codigoTurma) {
       console.log("codigo turma recebido:"+codigoTurma);
       // Verifica se a coleção "aluno" existe
       if(codigoTurma!=0){
-        const alunos = await mongoose.connection.db.collection("Aluno").find({Turma:codigoTurma}).toArray();
+        const alunos = await mongoose.connection.db.collection("Aluno").find({Turmas:codigoTurma}).toArray();
         console.log(alunos);
         return alunos;
       }
@@ -91,15 +91,15 @@ async function getTurmaTeste(request, response) {
             return response.status(404).json({ message: 'Nenhuma turma encontrada' });
         }
 
-        // Para cada turma, busca os alunos associados
-        const turmasComAlunos = await Promise.all(turmas.map(async (turma) => {
-            const alunos = await mongoose.connection.db.collection("Aluno").find({ Turma: turma.codigo }).toArray();
-            turma.alunos = alunos; // Associa os alunos à turma
-            return turma;
-        }));
+        // // Para cada turma, busca os alunos associados
+        // const turmasComAlunos = await Promise.all(turmas.map(async (turma) => {
+        //     const alunos = await mongoose.connection.db.collection("Aluno").find({ Turma: turma.codigo }).toArray();
+        //     turma.alunos = alunos; // Associa os alunos à turma
+        //     return turma;
+        // }));
 
         // Retorna o resultado com turmas e alunos associados
-        response.json(turmasComAlunos);
+        response.json(turmas);
 
     } catch (error) {
         console.error('Erro ao consultar as coleções:', error);
