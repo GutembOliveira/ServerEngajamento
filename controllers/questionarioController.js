@@ -136,21 +136,12 @@ async function carregaQuestionario(request, response){
 
   
 async function getQuestionarioAluno(request, response){
-
+    const {matricula} = request.body;
+    console.log("matricula recebida:"+matricula)
     // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
     await connection(); 
-        // Busca o questionário com código '1'
-        //let questionario = await mongoose.connection.db.collection("Questionario").findOne();
-        // if (!questionario) {
-        //   console.log('Questionário não encontrado com o código: '+codigoQuestionario);
-        //   return response.status(404).json({ message: 'Questionário não encontrado' });
-        // }
-        // Busca as questões associadas ao questionário
-        //const questoes = await mongoose.connection.db.collection("Questao").find({ codigoQuestionario: questionario.codigo }).toArray();
+        // AQUI DEVE SER CHAMADA A FUNÇÃO QUE PROCESSA A MATRICULA DO ALUNO E RETORNA O QUESTIONÁRIO PERSONALIZADO
     
-        // Adiciona as questões ao questionário
-        //questionario.questoes = questoes;
- 
 
         //console.log(questionario)
         if(canCallGetQuestionario==true){
