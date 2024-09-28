@@ -51,7 +51,7 @@ async function getTurmaTeste(request, response) {
     // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
     await connection(); 
     // Verifica se a coleção "aluno" existe
-  const  alunos = await mongoose.connection.db.collection("Aluno").find({ Turma: 2 }).toArray();
+  const  alunos = await mongoose.connection.db.collection("Aluno").find({ Turmas: 2 }).toArray();
    
     // Retorna o resultado
     response.json(alunos);
