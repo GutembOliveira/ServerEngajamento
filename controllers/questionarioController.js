@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const http = require('http');
 const QuestaoModel = require("../Models/questaoModel.js")
 const QuestionarioModel = require('../Models/questionarioModel.js');
+const RespostasAluno = require('../Models/respostasModel.js');  // Importa o modelo
 
 //const questoes = mongoose.model('Questao', questaoModel);
 const bodyParser = require('body-parser')
@@ -414,6 +415,47 @@ function iniciaQuestionario(request,response){
 
 }
 
+
+
+async function gravarRespostas(request,response) {
+    try {
+      // Extrai os dados recebidos
+      var dados = request.body
+      // Extrai os dados recebidos
+      const { matricula, pontuacao, questoes, data } = dados;
+
+      // Converte a pontuação para um número
+      const pontuacaoValida = pontuacao ? parseInt(pontuacao) : null;
+      console.log(dados);
+      console.log(pontuacao);
+      // Validação simples dos dados recebidos
+      if (!matricula || !pontuacaoValida || !questoes || !Array.isArray(questoes) || !data) {
+        throw new Error('Dados inválidos');
+      }
+      await connection(); 
+  
+      // Cria um novo documento com as respostas do aluno
+      const novaResposta = new RespostasAluno({
+        matricula: matricula,
+        pontuacao: pontuacao.$numberInt,  // Extraindo valor correto de pontuacao
+        questoes: questoes,
+        data: dados.data // Adicionando a data se fornecida
+      });
+  
+   
+      // Insere o novo documento na coleção RespostasAluno
+      const resultado = await mongoose.connection.db.collection("RespostasAluno").insertOne(novaResposta);
+  
+      response.status(200).json(resultado);
+    } catch (error) {
+      console.error('Erro ao salvar as respostas no banco de dados:', error);
+      response.json("error");
+    }
+  }
+
+
+
+
 function limparEstado(request,response){
      questionario;
      numAlunos = 0;
@@ -462,5 +504,6 @@ module.exports = {
     retornaQuestaoAtual,
     limparEstado,
     getQuestionarioTeste,
-    carregaQuestionario
+    carregaQuestionario,
+    gravarRespostas
 };

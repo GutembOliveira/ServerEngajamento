@@ -17,8 +17,10 @@ routes.get('/getTurmaTeste',turmaController.getTurmaTeste);
 routes.get('/getQuestionarioTeste',questionarioController.getQuestionarioTeste);
 routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);
 routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
+routes.post('/gravarRespostas',jsonParser,questionarioController.gravarRespostas);
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
+
 //funcionando
 routes.post('/getQuestionarioAluno',jsonParser,questionarioController.getQuestionarioAluno);
 //routes.get('/proxQuestao',questionarioController.getProximaQuestao);
