@@ -49,9 +49,11 @@ async function getTurmaQuiz(codigoTurma) {
 async function getTurmaTeste(request, response) {
   try {
     // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
+    const {codigoTurma} = request.body;
+    console.log(codigoTurma);
     await connection(); 
     // Verifica se a coleção "aluno" existe
-  const  alunos = await mongoose.connection.db.collection("Aluno").find({ Turmas: 2 }).toArray();
+  const  alunos = await mongoose.connection.db.collection("Aluno").find({ Turmas: Number(codigoTurma) }).toArray();
    
     // Retorna o resultado
     response.json(alunos);
