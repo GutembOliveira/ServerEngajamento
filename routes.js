@@ -12,6 +12,7 @@ routes.get('/turma',turmaController.getTurma);
 routes.get('/getTurmas',turmaController.getTurmas);
 //funcionando
 routes.get('/Questionarios',questionarioController.getQuestionario);
+routes.get('/gerarCodigo',questionarioController.gerarCodigo);
 routes.post('/carregaQuestionario',jsonParser,questionarioController.carregaQuestionario);
 routes.get('/getTurmaTeste',turmaController.getTurmaTeste);
 routes.get('/getQuestionarioTeste',questionarioController.getQuestionarioTeste);

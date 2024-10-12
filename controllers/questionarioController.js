@@ -11,6 +11,8 @@ const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
 const webSocketController = require('../webSocketController.js');
 const { response } = require('express');
+let codigoAleatorio="";
+
 var questionario;
 var numAlunos = 0;
 var clientesId = [];
@@ -359,11 +361,15 @@ async function carregaTurma(request,response){
 
 }
 function conectarAluno(request,response){
-    const {matricula} = request.body;
-    console.log("Matrícula recebida no request body:", matricula);
+    const {matricula,codigo} = request.body;
+    console.log("Código recebido:", codigo);
+    console.log("Matrícula recebida:", matricula);
     var aluno = "";
     //console.log("Turma carregada:", JSON.stringify(turma, null, 2));
     //console.log(turma);
+    if(codigo!=codigoAleatorio)
+        response.status(500).json("código Invalido").end();
+
     for (let item of turma) {
 
         if(item['Matricula']== matricula){
@@ -378,13 +384,10 @@ function conectarAluno(request,response){
        console.log("Aluno encontrado:", aluno);
     if (aluno!="") {
         console.log("matricula do aluno: +",matricula)
-
         adicionarAluno(matricula, aluno);
-        //console.log("aluno inserido")
         response.status(200).json("aluno conectado");
     }else{
-        response.statusMessage = "aluno não encontrado. Você está cadastrado na turma?"
-        response.status(200).end();
+        response.status(500).json("aluno não encontrado. Você está cadastrado na turma?").end();
 
     }
 
@@ -487,6 +490,23 @@ function salvaPontuacao(request,response){
     response.status(200).end();
 
 }
+
+function gerarCodigo(request,response) {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let codigo = '';
+    const tamanho = 4;
+
+    for (let i = 0; i < tamanho; i++) {
+        const randomIndex = Math.floor(Math.random() * caracteres.length);
+        codigo += caracteres[randomIndex];
+    }
+    console.log(codigo);
+    codigoAleatorio=codigo;
+    response.status(200).json(codigo).end();
+
+}
+
+
 module.exports = {
     getQuestionario,
     getProximaQuestao,
@@ -505,5 +525,6 @@ module.exports = {
     limparEstado,
     getQuestionarioTeste,
     carregaQuestionario,
-    gravarRespostas
+    gravarRespostas,
+    gerarCodigo
 };
