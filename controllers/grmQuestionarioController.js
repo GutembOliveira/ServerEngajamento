@@ -26,6 +26,7 @@ async function cadastraQuestionario(request, response) {
       const novoQuestionario = new QuestionarioModel({
         nome: questionario.nome,
         descricao: questionario.descricao,
+        
         codigo: questionario.codigo || (await gerarCodigoQuestionario())
       });
       console.log(novoQuestionario);
@@ -35,6 +36,7 @@ async function cadastraQuestionario(request, response) {
       const questoes = questionario.questoes.map(questaoData => ({
         enunciado: questaoData.enunciado,
         resposta: questaoData.resposta,
+        tema: questaoData.tema,
         codigoQuestionario: novoQuestionario.codigo
       }));
       // Salva as questões em lote

@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const questaoSchema = new mongoose.Schema({
     enunciado: { type: String, required: true },
     resposta: { type: String, default: null }, // Permite valores null
-    codigoQuestionario: { type: String, default: null }, // Permite valores null
+    codigoQuestionario: { type: String, default: null },
+    tema: { type: String, default: null }, // Permite valores null
 }, { collection: 'Questao' });  
 
 const Questao = mongoose.model('Questao', questaoSchema);

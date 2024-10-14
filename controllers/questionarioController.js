@@ -5,7 +5,7 @@ const http = require('http');
 const QuestaoModel = require("../Models/questaoModel.js")
 const QuestionarioModel = require('../Models/questionarioModel.js');
 const RespostasAluno = require('../Models/respostasModel.js');  // Importa o modelo
-
+const auxController = require('./auxController.js');
 //const questoes = mongoose.model('Questao', questaoModel);
 const bodyParser = require('body-parser')
 const turmaController = require('./turmaController.js')
@@ -435,6 +435,8 @@ async function gravarRespostas(request,response) {
       if (!matricula || !pontuacaoValida || !questoes || !Array.isArray(questoes) || !data) {
         throw new Error('Dados inválidos');
       }
+      aluno = turmaController.findAluno(turma,matricula);
+      console.log("email do aluno:"+aluno["email"]);
       await connection(); 
   
       // Cria um novo documento com as respostas do aluno
@@ -448,8 +450,8 @@ async function gravarRespostas(request,response) {
    
       // Insere o novo documento na coleção RespostasAluno
       const resultado = await mongoose.connection.db.collection("RespostasAluno").insertOne(novaResposta);
-  
-      response.status(200).json(resultado);
+    auxController.enviaEmail(aluno["email"],dados,questionario);
+    response.status(200).json("salvo");
     } catch (error) {
       console.error('Erro ao salvar as respostas no banco de dados:', error);
       response.json("error");

@@ -109,11 +109,24 @@ async function getTurmaTeste(request, response) {
     }
 }
 
+function findAluno(turma,matricula){
+  for (let item of turma) {
+
+      if(item['Matricula']== matricula){
+          console.log("ALUNO ENCONTRADO");
+          return item;
+      }
+  }
+     // Debug: Log do aluno encontrado
+     console.log("Aluno não encontrado:");
+}
+
 module.exports = {
 getTurmaQuiz,
 getTurma,
 getTurmas,
-getTurmaTeste
+getTurmaTeste,
+findAluno,
 
 
 }
