@@ -368,7 +368,7 @@ function conectarAluno(request,response){
     //console.log("Turma carregada:", JSON.stringify(turma, null, 2));
     //console.log(turma);
     if(codigo!=codigoAleatorio)
-        response.status(500).json("código Invalido").end();
+        return response.status(500).json("código Invalido").end();
 
     for (let item of turma) {
 
@@ -385,9 +385,9 @@ function conectarAluno(request,response){
     if (aluno!="") {
         console.log("matricula do aluno: +",matricula)
         adicionarAluno(matricula, aluno);
-        response.status(200).json("aluno conectado");
+        return response.status(200).json("aluno conectado");
     }else{
-        response.status(500).json("aluno não encontrado. Você está cadastrado na turma?").end();
+        return response.status(500).json("aluno não encontrado. Você está cadastrado na turma?").end();
 
     }
 
