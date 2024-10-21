@@ -95,7 +95,7 @@ async function getQuestionarioTeste(request, response){
 
 
 function retornaQuestaoAtual(request,response){
-    response.json(questaoAtual);
+    return response.json(questaoAtual);;
 }
 
  
@@ -259,6 +259,7 @@ function liberaProximaQuestao(request, response) {
         console.log(clients.length);
         console.log("resposta mandada para todos os alunos");
 }
+
 
 // Rota específica para SSE
 
@@ -528,5 +529,5 @@ module.exports = {
     getQuestionarioTeste,
     carregaQuestionario,
     gravarRespostas,
-    gerarCodigo
+    gerarCodigo,
 };

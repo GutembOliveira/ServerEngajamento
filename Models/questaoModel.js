@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // Define o modelo de dados para a coleção 'Questao'
 const questaoSchema = new mongoose.Schema({
-    enunciado: { type: String, required: true },
+    enunciado: { type: String, required: false },
     resposta: { type: String, default: null }, // Permite valores null
     codigoQuestionario: { type: String, default: null },
     tema: { type: String, default: null }, // Permite valores null
