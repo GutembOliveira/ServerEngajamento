@@ -35,7 +35,7 @@ async function cadastraQuestionario(request, response) {
       // 2. Salvar as questões associadas ao questionário
       const questoes = questionario.questoes.map(questaoData => ({
         enunciado: questaoData.enunciado,
-        resposta: questaoData.resposta,
+        resposta: normalizaResposta(questaoData.resposta),
         tema: questaoData.tema,
         codigoQuestionario: novoQuestionario.codigo
       }));
@@ -61,7 +61,20 @@ async function cadastraQuestionario(request, response) {
     return ultimoQuestionario ? (parseInt(ultimoQuestionario.codigo) + 1).toString() : '1';
   }
   
-
+ ///coloca a resposta no formato
+  function normalizaResposta(resposta){
+    if (typeof resposta === 'string') {
+      resposta = resposta.toLowerCase(); // Converter para minúsculo para evitar problemas com maiúsculas/minúsculas
+    }
+    
+    if (resposta === 'v' || resposta === 'verdadeiro' || resposta === 'true' || resposta ==="Verdadeiro") {
+      return 'V';
+    } else if (resposta === 'f' || resposta === 'falso' || resposta === 'false' || resposta === "Falso") {
+      return 'F';
+    } else {
+      throw new Error(`Resposta inválida: ${resposta}`); // Caso a resposta não seja válida
+    }
+  }
 
 // Função para deletar um questionário e suas questões associadas
 async function deletarQuestionario(request, response) {
