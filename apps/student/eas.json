@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 7.1.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "production": {
+      "env":{
+        "EXPO_PUBLIC_API_URL": "https://serverengajamento.onrender.com",
+        "EXPO_PUBLIC_WEBSOCKET_URL": "wss://serverengajamento.onrender.com/proxQuestao"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": "true"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
