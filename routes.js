@@ -17,6 +17,7 @@ routes.get('/gerarCodigo',questionarioController.gerarCodigo);
 routes.post('/carregaQuestionario',jsonParser,questionarioController.carregaQuestionario);
 routes.post('/getTurmaTeste',jsonParser,turmaController.getTurmaTeste);
 routes.post('/cadastraQuestionario',jsonParser,grmQuestionarioController.cadastraQuestionario);
+routes.post('/updateQuestionario',jsonParser,grmQuestionarioController.atualizaQuestionario);
 routes.post('/deletarQuestionario',jsonParser,grmQuestionarioController.deletarQuestionario);
 routes.get('/getQuestionarioTeste',questionarioController.getQuestionarioTeste);
 routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);

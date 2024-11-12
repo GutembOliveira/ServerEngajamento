@@ -109,9 +109,58 @@ async function deletarQuestionario(request, response) {
   }
   
 
+async function atualizaQuestionario(request, response) {
+    const { questionario } = request.body;
+    console.log(questionario);
+    await connection();
+    const session = await mongoose.startSession();
+    try {
+        session.startTransaction(); // Inicia a transação
+        
+        // 1. Buscar o questionário existente pelo código e atualizar
+        const questionarioExistente = await QuestionarioModel.findOneAndUpdate(
+          { nome: questionario.nome },
+          { 
+              nome: questionario.nome,
+              descricao: questionario.descricao
+          },
+          { new: true, session }
+      );
+        
+        if (!questionarioExistente) {
+            throw new Error('Questionário não encontrado');
+        }
+        else{"questionario encontrado"}
+        // 2. Remover questões antigas associadas ao questionário
+        await QuestaoModel.deleteMany({ codigoQuestionario: questionario.codigo }, { session });
+
+        // 3. Adicionar as novas questões ao questionário
+        const questoes = questionario.questoes.map(questaoData => ({
+            enunciado: questaoData.enunciado,
+            resposta: normalizaResposta(questaoData.resposta),
+            tema: questaoData.tema,
+            codigoQuestionario: questionario.codigo
+        }));
+        
+        // Inserir as novas questões em lote
+        await QuestaoModel.insertMany(questoes, { session });
+
+        // Commit da transação
+        await session.commitTransaction();
+        response.status(200).json({ success: true, message: "Questionário e questões atualizados com sucesso!", questionario: questionarioExistente });
+    } catch (error) {
+        await session.abortTransaction(); // Aborta a transação em caso de erro
+        console.error('Erro ao atualizar questionário e questões:', error);
+        response.status(500).json({ success: false, message: 'Erro ao atualizar questionário e questões.', error });
+    } finally {
+        session.endSession(); // Finaliza a sessão
+        console.log("Sessão finalizada.");
+    }
+}
 
 
   module.exports = {
     cadastraQuestionario,
-    deletarQuestionario
+    deletarQuestionario,
+    atualizaQuestionario
 }
