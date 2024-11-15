@@ -119,7 +119,7 @@ async function atualizaQuestionario(request, response) {
         
         // 1. Buscar o questionário existente pelo código e atualizar
         const questionarioExistente = await QuestionarioModel.findOneAndUpdate(
-          { nome: questionario.nome },
+          { codigo: questionario.codigo },
           { 
               nome: questionario.nome,
               descricao: questionario.descricao

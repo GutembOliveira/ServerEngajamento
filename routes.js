@@ -25,6 +25,7 @@ routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
 routes.post('/gravarRespostas',jsonParser,questionarioController.gravarRespostas);
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
+routes.get('/getQuestoes',questionarioController.getQuestoes);
 
 //funcionando
 routes.post('/getQuestionarioAluno',jsonParser,questionarioController.getQuestionarioAluno);
