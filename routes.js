@@ -38,6 +38,7 @@ routes.get('/liberaProximaQuestao',questionarioController.liberaProximaQuestao);
 routes.post('/carregaturma',jsonParser,questionarioController.carregaTurma);
 routes.get('/retornaPodio',questionarioController.retornaPodio);
 routes.get('/limparEstado',questionarioController.limparEstado);
+routes.get('/getAssuntos',questionarioController.getAssuntos);
 
 
 module.exports = routes;

@@ -110,14 +110,19 @@ async function deletarQuestionario(request, response) {
   
 
 async function atualizaQuestionario(request, response) {
+
     const { questionario } = request.body;
-    console.log(questionario);
-    await connection();
+    console.log("Questionário:", questionario);
+    if (!questionario) {
+        return response.status(400).json({ error: "Erro ao ler o questionário" });
+    }
+    //conecta ao banco
+    await connection(); 
     const session = await mongoose.startSession();
     try {
         session.startTransaction(); // Inicia a transação
-        
         // 1. Buscar o questionário existente pelo código e atualizar
+        console.log(questionario.codigo);
         const questionarioExistente = await QuestionarioModel.findOneAndUpdate(
           { codigo: questionario.codigo },
           { 
@@ -143,7 +148,7 @@ async function atualizaQuestionario(request, response) {
         }));
         
         // Inserir as novas questões em lote
-        await QuestaoModel.insertMany(questoes, { session });
+         await QuestaoModel.insertMany(questoes, { session });
 
         // Commit da transação
         await session.commitTransaction();

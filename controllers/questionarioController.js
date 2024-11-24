@@ -534,7 +534,19 @@ function gerarCodigo(request,response) {
 
 }
 
+async function getAssuntos(request, response) {
+    try {
+      // Conecta ao banco de dados (certifique-se de que a conexão está aberta)
 
+      await connection();
+      const assuntos = await mongoose.connection.db.collection("Assunto").find().toArray();
+      response.json(assuntos);
+
+    } catch (error) {
+      console.error('Erro ao consultar a coleção Assunto:', error);
+      response.status(500).json({ error: 'Erro ao consultar a coleção Assunto' });
+    }
+}
 module.exports = {
     getQuestionario,
     getProximaQuestao,
@@ -555,5 +567,6 @@ module.exports = {
     carregaQuestionario,
     gravarRespostas,
     gerarCodigo,
-    getQuestoes
+    getQuestoes,
+    getAssuntos
 };
