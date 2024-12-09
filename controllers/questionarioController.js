@@ -454,8 +454,8 @@ async function gravarRespostas(request,response) {
 
       // Converte a pontuação para um número
       const pontuacaoValida = pontuacao ? parseInt(pontuacao) : null;
-      console.log(dados);
-      console.log(pontuacao);
+      //console.log(dados);
+      //console.log(pontuacao);
       // Validação simples dos dados recebidos
       if (!matricula || !pontuacaoValida || !questoes || !Array.isArray(questoes) || !data) {
         throw new Error('Dados inválidos');
@@ -471,10 +471,8 @@ async function gravarRespostas(request,response) {
         questoes: questoes,
         data: dados.data // Adicionando a data se fornecida
       });
-  
-   
       // Insere o novo documento na coleção RespostasAluno
-      const resultado = await mongoose.connection.db.collection("RespostasAluno").insertOne(novaResposta);
+    const resultado = await mongoose.connection.db.collection("RespostasAluno").insertOne(novaResposta);
     auxController.enviaEmail(aluno["email"],dados,questionario);
     response.status(200).json("salvo");
     } catch (error) {

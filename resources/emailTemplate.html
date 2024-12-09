@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      text-align: center;
+      color: #4a90e2;
+      margin-bottom: 20px;
+    }
+    .content {
+      font-size: 16px;
+      color: #333333;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    .greeting {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4a4a4a;
+    }
+    .erro-info {
+      margin-top: 10px;
+      padding: 12px;
+      background-color: #fef2f2;
+      color: #d9534f;
+      border-left: 4px solid #d9534f;
+      border-radius: 5px;
+    }
+    .erro-list {
+      margin-top: 15px;
+      padding: 0;
+      list-style: none;
+    }
+    .erro-item {
+      background-color: #f5f7fa;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+      border: 1px solid #e0e0e0;
+      color: #333333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Relatório questionário</div>
+    <div class="content">
+      <p class="greeting">Olá,</p>
+      <p class="erro-info">Você errou {{totalErros}} questões no questionário {{data}}.</p>
+      <p>Veja abaixo o assunto das questões que você errou:</p>
+      <ul class="erro-list">
+        {{assuntosErrados}}
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

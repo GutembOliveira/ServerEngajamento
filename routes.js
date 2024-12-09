@@ -4,6 +4,7 @@ const apiCallFromRequest = require('./Request')
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json();
 const turmaController = require('./controllers/turmaController')
+const auxController = require('./controllers/auxController')
 const questionarioController = require('./controllers/questionarioController')
 const grmQuestionarioController = require('./controllers/grmQuestionarioController')
 const webSocketController = require('./webSocketController')
@@ -22,7 +23,8 @@ routes.post('/deletarQuestionario',jsonParser,grmQuestionarioController.deletarQ
 routes.get('/getQuestionarioTeste',questionarioController.getQuestionarioTeste);
 routes.get('/retornaQuestaoAtual',questionarioController.retornaQuestaoAtual);
 routes.post('/conectarAluno',jsonParser,questionarioController.conectarAluno);
-routes.post('/gravarRespostas',jsonParser,questionarioController.gravarRespostas);
+routes.post('/gravarRespostas',jsonParser,questionarioController.gravarRespostas );
+routes.post('/enviaEmail',jsonParser,auxController.enviaEmail );
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
 routes.get('/getQuestoes',questionarioController.getQuestoes);
