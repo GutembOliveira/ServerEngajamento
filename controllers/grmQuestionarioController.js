@@ -28,7 +28,7 @@ async function cadastraQuestionario(request, response) {
       const novoQuestionario = new QuestionarioModel({
         nome: questionario.nome,
         descricao: questionarioAux.descricao,
-        codigo: questionarioAux.codigo || (await gerarCodigoQuestionario())
+        codigo: questionarioAux.codigo || (await gerarCodigoQuestionario()),
         explicacao : questionarioAux.explicacao
       });
       console.log(novoQuestionario);
