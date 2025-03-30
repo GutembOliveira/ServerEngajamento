@@ -38,3 +38,6 @@ yarn-error.*
 .vscode/
 
 package-lock.json
+
+#arquivos de config que não podem subir
+chatConnection.js
