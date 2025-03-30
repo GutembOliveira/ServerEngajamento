@@ -13,7 +13,6 @@ const nodemailer = require('nodemailer');
 const axios = require('axios');
 const OpenAI = require('openai');
 const { response } = require('express');
-const chatConnection = require('../chatConnection.js');
 //-----------configurações da api
 //const apiKey = chatConnection.apiKey  // Substitua com sua chave da API
 const prompt = "Me dê um resumo sobre as habilidades do Jhin, campeão de League of Legends.";
