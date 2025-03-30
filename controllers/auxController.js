@@ -24,12 +24,23 @@ let transporter = nodemailer.createTransport({
 });
 
 // Função para carregar o HTML e substituir os placeholders
-function carregarTemplateEmail(totalErros, data, assuntosErrados) {
+function carregarTemplateEmail(totalErros, data, assuntosErrados,pontuacao) {
     let template = fs.readFileSync('./resources/emailTemplate.html', 'utf8');
-    // Substitui os placeholders pelas variáveis dinâmicas
-    template = template.replace('{{totalErros}}', totalErros);
-    template = template.replace('{{data}}', data);
-    template = template.replace('{{assuntosErrados}}', assuntosErrados.map(assunto => `<li class="erro-item">${assunto}</li>`).join(''));
+    if(assuntosErrados>0){
+        let template = fs.readFileSync('./resources/emailTemplate.html', 'utf8');
+        // Substitui os placeholders pelas variáveis dinâmicas
+        template = template.replace('{{totalErros}}', totalErros);
+        template = template.replace('{{data}}', data);
+        template = template.replace('{{assuntosErrados}}', assuntosErrados.map(assunto => `<li class="erro-item">${assunto}</li>`).join(''));
+    }else{
+        template = fs.readFileSync('./resources/emailTemplateAcerto.html', 'utf8');
+        // Substitui os placeholders pelas variáveis dinâmicas
+        //template = template.replace('{{totalErros}}', totalErros);
+        template = template.replace('{{data}}', data);
+        template = template.replace('{{pontuacao}}', pontuacao);
+
+    }
+
   
     return template;
   }
@@ -49,7 +60,7 @@ function carregarTemplateEmail(totalErros, data, assuntosErrados) {
 
     // Set para evitar repetição de texto/temas no email
     let temasErradosArray = Array.from(new Set(temasErrados)); // Converte o Set em um array
-    const emailHTML = carregarTemplateEmail(questoesErradas.length, questionario.nome, temasErradosArray);
+    const emailHTML = carregarTemplateEmail(questoesErradas.length, questionario.nome, temasErradosArray,pontuacao);
 
 
     // Configura os detalhes do e-mail
@@ -70,8 +81,9 @@ function carregarTemplateEmail(totalErros, data, assuntosErrados) {
         });
     }
 }
-
-
+//envia email para o email de engajamento com uma lista de alunos que participaram do quesitonário
+function enviaListaControle(listaDadosAlunos){
+}
 
 module.exports={
     enviaEmail,

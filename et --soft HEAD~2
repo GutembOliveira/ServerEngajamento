@@ -1,0 +1,262 @@
+[33mcommit a018bf5b1d74d12c5ab4ff7901e2861f77533f2a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Mar 30 10:57:55 2025 -0300
+
+    adicionado git ignore
+
+[33mcommit 4d61b82648ada91cf32e8bbe5a2bbfc092264068[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Mar 30 10:51:50 2025 -0300
+
+    integração com o chatgpt para mostrar a explicação
+
+[33mcommit 94b0c8a0dbd67301d4219c9eba89721820a010a4[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Mon Dec 9 01:04:13 2024 -0300
+
+    mudança no email
+
+[33mcommit a7a2e1e3e2852de632a225c87590f3089d8fc7dd[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Nov 24 10:01:33 2024 -0300
+
+    correcao no update
+
+[33mcommit d01ebd16c978d419c76a2fa2fa20ab22c1a5dd27[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Fri Nov 15 17:59:18 2024 -0300
+
+    rota de todas as questoes
+
+[33mcommit fd15be24e2789a1503087951dd09358cd4fb0bc4[m[33m ([m[1;31morigin/Backend[m[33m, [m[1;32mBackend[m[33m)[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Mon Nov 11 23:24:04 2024 -0300
+
+    função de update de questionario
+
+[33mcommit ce8cae8703d08071ed1ab512a5434233b0b7dbdc[m[33m ([m[1;31mengajamento/Backend[m[33m)[m
+Merge: 255a4d39 0cb86d7d
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Wed Oct 30 21:42:18 2024 -0300
+
+     erge branch 'Backend' of https://github.com/andrecbs/engajamento into Backend
+    Merge do branch remoto com o branch do backend
+
+[33mcommit 255a4d394743deecb5c494917436a4942b8b5643[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Mon Oct 21 09:10:22 2024 -0300
+
+    mudança no cadastro de questionario, conversão para V ou F
+
+[33mcommit abdbbcac4dd6d22774e83596c7955c2cdf14b346[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Oct 20 22:08:23 2024 -0300
+
+    mudança no model de questão
+
+[33mcommit 17005493159e5da9cb1118b916de49728874ba00[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Tue Oct 15 23:54:11 2024 -0300
+
+    correção de rotas
+
+[33mcommit e59e3155a54132f907f9123c92ed14f5f303b036[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Mon Oct 14 14:15:43 2024 -0300
+
+    implementado envio de email
+
+[33mcommit 1c846f48ff9b8f408f78730ce456fba8a443eaaf[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sat Oct 12 18:19:14 2024 -0300
+
+    rotas de cadastrar questionario e deletar questionario
+
+[33mcommit 882dce8953bd7202a3d407c5527ebbfacc8c8814[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sat Oct 12 12:38:56 2024 -0300
+
+    alteração na getTurmaTeste
+
+[33mcommit abb632b5f2236f50eb4c4f41b3106d5cbf6e2294[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sat Oct 12 12:11:33 2024 -0300
+
+    código aleatorio para conectar no questionário
+
+[33mcommit d696a7cae4b08a949b4a9d8f00a4e4cbf9213e9b[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Tue Oct 1 20:02:43 2024 -0300
+
+    mudança na getQuestionario
+
+[33mcommit 250c9f6f55a7eba2f9918f3579f1058b21c6a71e[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sat Sep 28 12:08:34 2024 -0300
+
+    mudança na getQuestionario
+
+[33mcommit adcc15d8cf67473fb074d6cf8e9db2f23b688c0b[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sat Sep 28 10:10:02 2024 -0300
+
+    mudança na getQuestionario
+
+[33mcommit 4fbea016bc4119a9dedba5ea7add8dd8aec0380f[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sat Sep 28 09:18:02 2024 -0300
+
+    mudança na getQuestionario
+
+[33mcommit 1150bfaacaddee21667e0a0ec4a8c78102601a3f[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Fri Sep 27 01:56:22 2024 -0300
+
+    adicionado carrega questionario
+
+[33mcommit ff659f195704869516164ab8400c6002ad51d726[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Thu Sep 26 22:14:37 2024 -0300
+
+    mudança na função getQuestionarioAluno
+
+[33mcommit 70d761ed663a530c4d735d9b627412875491cb16[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Thu Sep 26 21:59:06 2024 -0300
+
+    correção na adição de aluno
+
+[33mcommit f4e58f90ab2575ab642ffaa5919f1017e581805d[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Wed Sep 25 20:01:01 2024 -0300
+
+    correção na adição de aluno
+
+[33mcommit 918a826bba4961bb5b8b165df562e1ddaf157e46[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Wed Sep 25 13:02:39 2024 -0300
+
+    rotas de testes
+
+[33mcommit 3f93f4df6b8d3a28bd587743a71e2ec12127c403[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Tue Sep 24 00:50:28 2024 -0300
+
+    alteração na rota carrega turma, conectar aluno e alunosConectados
+
+[33mcommit eecc47778969a4b0b388898a0ea72d3094ef95bf[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Sep 22 22:36:24 2024 -0300
+
+    adicionada função que lista turmas
+
+[33mcommit aeb49f9b3242e943ae15393ef89655729b7079a1[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Sep 22 16:12:39 2024 -0300
+
+    reescrita da função getQuestionario
+
+[33mcommit 5da74d397b864bea320cade1fde3be8741ab86dc[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Sep 22 16:09:29 2024 -0300
+
+    funções getQuestionarioAlunoReescrita
+
+[33mcommit 319c8a55b4d53dcd5770bf1b0e400b5823775e3e[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Wed Sep 18 23:39:40 2024 -0300
+
+    funções reescritas para mongodb
+
+[33mcommit 71b80d0e62c55e0158ef2d1739055a5d39d641a9[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Wed Sep 18 23:10:37 2024 -0300
+
+    funções reescritas para mongodb
+
+[33mcommit 1f8fbc54349195d8dd60b1bb1431e18acaa63f9b[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Wed Sep 18 23:02:20 2024 -0300
+
+    funções reescritas para mongodb
+
+[33mcommit b22a8722335c0e36e7368c5eb3374529b4eca39b[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Sep 15 13:20:55 2024 -0300
+
+    funções reescritas para mongodb
+
+[33mcommit 77d5591d74a8ffaa29b18587e0e88fbf18bf7bf8[m
+Author: GutembOliveira <gutemb187@gmail.com>
+Date:   Sun Sep 15 12:39:07 2024 -0300
+
+    funções reescritas para mongodb
+
+[33mcommit 0cb86d7dec392c8e984f1f4480f9c69484ccc4ff[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Thu Sep 12 19:45:33 2024 -0300
+
+    Tela preliminar de questão
+
+[33mcommit 2db39029f50c8ec498bb5f7b75693d0b8cffc7cd[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Wed Sep 11 20:00:10 2024 -0300
+
+    Tela de alunos conectados
+
+[33mcommit 7e766244017bfcdbacbe01f29c1854fa7232c7ae[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Wed Sep 11 19:30:09 2024 -0300
+
+    Aprimorando formulários de cadastro
+
+[33mcommit eff9ab50eb74a44e9c080c1482f1ca3fd51eef68[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Thu Sep 5 19:20:02 2024 -0300
+
+    Adicionadas telas de novo quiz e nova turma
+
+[33mcommit df4ed22f6af6b9eed884e1f6137985ff9aff53a5[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Sun Sep 1 10:13:04 2024 -0300
+
+    Incluindo cards de listagem
+
+[33mcommit 79c5c392bc771615dc4480f9f51d45d74bdbd1fb[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Mon Aug 26 20:22:20 2024 -0300
+
+    Mudando navegação para sidebar
+
+[33mcommit f425a939ef1a8490d09b3123a00c6bcd6c057f4d[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Thu Aug 22 20:15:24 2024 -0300
+
+    Refazendo header
+
+[33mcommit 5311e266bad796b2dfc500d791ac8d96a994ff87[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Wed Aug 21 20:09:56 2024 -0300
+
+    Header de navegação
+
+[33mcommit e29608481124259982df556ae0ffcf57c83f9362[m
+Merge: e7b360ab 96ecd228
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Mon Aug 19 20:18:20 2024 -0300
+
+    Merge branch 'main' of https://github.com/andrecbs/engajamento
+
+[33mcommit e7b360ab5997272a2f769479e523045be3fd1014[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Mon Aug 19 20:15:57 2024 -0300
+
+    Back to material UI
+
+[33mcommit 96ecd228fd4372cfe19c8cd87f22bffa71951f8e[m
+Author: Guilherme Santos <santosgui678@gmail.com>
+Date:   Mon Aug 19 09:17:35 2024 -0300
+
+    Upgrade dependencies
+
+[33mcommit dcf662099699059da75fc4603a7c1b410529120c[m

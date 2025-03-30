@@ -24,6 +24,7 @@ let alunosProntos =[]
 let listaAlunosConectados = [];
 let requestQueue = [];
 let canCallGetQuestionario = false;
+let dadosEmailControle = [];
 // Criando uma lista de objetos dinamicamente
 const jsonParser = bodyParser.json();
 
@@ -392,8 +393,8 @@ function conectarAluno(request,response){
     var aluno = "";
     //console.log("Turma carregada:", JSON.stringify(turma, null, 2));
     //console.log(turma);
-    if(codigo!=codigoAleatorio)
-        return response.status(500).json("código Invalido").end();
+    // if(codigo!=codigoAleatorio)
+    //     return response.status(500).json("código Invalido").end();
 
     for (let item of turma) {
 
@@ -473,7 +474,7 @@ async function gravarRespostas(request,response) {
       });
       // Insere o novo documento na coleção RespostasAluno
     const resultado = await mongoose.connection.db.collection("RespostasAluno").insertOne(novaResposta);
-    auxController.enviaEmail(aluno["email"],dados,questionario);
+    auxController.enviaEmail(aluno["email"],dados,questionario,pontuacao);
     response.status(200).json("salvo");
     } catch (error) {
       console.error('Erro ao salvar as respostas no banco de dados:', error);
@@ -566,5 +567,5 @@ module.exports = {
     gravarRespostas,
     gerarCodigo,
     getQuestoes,
-    getAssuntos
+    getAssuntos,
 };

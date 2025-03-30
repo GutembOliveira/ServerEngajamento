@@ -6,6 +6,7 @@ const jsonParser = bodyParser.json();
 const turmaController = require('./controllers/turmaController')
 const auxController = require('./controllers/auxController')
 const questionarioController = require('./controllers/questionarioController')
+const chatGptApiController = require('./controllers/apiGptController')
 const grmQuestionarioController = require('./controllers/grmQuestionarioController')
 const webSocketController = require('./webSocketController')
 //rota de retorno da turma
@@ -28,8 +29,6 @@ routes.post('/enviaEmail',jsonParser,auxController.enviaEmail );
 routes.post('/salvaPontuacao',jsonParser,questionarioController.salvaPontuacao);
 routes.get('/alunosConectados',questionarioController.alunosConectados);
 routes.get('/getQuestoes',questionarioController.getQuestoes);
-
-//funcionando
 routes.post('/getQuestionarioAluno',jsonParser,questionarioController.getQuestionarioAluno);
 //routes.get('/proxQuestao',questionarioController.getProximaQuestao);
 routes.post('/conectaQuestionario',jsonParser,questionarioController.liberaQuestionario);
@@ -41,6 +40,9 @@ routes.post('/carregaturma',jsonParser,questionarioController.carregaTurma);
 routes.get('/retornaPodio',questionarioController.retornaPodio);
 routes.get('/limparEstado',questionarioController.limparEstado);
 routes.get('/getAssuntos',questionarioController.getAssuntos);
+//--rotas chatGptApi
+routes.post('/getGptApi',jsonParser,chatGptApiController.apiTeste);
+
 
 
 module.exports = routes;

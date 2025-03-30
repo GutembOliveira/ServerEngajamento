@@ -1,0 +1,9 @@
+codigoQuestionario;nomeQuestionario;nomeQuestao;acertos;erros;idQuestao
+10;Entrega confiavel de dados - parte 1;O RDT 3.0 lida com a possibilidade de perda de pacotes através do uso de temporizadores e retransmissões.;22;1;674cbab8897ecf2c497a221f
+10;Entrega confiavel de dados - parte 1;O protocolo stop-and-wait (pare e espere) é altamente eficiente, pois garante a entrega dos pacotes com o mínimo de atraso.;16;7;674cbab8897ecf2c497a2220
+10;Entrega confiavel de dados - parte 1;O RDT 2.2 simplifica o protocolo utilizando apenas mensagens de ACK, eliminando o uso de NACK.;15;8;674cbab8897ecf2c497a221e
+10;Entrega confiavel de dados - parte 1;O protocolo RDT apresentado no livro do Prof. Kurose é um protocolo real utilizado na internet.;19;3;674cbab8897ecf2c497a221b
+10;Entrega confiavel de dados - parte 1;O RDT 2.1 introduz o uso de números de sequência para evitar a duplicação de dados no receptor em caso de retransmissões.;14;8;674cbab8897ecf2c497a221d
+10;Entrega confiavel de dados - parte 1;O serviço de transferência confiável de dados é implementado exclusivamente na camada de transporte.;9;18;674cbab8897ecf2c497a2219
+10;Entrega confiavel de dados - parte 1;A necessidade de implementar a transferência confiável de dados na camada de transporte surge porque a camada de rede, como o protocolo IP, não garante a entrega dos pacotes.;19;3;674cbab8897ecf2c497a221a
+10;Entrega confiavel de dados - parte 1;O uso de temporizadores no RDT 3.0 permite a retransmissão de segmentos perdidos, mesmo que o receptor tenha enviado um ACK que se perdeu na rede, enquanto o número de sequência identifica segmentos duplicados, evitando a entrega repetida da mesma informação para a camada de aplicação.;15;7;674cbab8897ecf2c497a221c
