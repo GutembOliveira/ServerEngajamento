@@ -15,7 +15,7 @@ const OpenAI = require('openai');
 const { response } = require('express');
 const chatConnection = require('../chatConnection.js');
 //-----------configurações da api
-const apiKey = chatConnection.apiKey  // Substitua com sua chave da API
+//const apiKey = chatConnection.apiKey  // Substitua com sua chave da API
 const prompt = "Me dê um resumo sobre as habilidades do Jhin, campeão de League of Legends.";
 const url = 'https://api.openai.com/v1/chat/completions';
 
